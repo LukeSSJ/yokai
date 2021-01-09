@@ -3,11 +3,15 @@ extends Node2D
 signal update_size
 signal update_cursor
 
+const MAX_UNDOS = 10
+
 var image
 var image_size
 var image_preview
 var zoom_level = 10.0
 var zoom
+var undoStack = []
+var undoIndex = -1
 
 onready var Output = $Output
 onready var Preview = $Preview
@@ -23,6 +27,7 @@ func _ready():
 	image_preview.create(image_size.x, image_size.y, false, Image.FORMAT_RGBA8)
 	
 	position = OS.get_window_size() / 2
+	undo_add()
 	update_output()
 	update_preview()
 	emit_signal("update_size", image_size)
@@ -55,6 +60,32 @@ func zoom_update():
 	zoom_level += 1
 	zoom = 1 / zoom_level
 	$Camera.zoom = Vector2(zoom, zoom)
+
+func undo_add():
+	undoStack.resize(undoIndex + 1)
+	undoStack.append(image.duplicate())
+	if len(undoStack) > MAX_UNDOS:
+		undoStack.pop_front()
+	else:
+		undoIndex += 1
+
+func undo():
+	if undoIndex > 0:
+		undoIndex -= 1
+		image = undoStack[undoIndex].duplicate()
+		Global.Tool.image = image
+		update_output()
+	else:
+		print("Nothing to undo")
+
+func redo():
+	if undoIndex < len(undoStack) - 1:
+		undoIndex += 1
+		image = undoStack[undoIndex].duplicate()
+		Global.Tool.image = image
+		update_output()
+	else:
+		print("Nothing to redo")
 
 func update_output():
 	var tex = ImageTexture.new()

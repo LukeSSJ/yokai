@@ -51,6 +51,10 @@ func tool_set(tool_name):
 		Global.Tool.image_preview = Global.Canvas.image_preview
 	else:
 		print("Error unknown tool: " + str(tool_name))
+	UI.update_tool(tool_name)
+
+func new():
+	pass
 
 func save():
 	Save.popup()
@@ -65,6 +69,9 @@ func open():
 func open_confirmed(filename):
 	print("Opened file: " + filename)
 	Canvas.load_image(filename)
+
+func resize_canvas():
+	$UI/Dialog/ResizeCanvas.popup()
 
 func color_changed(color, index):
 	Global.colors[index] = color

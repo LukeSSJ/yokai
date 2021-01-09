@@ -12,6 +12,7 @@ func _ready():
 		"Control+C": "copy",
 		"Control+P": "paste",
 		"Control+X": "cut",
+		"Control+R": "resize_canvas",
 		"Q": "tool_set:Rubber",
 		"D": "tool_set:Pencil",
 		"S": "tool_set:Select",

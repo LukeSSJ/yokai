@@ -24,6 +24,7 @@ func release(pos):
 	image_preview.lock()
 	image_preview.fill(Color.transparent)
 	image_preview.unlock()
+	Global.Canvas.undo_add()
 
 func move(pos):
 	if drawing:
