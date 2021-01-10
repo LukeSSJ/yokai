@@ -1,0 +1,43 @@
+[gd_scene format=2]
+
+[node name="ResizeCanvas" type="AcceptDialog"]
+visible = true
+margin_right = 200.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 200, 100 )
+window_title = "Resize Canvas"
+
+[node name="Content" type="CenterContainer" parent="."]
+anchor_right = 1.0
+margin_top = 16.0
+margin_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Content"]
+margin_left = 34.0
+margin_right = 165.0
+margin_bottom = 24.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEdit" type="LineEdit" parent="Content/HBoxContainer"]
+margin_right = 58.0
+margin_bottom = 24.0
+text = "32"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="Label" type="Label" parent="Content/HBoxContainer"]
+margin_left = 62.0
+margin_top = 5.0
+margin_right = 69.0
+margin_bottom = 19.0
+text = "x"
+
+[node name="LineEdit2" type="LineEdit" parent="Content/HBoxContainer"]
+margin_left = 73.0
+margin_right = 131.0
+margin_bottom = 24.0
+text = "32"
+caret_blink = true
+caret_blink_speed = 0.5

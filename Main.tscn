@@ -121,24 +121,34 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Dialog" type="MarginContainer" parent="UI"]
+[node name="DialogOld" type="MarginContainer" parent="UI"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="Dialog" type="Control" parent="UI"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Panel" type="Panel" parent="UI/Dialog"]
 margin_right = 1024.0
 margin_bottom = 600.0
 custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Save" type="FileDialog" parent="UI/Dialog"]
 margin_right = 1024.0
 margin_bottom = 600.0
 access = 2
 filters = PoolStringArray( "*.png" )
-current_dir = "/Users/Luke/Documents/GitHub/SIMP"
+current_dir = "/home/luke/Documents/projects/SIMP"
 current_file = "image.png"
-current_path = "/Users/Luke/Documents/GitHub/SIMP/image.png"
+current_path = "/home/luke/Documents/projects/SIMP/image.png"
 
 [node name="Open" type="FileDialog" parent="UI/Dialog"]
 margin_right = 1024.0
@@ -147,34 +157,5 @@ window_title = "Open a File"
 mode = 0
 access = 2
 filters = PoolStringArray( "*.png" )
-current_dir = "/Users/Luke/Documents/GitHub/SIMP"
-current_path = "/Users/Luke/Documents/GitHub/SIMP/"
-
-[node name="ResizeCanvas" type="WindowDialog" parent="UI/Dialog"]
-margin_right = 1024.0
-margin_bottom = 600.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MarginContainer" type="MarginContainer" parent="UI/Dialog/ResizeCanvas"]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/Dialog/ResizeCanvas/MarginContainer"]
-margin_right = 120.0
-margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="LineEdit" type="LineEdit" parent="UI/Dialog/ResizeCanvas/MarginContainer/HBoxContainer"]
-margin_right = 58.0
-margin_bottom = 40.0
-text = "32"
-
-[node name="LineEdit2" type="LineEdit" parent="UI/Dialog/ResizeCanvas/MarginContainer/HBoxContainer"]
-margin_left = 62.0
-margin_right = 120.0
-margin_bottom = 40.0
-text = "32"
+current_dir = "/home/luke/Documents/projects/SIMP"
+current_path = "/home/luke/Documents/projects/SIMP/"
