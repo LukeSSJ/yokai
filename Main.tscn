@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Canvas.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://tool/Rubber.tscn" type="PackedScene" id=9]
 [ext_resource path="res://tool/Eyedropper.gd" type="Script" id=10]
 [ext_resource path="res://tool/Select.gd" type="Script" id=11]
+[ext_resource path="res://dialog/ResizeCanvas.tscn" type="PackedScene" id=12]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.392157 )
@@ -29,6 +30,8 @@ script = ExtResource( 2 )
 [node name="Rect" parent="Tool" instance=ExtResource( 7 )]
 script = ExtResource( 6 )
 
+[node name="Circle" type="Node2D" parent="Tool"]
+
 [node name="Fill" parent="Tool" instance=ExtResource( 8 )]
 
 [node name="Rubber" parent="Tool" instance=ExtResource( 9 )]
@@ -45,15 +48,9 @@ script = ExtResource( 3 )
 [node name="Tool" type="GridContainer" parent="UI"]
 margin_right = 40.0
 margin_bottom = 40.0
-columns = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Button" type="Button" parent="UI/Tool"]
-margin_right = 40.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 40, 40 )
 
 [node name="Text" type="HBoxContainer" parent="UI"]
 anchor_left = 1.0
@@ -121,14 +118,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="DialogOld" type="MarginContainer" parent="UI"]
+[node name="Dialog" type="MarginContainer" parent="UI"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-
-[node name="Dialog" type="Control" parent="UI"]
-margin_right = 40.0
-margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -159,3 +152,7 @@ access = 2
 filters = PoolStringArray( "*.png" )
 current_dir = "/home/luke/Documents/projects/SIMP"
 current_path = "/home/luke/Documents/projects/SIMP/"
+
+[node name="ResizeCanvas" parent="UI/Dialog" instance=ExtResource( 12 )]
+margin_right = 1024.0
+margin_bottom = 600.0

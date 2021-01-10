@@ -25,6 +25,10 @@ Global="*res://Global.gd"
 Command="*res://Command.gd"
 Shortcut="*res://Shortcut.gd"
 
+[debug]
+
+gdscript/warnings/return_value_discarded=false
+
 [input]
 
 click1={

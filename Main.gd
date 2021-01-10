@@ -6,8 +6,7 @@ onready var Dialog = $UI/Dialog
 onready var Save = $UI/Dialog/Save
 onready var Open = $UI/Dialog/Open
 onready var ResizeCanvas = $UI/Dialog/ResizeCanvas
-onready var ColorPrimary = $UI/Colors/Primary
-onready var ColorSecondary = $UI/Colors/Secondary
+onready var Colors = [$UI/Colors/Primary, $UI/Colors/Secondary]
 
 func _ready():
 	for popup in Dialog.get_children():
@@ -15,20 +14,25 @@ func _ready():
 			popup.connect("popup_hide", self, "dialog_close")
 	Save.connect("file_selected", self, "save_confirmed")
 	Open.connect("file_selected", self, "open_confirmed")
-	
-	ColorPrimary.connect("color_changed", self, "color_changed", [0])
-	ColorSecondary.connect("color_changed", self, "color_changed", [1])
+	ResizeCanvas.connect("confirmed", self, "resize_canvas_confirmed")
 	
 	Canvas.connect("update_size", UI, "update_size")
 	Canvas.connect("update_cursor", UI, "update_cursor")
 	
+	for i in range (2):
+		Colors[i].connect("color_changed", self, "color_changed", [i])
+		Colors[i].color = Global.colors[i]
+	
 	Global.Main = self
 	Global.Canvas = Canvas
 	
-	ColorPrimary.color = Global.colors[0]
-	ColorSecondary.color = Global.colors[1]
-	
 	tool_set("Pencil")
+	
+	for Tool in $Tool.get_children():
+		var button = Button.new()
+		button.text = Tool.name
+		button.connect("pressed", Command, "tool_set", [Tool.name])
+		$UI/Tool.add_child(button)
 
 func _unhandled_input(event):
 	if event is InputEventMouse:
@@ -36,6 +40,7 @@ func _unhandled_input(event):
 	if event is InputEventKey and event.pressed:
 		# Keyboard shortcuts
 		var key_input = OS.get_scancode_string(event.get_scancode_with_modifiers())
+#		print(key_input)
 		var command = Shortcut.command.get(key_input)
 		if command:
 			var args = command.split(":")
@@ -51,9 +56,6 @@ func tool_set(tool_name):
 	if new_tool:
 		print("Set tool: " + str(tool_name))
 		Global.Tool = new_tool
-		Global.Tool.image = Global.Canvas.image
-		Global.Tool.image_size = Global.Canvas.image_size
-		Global.Tool.image_preview = Global.Canvas.image_preview
 	else:
 		print("Error unknown tool: " + str(tool_name))
 	UI.update_tool(tool_name)
@@ -62,16 +64,25 @@ func new():
 	pass
 
 func save():
-	Dialog.show()
-	Save.popup()
+	if Canvas.image_file:
+		save_confirmed(Canvas.image_file)
+	else:
+		save_as()
 
-func save_confirmed(filename):
-	print("Saved image to: " + filename)
-	Canvas.image.save_png(filename)
+func save_as():
+	Dialog.show()
+	Save.popup_centered()
+
+func save_confirmed(file):
+	print("Saved image to: " + file)
+	Canvas.image.save_png(file)
+	Canvas.image_file = file
+	Canvas.image_name = file.get_file()
+	OS.set_window_title(Canvas.image_name)
 
 func open():
 	Dialog.show()
-	Open.popup()
+	Open.popup_centered()
 
 func open_confirmed(file):
 	print("Opened file: " + file)
@@ -82,10 +93,15 @@ func open_confirmed(file):
 
 func resize_canvas():
 	Dialog.show()
-	ResizeCanvas.popup()
+	ResizeCanvas.popup_centered(Vector2(200, 100))
+	ResizeCanvas.on_popup()
+
+func resize_canvas_confirmed():
+	Canvas.resize_canvas(ResizeCanvas.get_size())
 
 func dialog_close():
 	Dialog.hide()
 
 func color_changed(color, index):
+	Colors[index].color = color
 	Global.colors[index] = color
