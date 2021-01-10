@@ -5,6 +5,8 @@ signal update_cursor
 
 const MAX_UNDOS = 10
 
+var image_file
+var image_name
 var image
 var image_size
 var image_preview
@@ -40,7 +42,12 @@ func mouse_event(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT:
 			if event.pressed:
-				Global.Tool.click(mouse_pos)
+				Global.Tool.click(mouse_pos, 0)
+			else:
+				Global.Tool.release(mouse_pos)
+		elif event.button_index == BUTTON_RIGHT:
+			if event.pressed:
+				Global.Tool.click(mouse_pos, 1)
 			else:
 				Global.Tool.release(mouse_pos)
 		elif event.button_index == BUTTON_WHEEL_UP:

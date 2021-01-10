@@ -15,6 +15,7 @@ func _ready():
 		"Control+R": "resize_canvas",
 		"Q": "tool_set:Rubber",
 		"D": "tool_set:Pencil",
+		"F": "tool_set:Fill",
 		"S": "tool_set:Select",
 		"A": "tool_set:Line",
 		"R": "tool_set:Rect",

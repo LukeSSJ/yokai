@@ -2,12 +2,17 @@ extends Node2D
 
 onready var Canvas = $Canvas
 onready var UI = $UI
+onready var Dialog = $UI/Dialog
 onready var Save = $UI/Dialog/Save
 onready var Open = $UI/Dialog/Open
+onready var ResizeCanvas = $UI/Dialog/ResizeCanvas
 onready var ColorPrimary = $UI/Colors/Primary
 onready var ColorSecondary = $UI/Colors/Secondary
 
 func _ready():
+	for popup in Dialog.get_children():
+		if popup.has_signal("popup_hide"):
+			popup.connect("popup_hide", self, "dialog_close")
 	Save.connect("file_selected", self, "save_confirmed")
 	Open.connect("file_selected", self, "open_confirmed")
 	
@@ -25,7 +30,7 @@ func _ready():
 	
 	tool_set("Pencil")
 
-func _input(event):
+func _unhandled_input(event):
 	if event is InputEventMouse:
 		Canvas.mouse_event(event)
 	if event is InputEventKey and event.pressed:
@@ -57,6 +62,7 @@ func new():
 	pass
 
 func save():
+	Dialog.show()
 	Save.popup()
 
 func save_confirmed(filename):
@@ -64,14 +70,22 @@ func save_confirmed(filename):
 	Canvas.image.save_png(filename)
 
 func open():
+	Dialog.show()
 	Open.popup()
 
-func open_confirmed(filename):
-	print("Opened file: " + filename)
-	Canvas.load_image(filename)
+func open_confirmed(file):
+	print("Opened file: " + file)
+	Canvas.load_image(file)
+	Canvas.image_file = file
+	Canvas.image_name = file.get_file()
+	OS.set_window_title(Canvas.image_name)
 
 func resize_canvas():
-	$UI/Dialog/ResizeCanvas.popup()
+	Dialog.show()
+	ResizeCanvas.popup()
+
+func dialog_close():
+	Dialog.hide()
 
 func color_changed(color, index):
 	Global.colors[index] = color
