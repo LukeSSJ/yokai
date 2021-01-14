@@ -1,12 +1,12 @@
 extends Node2D
 
-onready var Canvas = $Canvas
-onready var UI = $UI
-onready var Dialog = $UI/Dialog
-onready var Save = $UI/Dialog/Save
-onready var Open = $UI/Dialog/Open
-onready var ResizeCanvas = $UI/Dialog/ResizeCanvas
-onready var Colors = [$UI/Colors/Primary, $UI/Colors/Secondary]
+onready var Canvas := $Canvas
+onready var UI := $UI
+onready var Dialog := $UI/Dialog
+onready var Save := $UI/Dialog/Save
+onready var Open := $UI/Dialog/Open
+onready var ResizeCanvas := $UI/Dialog/ResizeCanvas
+onready var Colors := $UI/Colors/HBox/Drawing.get_children()
 
 func _ready():
 	for popup in Dialog.get_children():
@@ -29,7 +29,7 @@ func _ready():
 	tool_set("Pencil")
 	
 	for Tool in $Tool.get_children():
-		var button = Button.new()
+		var button := Button.new()
 		button.text = Tool.name
 		button.connect("pressed", Command, "tool_set", [Tool.name])
 		$UI/Tool.add_child(button)
@@ -43,16 +43,17 @@ func _unhandled_input(event):
 #		print(key_input)
 		var command = Shortcut.command.get(key_input)
 		if command:
-			var args = command.split(":")
+			var args : PoolStringArray = command.split(":")
 			command = args[0]
 			args.remove(0)
 			if Command.has_method(command):
+				print("Command: " + command + " " + args.join(" "))
 				Command.callv(command, args)
 			else:
 				print("Error unkown command: " + command)
 
 func tool_set(tool_name):
-	var new_tool = $Tool.get_node_or_null(tool_name)
+	var new_tool := $Tool.get_node_or_null(tool_name)
 	if new_tool:
 		print("Set tool: " + str(tool_name))
 		Global.Tool = new_tool

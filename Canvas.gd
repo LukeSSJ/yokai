@@ -3,21 +3,20 @@ extends Node2D
 signal update_size
 signal update_cursor
 
-const MAX_UNDOS = 10
+const MAX_UNDOS : int = 10
 
-var image_file
-var image_name
-var image
-var image_size
-var image_preview
-var zoom_level = 10.0
-var zoom
-var undo_stack = []
-var undo_index = -1
+var image_file : String
+var image_name : String
+var image : Image
+var image_size : Vector2
+var image_preview : Image
+var zoom_level : float = 10.0
+var undo_stack : Array = []
+var undo_index : int = -1
 
-onready var Output = $Output
-onready var Preview = $Preview
-onready var Select = $Select
+onready var Output := $Output
+onready var Preview := $Preview
+onready var Select := $Select
 
 func _ready():
 	#OS.window_maximized = true
@@ -26,8 +25,8 @@ func _ready():
 	
 	image_size = Vector2(32, 32)
 	
-	image.create(image_size.x, image_size.y, false, Image.FORMAT_RGBA8)
-	image_preview.create(image_size.x, image_size.y, false, Image.FORMAT_RGBA8)
+	image.create(int(image_size.x), int(image_size.y), false, Image.FORMAT_RGBA8)
+	image_preview.create(int(image_size.x), int(image_size.y), false, Image.FORMAT_RGBA8)
 	
 	position = OS.get_window_size() / 2
 	undo_add()
@@ -36,10 +35,12 @@ func _ready():
 	emit_signal("update_size", image_size)
 
 func mouse_event(event):
-	var mouse_pos = get_global_mouse_position() - position + image_size / 2
+	var mouse_pos : Vector2 = get_global_mouse_position() - position + image_size / 2
 	mouse_pos.x = floor(mouse_pos.x)
 	mouse_pos.y = floor(mouse_pos.y)
 	emit_signal("update_cursor", mouse_pos)
+	if Select.visible and Select.mouse_event_with_pos(event, mouse_pos):
+		return
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT:
 			if event.pressed:
@@ -66,7 +67,7 @@ func load_image(filename):
 
 func zoom_update():
 	zoom_level = clamp(zoom_level, 1, 100)
-	zoom = 1 / zoom_level
+	var zoom : float = 1 / zoom_level
 	$Camera.zoom = Vector2(zoom, zoom)
 
 func zoom_in():
@@ -77,8 +78,12 @@ func zoom_out():
 	zoom_level -= 1
 	zoom_update()
 
+func zoom_reset():
+	zoom_level = 1.0
+	zoom_update()
+
 func select_all():
-	Select.select_region(image_size)
+	Select.select_region(Rect2(Vector2.ZERO, image_size))
 
 func deselect():
 	Select.hide()
@@ -86,7 +91,7 @@ func deselect():
 func delete_selection():
 	if Select.visible:
 		Select.hide()
-		var blank_image = Image.new()
+		var blank_image := Image.new()
 		blank_image.create(Select.rect.size.x, Select.rect.size.y, false, Image.FORMAT_RGBA8)
 		image.blit_rect(blank_image, Rect2(Vector2.ZERO, Select.rect.size), Select.rect.position + Select.rect.size / 2)
 		update_output()
@@ -97,7 +102,7 @@ func rotate_clockwise():
 	if image_size.x != image_size.y:
 		print("Can only rotate square images atm :/")
 		return
-	var new_image = image.duplicate()
+	var new_image : Image = image.duplicate()
 	image.lock()
 	new_image.lock()
 	for x in image_size.x:
@@ -129,7 +134,7 @@ func rotate_anticlockwise():
 	undo_add()
 
 func flip_horizontal():
-	var new_image = image.duplicate()
+	var new_image : Image = image.duplicate()
 	image.lock()
 	new_image.lock()
 	for x in image_size.x:
@@ -143,7 +148,7 @@ func flip_horizontal():
 	undo_add()
 
 func flip_vertical():
-	var new_image = image.duplicate()
+	var new_image : Image = image.duplicate()
 	image.lock()
 	new_image.lock()
 	for y in image_size.y:
@@ -182,11 +187,11 @@ func redo():
 
 func resize_canvas(size):
 	print("Resize canvas to: " + str(size))
-	var old_size = image_size
+	var old_size : Vector2 = image_size
 	image_size = size
-	var old_image = image.duplicate()
-	image.create(image_size.x, image_size.y, false, Image.FORMAT_RGBA8)
-	image_preview.create(image_size.x, image_size.y, false, Image.FORMAT_RGBA8)
+	var old_image : Image = image.duplicate()
+	image.create(int(image_size.x), int(image_size.y), false, Image.FORMAT_RGBA8)
+	image_preview.create(int(image_size.x), int(image_size.y), false, Image.FORMAT_RGBA8)
 	image.blit_rect(old_image, Rect2(Vector2.ZERO, old_size), Vector2.ZERO)
 	$Background.region_rect.size = image_size
 	update_output()
@@ -195,13 +200,13 @@ func select_region(rect):
 	Select.select_region(rect)
 
 func update_output():
-	var tex = ImageTexture.new()
-	tex.create(image_size.x, image_size.y, Image.FORMAT_RGBA8, 0)
+	var tex := ImageTexture.new()
+	tex.create(int(image_size.x), int(image_size.y), Image.FORMAT_RGBA8, 0)
 	tex.set_data(image)
 	Output.set_texture(tex)
 
 func update_preview():
-	var tex = ImageTexture.new()
-	tex.create(image_size.x, image_size.y, Image.FORMAT_RGBA8, 0)
+	var tex := ImageTexture.new()
+	tex.create(int(image_size.x), int(image_size.y), Image.FORMAT_RGBA8, 0)
 	tex.set_data(image_preview)
 	Preview.set_texture(tex)

@@ -1,12 +1,12 @@
 extends Node
 
-var drawing
-var start_pos
-var prev_pos
-var use_preview
-var button_index
-var draw_color
-var change_made
+var drawing : bool
+var start_pos : Vector2
+var prev_pos : Vector2
+var use_preview : bool
+var button_index : int
+var draw_color : Color
+var change_made : bool
 
 func click(pos, set_button_index):
 	drawing = true
@@ -27,6 +27,7 @@ func release(pos):
 	Global.Canvas.image_preview.lock()
 	Global.Canvas.image_preview.fill(Color.transparent)
 	Global.Canvas.image_preview.unlock()
+	Global.Canvas.update_preview()
 	if change_made:
 		Global.Canvas.undo_add()
 
@@ -63,9 +64,9 @@ func image_draw_point(pos):
 			Global.Canvas.image.set_pixelv(pos, draw_color)
 
 func image_draw_line(pos1, pos2):
-	var dx = pos2.x - pos1.x
-	var dy = pos2.y - pos1.y
-	var step = max(abs(dx), abs(dy))
+	var dx : float = pos2.x - pos1.x
+	var dy : float = pos2.y - pos1.y
+	var step := max(abs(dx), abs(dy))
 	if step == 0:
 		image_draw_point(pos1)
 	else:
@@ -78,7 +79,7 @@ func image_draw_line(pos1, pos2):
 
 func image_draw_rect(pos1, pos2):
 	image_draw_point(pos1)
-	var step = sign(pos2.x - pos1.x)
+	var step := sign(pos2.x - pos1.x)
 	var i = pos1.x
 	while i != pos2.x:
 		i += step

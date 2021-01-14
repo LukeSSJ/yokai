@@ -1,7 +1,7 @@
 extends Node
 
-var Main
-var Canvas
-var Tool
+var Main : Node
+var Canvas : Node
+var Tool : Node
 
-var colors = [Color.black, Color.white]
+var colors := [Color.black, Color.white]

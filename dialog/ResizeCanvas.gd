@@ -1,7 +1,7 @@
 extends AcceptDialog
 
-onready var Width = $Content/Size/Width
-onready var Height = $Content/Size/Height
+onready var Width := $Content/Size/Width
+onready var Height := $Content/Size/Height
 
 #func _ready():
 #	Width.connect("text_changed", Width, "force_int")
