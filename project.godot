@@ -17,13 +17,14 @@ _global_script_class_icons={
 
 config/name="SIMP"
 run/main_scene="res://Main.tscn"
-config/icon="res://icon.png"
+config/icon="res://graphics/icon.png"
 
 [autoload]
 
 Global="*res://Global.gd"
 Command="*res://Command.gd"
 Shortcut="*res://Shortcut.gd"
+ImageTools="*res://ImageTools.gd"
 
 [debug]
 

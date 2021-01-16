@@ -17,6 +17,7 @@ func _ready():
 		"Control+V": "paste",
 		"Control+X": "cut",
 		"Delete": "delete",
+		"Enter": "confirm",
 		
 		"Shift+Control+C": "resize_canvas",
 		"Control+R": "rotate_clockwise",

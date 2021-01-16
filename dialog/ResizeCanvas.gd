@@ -7,11 +7,11 @@ onready var Height := $Content/Size/Height
 #	Width.connect("text_changed", Width, "force_int")
 #	Height.connect("text_changed", Height, "force_int")
 
-func on_popup():
+func on_popup() -> void:
 	Width.text = str(Global.Canvas.image_size.x)
 	Height.text = str(Global.Canvas.image_size.y)
 	Width.select_all()
 	Width.grab_focus()
 
-func get_size():
+func get_size() -> Vector2:
 	return Vector2(Width.text, Height.text)

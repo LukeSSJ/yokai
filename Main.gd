@@ -2,11 +2,11 @@ extends Node2D
 
 onready var Canvas := $Canvas
 onready var UI := $UI
-onready var Dialog := $UI/Dialog
-onready var Save := $UI/Dialog/Save
-onready var Open := $UI/Dialog/Open
-onready var ResizeCanvas := $UI/Dialog/ResizeCanvas
-onready var Colors := $UI/Colors/HBox/Drawing.get_children()
+onready var Colors := $UI/Colors
+onready var Dialog := $UI/Backdrop/Dialog
+onready var Save := $UI/Backdrop/Dialog/Save
+onready var Open := $UI/Backdrop/Dialog/Open
+onready var ResizeCanvas := $UI/Backdrop/Dialog/ResizeCanvas
 
 func _ready():
 	for popup in Dialog.get_children():
@@ -19,12 +19,9 @@ func _ready():
 	Canvas.connect("update_size", UI, "update_size")
 	Canvas.connect("update_cursor", UI, "update_cursor")
 	
-	for i in range (2):
-		Colors[i].connect("color_changed", self, "color_changed", [i])
-		Colors[i].color = Global.colors[i]
-	
 	Global.Main = self
 	Global.Canvas = Canvas
+	Global.Colors = Colors
 	
 	tool_set("Pencil")
 	
@@ -52,7 +49,7 @@ func _unhandled_input(event):
 			else:
 				print("Error unkown command: " + command)
 
-func tool_set(tool_name):
+func tool_set(tool_name) -> void:
 	var new_tool := $Tool.get_node_or_null(tool_name)
 	if new_tool:
 		print("Set tool: " + str(tool_name))
@@ -61,48 +58,44 @@ func tool_set(tool_name):
 		print("Error unknown tool: " + str(tool_name))
 	UI.update_tool(tool_name)
 
-func new():
+func new() -> void:
 	pass
 
-func save():
+func save() -> void:
 	if Canvas.image_file:
 		save_confirmed(Canvas.image_file)
 	else:
 		save_as()
 
-func save_as():
+func save_as() -> void:
 	Dialog.show()
 	Save.popup_centered()
 
-func save_confirmed(file):
+func save_confirmed(file) -> void:
 	print("Saved image to: " + file)
 	Canvas.image.save_png(file)
 	Canvas.image_file = file
 	Canvas.image_name = file.get_file()
 	OS.set_window_title(Canvas.image_name)
 
-func open():
+func open() -> void:
 	Dialog.show()
 	Open.popup_centered()
 
-func open_confirmed(file):
+func open_confirmed(file : String) -> void:
 	print("Opened file: " + file)
 	Canvas.load_image(file)
 	Canvas.image_file = file
 	Canvas.image_name = file.get_file()
 	OS.set_window_title(Canvas.image_name)
 
-func resize_canvas():
+func resize_canvas() -> void:
 	Dialog.show()
 	ResizeCanvas.popup_centered(Vector2(200, 100))
 	ResizeCanvas.on_popup()
 
-func resize_canvas_confirmed():
+func resize_canvas_confirmed() -> void:
 	Canvas.resize_canvas(ResizeCanvas.get_size())
 
-func dialog_close():
+func dialog_close() -> void:
 	Dialog.hide()
-
-func color_changed(color, index):
-	Colors[index].color = color
-	Global.colors[index] = color

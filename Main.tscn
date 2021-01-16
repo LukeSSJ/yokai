@@ -100,7 +100,7 @@ __meta__ = {
 [node name="TopMenu" parent="UI" instance=ExtResource( 13 )]
 margin_bottom = 20.0
 
-[node name="Dialog" type="MarginContainer" parent="UI"]
+[node name="Backdrop" type="MarginContainer" parent="UI"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -108,7 +108,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="UI/Dialog"]
+[node name="Panel" type="Panel" parent="UI/Backdrop"]
 margin_right = 1024.0
 margin_bottom = 600.0
 custom_styles/panel = SubResource( 1 )
@@ -116,18 +116,30 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Save" type="FileDialog" parent="UI/Dialog"]
+[node name="Dialog" type="MarginContainer" parent="UI/Backdrop"]
 margin_right = 1024.0
 margin_bottom = 600.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+
+[node name="Save" type="FileDialog" parent="UI/Backdrop/Dialog"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1004.0
+margin_bottom = 580.0
 access = 2
 filters = PoolStringArray( "*.png" )
 current_dir = "/home/luke/Pictures"
 current_file = "image.png"
 current_path = "/home/luke/Pictures/image.png"
 
-[node name="Open" type="FileDialog" parent="UI/Dialog"]
-margin_right = 1024.0
-margin_bottom = 600.0
+[node name="Open" type="FileDialog" parent="UI/Backdrop/Dialog"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1004.0
+margin_bottom = 580.0
 window_title = "Open a File"
 mode = 0
 access = 2
@@ -136,6 +148,8 @@ current_dir = "/home/luke/Pictures"
 current_file = "image.png"
 current_path = "/home/luke/Pictures/image.png"
 
-[node name="ResizeCanvas" parent="UI/Dialog" instance=ExtResource( 12 )]
-margin_right = 1024.0
-margin_bottom = 600.0
+[node name="ResizeCanvas" parent="UI/Backdrop/Dialog" instance=ExtResource( 12 )]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1004.0
+margin_bottom = 580.0

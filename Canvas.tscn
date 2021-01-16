@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Canvas.gd" type="Script" id=1]
 [ext_resource path="res://graphics/transparent.png" type="Texture" id=2]
-[ext_resource path="res://Select.gd" type="Script" id=3]
+[ext_resource path="res://Select.tscn" type="PackedScene" id=3]
 
 [node name="Canvas" type="Node2D"]
 position = Vector2( 512, 300 )
@@ -17,9 +17,7 @@ region_rect = Rect2( 0, 0, 32, 32 )
 
 [node name="Preview" type="Sprite" parent="."]
 
-[node name="Select" type="Node2D" parent="."]
-visible = false
-script = ExtResource( 3 )
+[node name="Select" parent="." instance=ExtResource( 3 )]
 
 [node name="Camera" type="Camera2D" parent="."]
 current = true
