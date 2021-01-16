@@ -3,17 +3,20 @@ extends Node2D
 onready var Canvas := $Canvas
 onready var UI := $UI
 onready var Colors := $UI/Colors
+onready var Backdrop := $UI/Backdrop
 onready var Dialog := $UI/Backdrop/Dialog
-onready var Save := $UI/Backdrop/Dialog/Save
-onready var Open := $UI/Backdrop/Dialog/Open
+onready var NewImage := $UI/Backdrop/Dialog/NewImage
+onready var SaveImage := $UI/Backdrop/Dialog/SaveImage
+onready var OpenImage := $UI/Backdrop/Dialog/OpenImage
 onready var ResizeCanvas := $UI/Backdrop/Dialog/ResizeCanvas
 
 func _ready():
 	for popup in Dialog.get_children():
 		if popup.has_signal("popup_hide"):
 			popup.connect("popup_hide", self, "dialog_close")
-	Save.connect("file_selected", self, "save_confirmed")
-	Open.connect("file_selected", self, "open_confirmed")
+	NewImage.connect("confirmed", self, "image_new_confirmed")
+	SaveImage.connect("file_selected", self, "image_save_confirmed")
+	OpenImage.connect("file_selected", self, "image_open_confirmed")
 	ResizeCanvas.connect("confirmed", self, "resize_canvas_confirmed")
 	
 	Canvas.connect("update_size", UI, "update_size")
@@ -58,39 +61,43 @@ func tool_set(tool_name) -> void:
 		print("Error unknown tool: " + str(tool_name))
 	UI.update_tool(tool_name)
 
-func new() -> void:
-	pass
+func image_new() -> void:
+	Backdrop.show()
+	NewImage.popup_centered(Vector2(200, 100))
 
-func save() -> void:
+func image_new_confirmed() -> void:
+	Canvas.image_new()
+
+func image_save() -> void:
 	if Canvas.image_file:
-		save_confirmed(Canvas.image_file)
+		image_save_confirmed(Canvas.image_file)
 	else:
-		save_as()
+		image_save_as()
 
-func save_as() -> void:
-	Dialog.show()
-	Save.popup_centered()
+func image_save_as() -> void:
+	Backdrop.show()
+	SaveImage.popup_centered()
 
-func save_confirmed(file) -> void:
+func image_save_confirmed(file) -> void:
 	print("Saved image to: " + file)
 	Canvas.image.save_png(file)
 	Canvas.image_file = file
 	Canvas.image_name = file.get_file()
 	OS.set_window_title(Canvas.image_name)
 
-func open() -> void:
-	Dialog.show()
-	Open.popup_centered()
+func image_open() -> void:
+	Backdrop.show()
+	OpenImage.popup_centered()
 
-func open_confirmed(file : String) -> void:
+func image_open_confirmed(file : String) -> void:
 	print("Opened file: " + file)
-	Canvas.load_image(file)
+	Canvas.image_load(file)
 	Canvas.image_file = file
 	Canvas.image_name = file.get_file()
 	OS.set_window_title(Canvas.image_name)
 
 func resize_canvas() -> void:
-	Dialog.show()
+	Backdrop.show()
 	ResizeCanvas.popup_centered(Vector2(200, 100))
 	ResizeCanvas.on_popup()
 
@@ -98,4 +105,4 @@ func resize_canvas_confirmed() -> void:
 	Canvas.resize_canvas(ResizeCanvas.get_size())
 
 func dialog_close() -> void:
-	Dialog.hide()
+	Backdrop.hide()

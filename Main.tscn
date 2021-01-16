@@ -124,24 +124,32 @@ custom_constants/margin_top = 20
 custom_constants/margin_left = 20
 custom_constants/margin_bottom = 20
 
-[node name="Save" type="FileDialog" parent="UI/Backdrop/Dialog"]
+[node name="NewImage" type="ConfirmationDialog" parent="UI/Backdrop/Dialog"]
 margin_left = 20.0
 margin_top = 20.0
 margin_right = 1004.0
 margin_bottom = 580.0
-access = 2
-filters = PoolStringArray( "*.png" )
-current_dir = "/home/luke/Pictures"
-current_file = "image.png"
-current_path = "/home/luke/Pictures/image.png"
+window_title = "New Image"
+dialog_text = "Dicard current image?"
 
-[node name="Open" type="FileDialog" parent="UI/Backdrop/Dialog"]
+[node name="OpenImage" type="FileDialog" parent="UI/Backdrop/Dialog"]
 margin_left = 20.0
 margin_top = 20.0
 margin_right = 1004.0
 margin_bottom = 580.0
 window_title = "Open a File"
 mode = 0
+access = 2
+filters = PoolStringArray( "*.png" )
+current_dir = "/home/luke/Pictures"
+current_file = "image.png"
+current_path = "/home/luke/Pictures/image.png"
+
+[node name="SaveImage" type="FileDialog" parent="UI/Backdrop/Dialog"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1004.0
+margin_bottom = 580.0
 access = 2
 filters = PoolStringArray( "*.png" )
 current_dir = "/home/luke/Pictures"

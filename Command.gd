@@ -1,16 +1,16 @@
 extends Node
 
 func new() -> void:
-	Global.Main.new()
+	Global.Main.image_new()
 
 func save() -> void:
-	Global.Main.save()
+	Global.Main.image_save()
 
 func save_as() -> void:
-	Global.Main.save_as()
+	Global.Main.image_save_as()
 
 func open() -> void:
-	Global.Main.open()
+	Global.Main.image_open()
 
 func undo() -> void:
 	Global.Canvas.undo()
@@ -25,13 +25,13 @@ func deselect() -> void:
 	Global.Canvas.deselect()
 
 func cut() -> void:
-	pass
+	Global.Canvas.cut()
 
 func copy() -> void:
-	pass
+	Global.Canvas.copy()
 
 func paste() -> void:
-	print(OS.clipboard)
+	Global.Canvas.paste()
 
 func delete() -> void:
 	Global.Canvas.delete()

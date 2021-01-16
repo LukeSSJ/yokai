@@ -54,7 +54,12 @@ func mouse_event(event : InputEventMouse) -> void:
 	else:
 		Global.Tool.move(mouse_pos)
 
-func load_image(filename : String) -> void:
+func image_new():
+	ImageTools.blank_image(image, image_size)
+	undo_stack_reset()
+	update_output()
+
+func image_load(filename : String) -> void:
 	image.load(filename)
 	image_size = image.get_size()
 	undo_stack_reset()
@@ -83,6 +88,20 @@ func select_all() -> void:
 
 func deselect() -> void:
 	Select.cancel_selection()
+
+func cut() -> void:
+	if Select.visible:
+		Select.hide()
+		Select.copy_selection()
+		delete_selection()
+		undo_add()
+
+func copy() -> void:
+	if Select.visible:
+		Select.copy_selection()
+
+func paste() -> void:
+	Select.paste()
 
 func delete() -> void:
 	if Select.visible:

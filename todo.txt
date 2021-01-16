@@ -1,0 +1,9 @@
+
+new file [X]
+circle tool []
+fix line tool []
+rotate non-square images []
+cut, copy, paste [X]
+zoom text + buttons []
+
+test everything []
