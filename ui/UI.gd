@@ -1,10 +1,13 @@
 extends CanvasLayer
 
-func update_tool(tool_name):
+func update_tool(tool_name: String):
 	$Text/Tool.text = tool_name
 
-func update_size(size):
+func update_zoom(zoom: float):
+	$Text/Zoom.text = "%0.2f" % (zoom * 100) + "%"
+
+func update_size(size: Vector2):
 	$Text/Size.text = str(size.x) + "x" + str(size.y)
 
-func update_cursor(cursor):
+func update_cursor(cursor: Vector2):
 	$Text/Cursor.text = "(" + str(cursor.x) + "," +  str(cursor.y) + ")"

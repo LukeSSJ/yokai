@@ -17,7 +17,6 @@ func _ready():
 
 func _draw():
 	var draw_rect : Rect2 = select_rect
-	draw_rect.position -= Vector2(16, 16)
 	if has_moved or is_new:
 		draw_texture(select_texture, draw_rect.position)
 	draw_rect(draw_rect, Color.black, false)
@@ -75,16 +74,25 @@ func confirm_selection() -> void:
 	hide()
 
 func copy_selection() -> void:
-	if select_image:
+	if visible and select_image:
 		clipboard_image = select_image.duplicate()
 
 func paste() -> void:
 	confirm_selection()
-	select_image = clipboard_image.duplicate()
+	if clipboard_image:
+		select_image = clipboard_image.duplicate()
+		select_texture = ImageTools.get_texture(select_image)
+		select_rect = Rect2(Vector2.ZERO, select_image.get_size())
+		is_new = true
+		update()
+		show()
+	else:
+		print("Nothing to paste")
+
+func add_image(image : Image) -> void:
+	select_image = image
 	select_texture = ImageTools.get_texture(select_image)
 	select_rect = Rect2(Vector2.ZERO, select_image.get_size())
 	is_new = true
 	update()
 	show()
-
-

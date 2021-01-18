@@ -24,6 +24,9 @@ func select_all() -> void:
 func deselect() -> void:
 	Global.Canvas.deselect()
 
+func delete() -> void:
+	Global.Canvas.delete()
+
 func cut() -> void:
 	Global.Canvas.cut()
 
@@ -33,11 +36,8 @@ func copy() -> void:
 func paste() -> void:
 	Global.Canvas.paste()
 
-func delete() -> void:
-	Global.Canvas.delete()
-
-func confirm() -> void:
-	Global.Canvas.confirm()
+func import() -> void:
+	Global.Main.import_image()
 
 func rotate_clockwise() -> void:
 	Global.Canvas.rotate_clockwise()
@@ -54,11 +54,17 @@ func flip_vertical() -> void:
 func resize_canvas() -> void:
 	Global.Main.resize_canvas()
 
+func confirm() -> void:
+	Global.Canvas.confirm()
+
+func cancel() -> void:
+	Global.Canvas.cancel()
+
 func tool_set(new_tool : String):
 	Global.Main.tool_set(new_tool)
 
-func palete_select(number : int, color_index:=0):
-	Global.Colors.palete_select(number, color_index)
+func palete_select(palete_number: String, color_index:="0"):
+	Global.Colors.palete_select(int(palete_number), int(color_index))
 
 func zoom_in() -> void:
 	Global.Canvas.zoom_in()

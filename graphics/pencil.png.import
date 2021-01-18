@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/transparent.png-e6e45db78c2455b6f72cddb44b50a22c.stex"
+path="res://.import/pencil.png-d0e023c1ee9a1e9d78b5665dc2bbb0b6.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/transparent.png"
-dest_files=[ "res://.import/transparent.png-e6e45db78c2455b6f72cddb44b50a22c.stex" ]
+source_file="res://graphics/pencil.png"
+dest_files=[ "res://.import/pencil.png-d0e023c1ee9a1e9d78b5665dc2bbb0b6.stex" ]
 
 [params]
 

@@ -6,3 +6,4 @@ var Colors : Node
 var Tool : Node
 
 var colors := [Color.black, Color.white]
+var dirty = false

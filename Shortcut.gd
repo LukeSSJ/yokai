@@ -18,6 +18,7 @@ func _ready():
 		"Control+X": "cut",
 		"Delete": "delete",
 		"Enter": "confirm",
+		"Escape": "cancel",
 		
 		"Shift+Control+C": "resize_canvas",
 		"Control+R": "rotate_clockwise",
