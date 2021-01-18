@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://ui/PaleteColor.gd" type="Script" id=1]
+
+[node name="PaleteColor" type="Panel"]
+margin_right = 30.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 30, 40 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 44.0
+margin_bottom = 18.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 0
+text = "1"
+__meta__ = {
+"_edit_use_anchors_": false
+}

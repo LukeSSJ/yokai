@@ -1,5 +1,6 @@
 extends Node2D
 
+signal update_zoom
 signal update_size
 signal update_cursor
 
@@ -18,16 +19,11 @@ onready var Output := $Output
 onready var Preview := $Preview
 onready var Select := $Select
 
-func _ready():
+func _ready() -> void:
 	#OS.window_maximized = true
-	ImageTools.blank_image(image, image_size)
-	ImageTools.blank_image(image_preview, image_size)
-	
 	position = OS.get_window_size() / 2
-	undo_stack_reset()
-	update_output()
-	update_preview()
-	emit_signal("update_size", image_size)
+	image_new()
+	update_size()
 
 func mouse_event(event : InputEventMouse) -> void:
 	var mouse_pos : Vector2 = get_global_mouse_position() - position + image_size / 2
@@ -54,21 +50,39 @@ func mouse_event(event : InputEventMouse) -> void:
 	else:
 		Global.Tool.move(mouse_pos)
 
-func image_new():
+func update_size() -> void:
+	emit_signal("update_size", image_size)
+	Select.position = -image_size / 2
+	$Background.region_rect.size = image_size
+
+func image_new() -> void:
+	image_file = ""
+	image_name = ""
 	ImageTools.blank_image(image, image_size)
+	ImageTools.blank_image(image_preview, image_size)
 	undo_stack_reset()
+	Select.cancel_selection()
 	update_output()
 
-func image_load(filename : String) -> void:
-	image.load(filename)
+func image_load(file : String) -> void:
+	image.load(file)
+	image_file = file
+	image_name = file.get_file()
 	image_size = image.get_size()
+	update_size()
 	undo_stack_reset()
 	update_output()
-	emit_signal("update_size", image_size)
+	update_preview()
+
+func import_image(file : String) -> void:
+	var add_image := Image.new()
+	add_image.load(file)
+	Select.add_image(add_image)
 
 func zoom_update() -> void:
 	zoom_level = clamp(zoom_level, 1, 100)
 	var zoom : float = 1 / zoom_level
+	emit_signal("update_zoom", zoom)
 	$Camera.zoom = Vector2(zoom, zoom)
 
 func zoom_in() -> void:
@@ -91,8 +105,8 @@ func deselect() -> void:
 
 func cut() -> void:
 	if Select.visible:
-		Select.hide()
 		Select.copy_selection()
+		Select.hide()
 		delete_selection()
 		undo_add()
 
@@ -111,6 +125,9 @@ func delete() -> void:
 
 func confirm() -> void:
 	Select.confirm_selection()
+
+func cancel() -> void:
+	Global.Tool.cancel_drawing()
 
 func delete_selection() -> void:
 	var blank_image := Image.new()
@@ -189,6 +206,8 @@ func undo_stack_reset() -> void:
 	undo_add()
 
 func undo_add() -> void:
+	if !undo_stack.empty():
+		Global.dirty = true
 	undo_stack.resize(undo_index + 1)
 	undo_stack.append(image.duplicate())
 	if len(undo_stack) > MAX_UNDOS:
@@ -200,6 +219,7 @@ func undo() -> void:
 	if undo_index > 0:
 		undo_index -= 1
 		image = undo_stack[undo_index].duplicate()
+		resize_canvas(image.get_size())
 		update_output()
 	else:
 		print("Nothing to undo")
@@ -208,6 +228,7 @@ func redo() -> void:
 	if undo_index < len(undo_stack) - 1:
 		undo_index += 1
 		image = undo_stack[undo_index].duplicate()
+		resize_canvas(image.get_size())
 		update_output()
 	else:
 		print("Nothing to redo")
@@ -216,11 +237,11 @@ func resize_canvas(size : Vector2) -> void:
 	print("Resize canvas to: " + str(size))
 	var old_size : Vector2 = image_size
 	image_size = size
+	update_size()
 	var old_image : Image = image.duplicate()
 	ImageTools.blank_image(image, image_size)
 	ImageTools.blank_image(image_preview, image_size)
 	image.blit_rect(old_image, Rect2(Vector2.ZERO, old_size), Vector2.ZERO)
-	$Background.region_rect.size = image_size
 	update_output()
 
 func select_region(rect : Rect2) -> void:

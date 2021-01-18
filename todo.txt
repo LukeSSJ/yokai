@@ -1,9 +1,9 @@
 
 new file [X]
-circle tool []
-fix line tool []
+circle tool [X] - needs perfecting
+fix line tool [X]
 rotate non-square images []
 cut, copy, paste [X]
-zoom text + buttons []
+zoom text + buttons [X]
 
 test everything []
