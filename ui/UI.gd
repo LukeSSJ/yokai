@@ -2,6 +2,7 @@ extends CanvasLayer
 
 func update_tool(tool_name: String):
 	$Text/Tool.text = tool_name
+	$Tool.get_node(tool_name).pressed = true
 
 func update_zoom(zoom: float):
 	$Text/Zoom.text = "%0.2f" % (zoom * 100) + "%"

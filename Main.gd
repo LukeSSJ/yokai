@@ -15,6 +15,15 @@ onready var ResizeCanvas := $UI/Backdrop/Dialog/ResizeCanvas
 func _ready():
 	get_tree().set_auto_accept_quit(false)
 	
+#	var dir := Directory.new()
+#	dir.open("./")
+#	dir.list_dir_begin()
+#	var file = dir.get_next()
+#	print("test " + file)
+#	while file != "":
+#		print(file)
+#		file = dir.get_next()
+	
 	for popup in Dialog.get_children():
 		if popup.has_signal("popup_hide"):
 			popup.connect("popup_hide", self, "dialog_close")
@@ -106,11 +115,11 @@ func image_open_confirmed(file : String) -> void:
 	Canvas.image_load(file)
 	OS.set_window_title(Canvas.image_name)
 
-func import_image():
+func import_image() -> void:
 	Backdrop.show()
 	ImportImage.popup()
 
-func import_image_confirmed(file : String):
+func import_image_confirmed(file : String) -> void:
 	print("Importing file " + file)
 	Global.Canvas.import_image(file)
 

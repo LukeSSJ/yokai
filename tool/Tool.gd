@@ -80,11 +80,11 @@ func image_draw_line(pos1: Vector2, pos2: Vector2) -> void:
 		image_draw_point(pos1)
 		if pos1 == pos2:
 			break
-		var e2 := 2 * step
-		if e2 > -dy:
+		var a := 2 * step
+		if a > -dy:
 			step -= dy
 			pos1.x += sx
-		if e2 < dx:
+		if a < dx:
 			step += dx
 			pos1.y += sy
 
@@ -104,13 +104,37 @@ func image_draw_rect(pos1: Vector2, pos2: Vector2) -> void:
 		image_draw_point(Vector2(pos2.x, i))
 
 func image_draw_ellipse(pos1: Vector2, pos2: Vector2) -> void:
+	if pos1 == pos2:
+		image_draw_point(pos1)
+		return
+	var top_left := Vector2(min(pos1.x, pos2.x), min(pos1.y, pos2.y))
+	var bottom_right := Vector2(max(pos1.x, pos2.x), max(pos1.y, pos2.y))
+	var center = (top_left + bottom_right) / 2
+	var even = Vector2(int(top_left.x + bottom_right.x) % 2, int(top_left.y + bottom_right.y) % 2)
+	var r = bottom_right - center
+	if r.x == 0:
+		r.x = 1
+	if r.y == 0:
+		r.y = 1
+	
+	for x in range(top_left.x, center.x + 1):
+		var angle := acos((x - center.x) / r.x)
+		var y := round(r.y * sin(angle) + center.y)
+		image_draw_point(Vector2(x - even.x, y))
+		image_draw_point(Vector2(x - even.x, 2 * center.y - y - even.y))
+		image_draw_point(Vector2(2 * center.x - x, y))
+		image_draw_point(Vector2(2 * center.x - x, 2 * center.y - y - even.y))
+	for y in range(top_left.y, center.y + 1):
+		var angle := asin((y - center.y) / r.y)
+		var x := round(r.x * cos(angle) + center.x)
+		image_draw_point(Vector2(x, y - even.y))
+		image_draw_point(Vector2(2 * center.x - x - even.x, y - even.y))
+		image_draw_point(Vector2(x, 2 * center.y - y))
+		image_draw_point(Vector2(2 * center.x - x - even.x, 2 * center.y - y))
+
+func image_draw_ellipse_old(pos1: Vector2, pos2: Vector2) -> void:
 	var pos := pos1.linear_interpolate(pos2, 0.5)
 	var r := ((pos1 - pos2).abs() / 2)
-	print("===========")
-#	print(pos1)
-#	print(pos2)
-#	print(pos)
-#	print(r)
 	var x : float = 0
 	var y : float = r.y
 	var d1 := (r.y * r.y) - (r.x * r.x * r.y) + (0.25 * r.x * r.x)
