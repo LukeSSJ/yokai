@@ -16,6 +16,8 @@ func click(pos: Vector2, set_button_index: int) -> void:
 	prev_pos = pos
 	button_index = set_button_index
 	draw_color = Global.colors[button_index]
+	if Global.Canvas.Select.visible:
+		Global.Canvas.Select.confirm_selection()
 	start(pos)
 	draw(pos)
 
@@ -61,7 +63,7 @@ func image_draw_end() -> void:
 
 func image_draw_point(pos: Vector2) -> void:
 #	pos = pos.round()
-	if pos.x >= 0 and pos.y >= 0 and pos.x < Global.Canvas.image_size.x and pos.y < Global.Canvas.image_size.y:
+	if Global.Canvas.image_rect.has_point(pos):
 		if use_preview:
 			Global.Canvas.image_preview.lock()
 			Global.Canvas.image_preview.set_pixelv(pos, draw_color)
@@ -109,7 +111,7 @@ func image_draw_ellipse(pos1: Vector2, pos2: Vector2) -> void:
 		return
 	var top_left := Vector2(min(pos1.x, pos2.x), min(pos1.y, pos2.y))
 	var bottom_right := Vector2(max(pos1.x, pos2.x), max(pos1.y, pos2.y))
-	var center = (top_left + bottom_right) / 2
+	var center = ((top_left + bottom_right) / 2).round()
 	var even = Vector2(int(top_left.x + bottom_right.x) % 2, int(top_left.y + bottom_right.y) % 2)
 	var r = bottom_right - center
 	if r.x == 0:
@@ -117,20 +119,27 @@ func image_draw_ellipse(pos1: Vector2, pos2: Vector2) -> void:
 	if r.y == 0:
 		r.y = 1
 	
-	for x in range(top_left.x, center.x + 1):
+#	for x in range(top_left.x, center.x):
+	var x := int(top_left.x)
+	while x <= center.x:
 		var angle := acos((x - center.x) / r.x)
 		var y := round(r.y * sin(angle) + center.y)
-		image_draw_point(Vector2(x - even.x, y))
-		image_draw_point(Vector2(x - even.x, 2 * center.y - y - even.y))
-		image_draw_point(Vector2(2 * center.x - x, y))
-		image_draw_point(Vector2(2 * center.x - x, 2 * center.y - y - even.y))
-	for y in range(top_left.y, center.y + 1):
+		if !is_nan(y):
+			image_draw_point(Vector2(x - even.x, y))
+			image_draw_point(Vector2(x - even.x, 2 * center.y - y - even.y))
+			image_draw_point(Vector2(2 * center.x - x, y))
+			image_draw_point(Vector2(2 * center.x - x, 2 * center.y - y - even.y))
+		x += 1
+#	for y in range(top_left.y, center.y):
+	var y := int(top_left.y)
+	while y <= center.y:
 		var angle := asin((y - center.y) / r.y)
-		var x := round(r.x * cos(angle) + center.x)
+		x = round(r.x * cos(angle) + center.x)
 		image_draw_point(Vector2(x, y - even.y))
 		image_draw_point(Vector2(2 * center.x - x - even.x, y - even.y))
 		image_draw_point(Vector2(x, 2 * center.y - y))
 		image_draw_point(Vector2(2 * center.x - x - even.x, 2 * center.y - y))
+		y += 1
 
 func image_draw_ellipse_old(pos1: Vector2, pos2: Vector2) -> void:
 	var pos := pos1.linear_interpolate(pos2, 0.5)
@@ -183,7 +192,7 @@ func image_draw_ellipse_old(pos1: Vector2, pos2: Vector2) -> void:
 	print(xmax)
 
 func image_fill(pos: Vector2, color_replace: Color) -> void:
-	if pos.x >= 0 and pos.y >= 0 and pos.x < Global.Canvas.image_size.x and pos.y < Global.Canvas.image_size.y:
+	if Global.Canvas.image_rect.has_point(pos):
 		var color_find = Global.Canvas.image.get_pixelv(pos)
 		if color_find != color_replace:
 			image_fill_recur(pos, color_find, color_replace)
@@ -201,7 +210,7 @@ func image_fill_recur(pos: Vector2, color_find: Color, color_replace: Color) -> 
 			image_fill_recur(Vector2(pos.x, pos.y + 1), color_find, color_replace)
 
 func image_grab_color(pos : Vector2) -> void:
-	if pos.x >= 0 and pos.y >= 0 and pos.x < Global.Canvas.image_size.x and pos.y < Global.Canvas.image_size.y:
+	if Global.Canvas.image_rect.has_point(pos):
 		Global.Colors.color_set(Global.Canvas.image.get_pixelv(pos), button_index)
 
 # Methods for overriding

@@ -3,9 +3,9 @@ extends AcceptDialog
 onready var Width := $Content/Size/Width
 onready var Height := $Content/Size/Height
 
-#func _ready():
-#	Width.connect("text_changed", Width, "force_int")
-#	Height.connect("text_changed", Height, "force_int")
+func _ready():
+	register_text_enter(Width)
+	register_text_enter(Height)
 
 func on_popup() -> void:
 	Width.text = str(Global.Canvas.image_size.x)

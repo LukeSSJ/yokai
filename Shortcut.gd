@@ -20,11 +20,14 @@ func _ready():
 		"Enter": "confirm",
 		"Escape": "cancel",
 		
-		"Shift+Control+C": "resize_canvas",
 		"Control+R": "rotate_clockwise",
 		"Shift+Control+R": "rotate_anticlockwise",
 		"Control+F": "flip_horizontal",
 		"Shift+Control+F": "flip_vertical",
+		
+		"Shift+Control+C": "resize_canvas",
+		
+		"Control+P": "select_palete",
 		
 		"Q": "tool_set:Rubber",
 		"D": "tool_set:Pencil",

@@ -1,9 +1,14 @@
 
 new file [X]
-circle tool [X] - needs perfecting
+circle tool [X] - needs perfecting [X]
 fix line tool [X]
-rotate non-square images []
+rotate non-square images [X]
 cut, copy, paste [X]
 zoom text + buttons [X]
+transform selection []
+tabs []
 
-test everything []
+test everything [X]
+
+== BUGS ==
+resize background stretchs [X]

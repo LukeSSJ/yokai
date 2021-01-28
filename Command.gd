@@ -54,17 +54,20 @@ func flip_vertical() -> void:
 func resize_canvas() -> void:
 	Global.Main.resize_canvas()
 
+func select_palete() -> void:
+	Global.Main.select_palete()
+
 func confirm() -> void:
 	Global.Canvas.confirm()
 
 func cancel() -> void:
 	Global.Canvas.cancel()
 
-func tool_set(new_tool : String):
+func tool_set(new_tool : String) -> void:
 	Global.Main.tool_set(new_tool)
 
 func palete_select(palete_number: String, color_index:="0"):
-	Global.Colors.palete_select(int(palete_number), int(color_index))
+	Global.Colors.palete_select_color(int(palete_number), int(color_index))
 
 func zoom_in() -> void:
 	Global.Canvas.zoom_in()

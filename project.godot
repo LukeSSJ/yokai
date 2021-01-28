@@ -17,7 +17,7 @@ _global_script_class_icons={
 
 config/name="GSprite"
 run/main_scene="res://Main.tscn"
-config/icon="res://graphics/icon.png"
+config/icon="res://graphics/GS.png"
 
 [autoload]
 

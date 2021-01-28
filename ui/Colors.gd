@@ -5,15 +5,18 @@ onready var Palete = $HBox/Palete
 
 onready var PaleteColor = preload("res://ui/PaleteColor.tscn")
 
-var colors = "#9ee7d7,#6ac0bd,#5889a2,#462c4b,#724254,#c18c72,#fcebb6,#a9f05f,#5fad67,#4e5e5e"
+#var colors = "#9ee7d7,#6ac0bd,#5889a2,#462c4b,#724254,#c18c72,#fcebb6,#a9f05f,#5fad67,#4e5e5e"
 
 func _ready():
 	for i in range (2):
 		Colors[i].connect("color_changed", self, "color_set", [i])
 		Colors[i].color = Global.colors[i]
-	
+
+func palete_set(palete : Dictionary) -> void:
+	for child in Palete.get_children():
+		child.queue_free()
 	var i := 1
-	for color in colors.split(","):
+	for color in palete.colors:
 		var paleteColor = PaleteColor.instance()
 		paleteColor.set_number_and_color(i, color)
 		Palete.add_child(paleteColor)
@@ -25,10 +28,10 @@ func palete_color_input(event: InputEvent, palete_index: int) -> void:
 		if event.button_index in [1,2]:
 			Command.palete_select(str(palete_index), str(event.button_index - 1))
 
-func color_set(new_color, color_index):
+func color_set(new_color : Color, color_index: int):
 	Colors[color_index].color = new_color
 	Global.colors[color_index] = new_color
 
-func palete_select(palete_number, color_index):
+func palete_select_color(palete_number : int, color_index: int):
 	var color : Color = Palete.get_child(int(palete_number) - 1).get("custom_styles/panel").bg_color
 	color_set(color, color_index)

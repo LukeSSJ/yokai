@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://dialog/PaletePreview.gd" type="Script" id=1]
+
+[node name="PaletePreview" type="MarginContainer"]
+anchor_right = 1.0
+margin_bottom = 60.0
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 55.0
+mouse_filter = 1
+
+[node name="Content" type="MarginContainer" parent="."]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 55.0
+mouse_filter = 1
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBox" type="VBoxContainer" parent="Content"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 1010.0
+margin_bottom = 46.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="Content/VBox"]
+margin_right = 1006.0
+margin_bottom = 14.0
+mouse_filter = 1
+text = "Palete Name"
+
+[node name="Colors" type="HBoxContainer" parent="Content/VBox"]
+margin_top = 18.0
+margin_right = 1006.0
+margin_bottom = 18.0

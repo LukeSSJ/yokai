@@ -1,0 +1,15 @@
+;paint.net Palette File
+;Downloaded from Lospec.com/palette-list
+;Palette Name: Island Life
+;Description: 
+;Colors: 10
+FF9ee7d7
+FF6ac0bd
+FF5889a2
+FF462c4b
+FF724254
+FFc18c72
+FFfcebb6
+FFa9f05f
+FF5fad67
+FF4e5e5e

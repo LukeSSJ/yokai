@@ -1,5 +1,6 @@
 extends Node2D
 
+signal update_title
 signal update_zoom
 signal update_size
 signal update_cursor
@@ -9,18 +10,19 @@ const MAX_UNDOS : int = 10
 var image_file : String
 var image_name : String
 var image_size := Vector2(32, 32)
+var image_rect = Rect2(Vector2.ZERO, Vector2(32, 32))
 var image := Image.new()
 var image_preview := Image.new()
 var zoom_level : float = 10.0
 var undo_stack : Array
 var undo_index : int
+var dirty := false
 
 onready var Output := $Output
 onready var Preview := $Preview
 onready var Select := $Select
 
 func _ready() -> void:
-	#OS.window_maximized = true
 	position = OS.get_window_size() / 2
 	image_new()
 	update_size()
@@ -50,11 +52,6 @@ func mouse_event(event : InputEventMouse) -> void:
 	else:
 		Global.Tool.move(mouse_pos)
 
-func update_size() -> void:
-	emit_signal("update_size", image_size)
-	Select.position = -image_size / 2
-	$Background.region_rect.size = image_size
-
 func image_new() -> void:
 	image_file = ""
 	image_name = ""
@@ -64,13 +61,20 @@ func image_new() -> void:
 	Select.cancel_selection()
 	update_output()
 
+func image_save(file : String) -> void:
+	image.save_png(file)
+	image_file = file
+	image_name = file.get_file()
+	dirty = false
+	update_title()
+
 func image_load(file : String) -> void:
 	image.load(file)
 	image_file = file
 	image_name = file.get_file()
-	image_size = image.get_size()
 	update_size()
 	undo_stack_reset()
+	update_title()
 	update_output()
 	update_preview()
 
@@ -101,7 +105,7 @@ func select_all() -> void:
 	Select.select_region(Rect2(Vector2.ZERO, image_size))
 
 func deselect() -> void:
-	Select.cancel_selection()
+	Select.confirm_selection()
 
 func cut() -> void:
 	if Select.visible:
@@ -127,6 +131,9 @@ func confirm() -> void:
 	Select.confirm_selection()
 
 func cancel() -> void:
+	if Select.visible:
+		Select.cancel_selection()
+		return
 	Global.Tool.cancel_drawing()
 
 func delete_selection() -> void:
@@ -138,65 +145,37 @@ func delete_selection() -> void:
 
 func rotate_clockwise() -> void:
 	print("Rotate clockwise")
-	if image_size.x != image_size.y:
-		print("Can only rotate square images atm :/")
+	if Select.visible:
+		Select.rotate_selection(true)
 		return
-	var new_image : Image = image.duplicate()
-	image.lock()
-	new_image.lock()
-	for x in image_size.x:
-		for y in image_size.y:
-			var color = image.get_pixel(x, y)
-			new_image.set_pixel(image_size.x - 1 - y, x, color)
-	image = new_image
-	image.unlock()
-	new_image.unlock()
+	ImageTools.image_rotate(image, true)
+	update_size()
 	update_output()
 	undo_add()
 
 func rotate_anticlockwise() -> void:
 	print("Rotate anticlockwise")
-	if image_size.x != image_size.y:
-		print("Can only rotate square images atm :/")
+	if Select.visible:
+		Select.rotate_selection(false)
 		return
-	var new_image = image.duplicate()
-	image.lock()
-	new_image.lock()
-	for x in image_size.x:
-		for y in image_size.y:
-			var color = image.get_pixel(x, y)
-			new_image.set_pixel(y, image_size.y - 1 - x, color)
-	image = new_image
-	image.unlock()
-	new_image.unlock()
+	ImageTools.image_rotate(image, false)
+	update_size()
 	update_output()
 	undo_add()
 
 func flip_horizontal() -> void:
-	var new_image : Image = image.duplicate()
-	image.lock()
-	new_image.lock()
-	for x in image_size.x:
-		for y in image_size.y:
-			var color = image.get_pixel(x, y)
-			new_image.set_pixel(image_size.y - 1 - x, y, color)
-	image = new_image
-	image.unlock()
-	new_image.unlock()
+	if Select.visible:
+		Select.flip_selection(true)
+		return
+	image.flip_x()
 	update_output()
 	undo_add()
 
 func flip_vertical() -> void:
-	var new_image : Image = image.duplicate()
-	image.lock()
-	new_image.lock()
-	for y in image_size.y:
-		for x in image_size.x:
-			var color = image.get_pixel(x, y)
-			new_image.set_pixel(x, image_size.y - 1 - y, color)
-	image = new_image
-	image.unlock()
-	new_image.unlock()
+	if Select.visible:
+		Select.flip_selection(false)
+		return
+	image.flip_y()
 	update_output()
 	undo_add()
 
@@ -207,7 +186,9 @@ func undo_stack_reset() -> void:
 
 func undo_add() -> void:
 	if !undo_stack.empty():
+		dirty = true
 		Global.dirty = true
+		update_title()
 	undo_stack.resize(undo_index + 1)
 	undo_stack.append(image.duplicate())
 	if len(undo_stack) > MAX_UNDOS:
@@ -236,16 +217,28 @@ func redo() -> void:
 func resize_canvas(size : Vector2) -> void:
 	print("Resize canvas to: " + str(size))
 	var old_size : Vector2 = image_size
-	image_size = size
-	update_size()
 	var old_image : Image = image.duplicate()
-	ImageTools.blank_image(image, image_size)
-	ImageTools.blank_image(image_preview, image_size)
+	ImageTools.blank_image(image, size)
 	image.blit_rect(old_image, Rect2(Vector2.ZERO, old_size), Vector2.ZERO)
+	update_size()
 	update_output()
 
 func select_region(rect : Rect2) -> void:
 	Select.select_region(rect)
+
+func update_size() -> void:
+	image_size = image.get_size()
+	image_rect = Rect2(Vector2.ZERO, image_size)
+	emit_signal("update_size", image_size)
+	ImageTools.blank_image(image_preview, image_size)
+	$Background.region_rect.size = image_size
+	Select.position = -image_size / 2
+
+func update_title():
+	var title := image_name
+	if dirty:
+		title += "*"
+	emit_signal("update_title", title)
 
 func update_output() -> void:
 	Output.texture = ImageTools.get_texture(image)

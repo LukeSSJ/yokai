@@ -7,19 +7,38 @@ var original_pos : Vector2
 var dragging : bool = false
 var drag_offset : Vector2
 var has_moved : bool
+var is_new : bool
 var select_image := Image.new()
 var select_texture : ImageTexture
 var clipboard_image : Image
-var is_new : bool
 
 func _ready():
 	select_rect = Rect2(Vector2(-16, -16), Vector2(32, 32))
+	hide()
 
 func _draw():
 	var draw_rect : Rect2 = select_rect
-	if has_moved or is_new:
+	if has_moved:
 		draw_texture(select_texture, draw_rect.position)
 	draw_rect(draw_rect, Color.black, false)
+
+func select_region(rect) -> void:
+	confirm_selection()
+	select_rect = rect
+	original_pos = rect.position
+	has_moved = false
+	is_new = false
+	select_texture = null
+	select_image = Global.Canvas.image.get_rect(select_rect)
+	select_texture = ImageTools.get_texture(select_image)
+	update()
+	show()
+
+func grab_selection():
+	if !has_moved:
+		has_moved = true
+		update()
+		Global.Canvas.delete_selection()
 
 func mouse_event_with_pos(event : InputEventMouse, mouse_pos) -> bool:
 	if dragging and event is InputEventMouseMotion:
@@ -32,11 +51,8 @@ func mouse_event_with_pos(event : InputEventMouse, mouse_pos) -> bool:
 		if event.pressed:
 			if !select_rect.has_point(mouse_pos):
 				return false
+			grab_selection()
 			dragging = true
-			if !has_moved:
-				has_moved = true
-				update()
-				Global.Canvas.delete_selection()
 			drag_offset = select_rect.position - mouse_pos
 			get_tree().set_input_as_handled()
 			return true
@@ -46,18 +62,6 @@ func mouse_event_with_pos(event : InputEventMouse, mouse_pos) -> bool:
 			return true
 	return false
 
-func select_region(rect) -> void:
-	confirm_selection()
-	select_rect = rect
-	original_pos = rect.position
-	has_moved = false
-	select_texture = null
-	select_image = Global.Canvas.image.get_rect(select_rect)
-	select_texture = ImageTools.get_texture(select_image)
-	is_new = false
-	update()
-	show()
-
 func cancel_selection() -> void:
 	if visible and has_moved and !is_new:
 		Global.Canvas.image.blit_rect(select_image, Rect2(Vector2.ZERO, select_rect.size), original_pos)
@@ -66,7 +70,7 @@ func cancel_selection() -> void:
 	hide()
 
 func confirm_selection() -> void:
-	if visible and (has_moved or is_new):
+	if visible and has_moved:
 		Global.Canvas.image.blit_rect(select_image, Rect2(Vector2.ZERO, select_rect.size), select_rect.position)
 		Global.Canvas.update_output()
 		Global.Canvas.undo_add()
@@ -83,6 +87,7 @@ func paste() -> void:
 		select_image = clipboard_image.duplicate()
 		select_texture = ImageTools.get_texture(select_image)
 		select_rect = Rect2(Vector2.ZERO, select_image.get_size())
+		has_moved = true
 		is_new = true
 		update()
 		show()
@@ -93,6 +98,23 @@ func add_image(image : Image) -> void:
 	select_image = image
 	select_texture = ImageTools.get_texture(select_image)
 	select_rect = Rect2(Vector2.ZERO, select_image.get_size())
+	has_moved = true
 	is_new = true
 	update()
 	show()
+
+func rotate_selection(clockwise : bool):
+	grab_selection()
+	ImageTools.image_rotate(select_image, clockwise)
+	select_texture = ImageTools.get_texture(select_image)
+	select_rect.size = select_image.get_size()
+	update()
+
+func flip_selection(horizontal : bool):
+	grab_selection()
+	if horizontal:
+		select_image.flip_x()
+	else:
+		select_image.flip_y()
+	select_texture = ImageTools.get_texture(select_image)
+	update()
