@@ -3,6 +3,7 @@ extends Node2D
 onready var CanvasList := $CanvasList
 onready var UI := $UI
 onready var Colors := $UI/Colors
+onready var Tool := $UI/Tool
 onready var ImageTabs = $UI/VBox/TabWrap/ImageTabs
 onready var Backdrop := $UI/Backdrop
 onready var Dialog := $UI/Backdrop/Dialog
@@ -18,7 +19,6 @@ onready var SelectPalete := $UI/Backdrop/Dialog/SelectPalete
 onready var Canvas = preload("res://Canvas.tscn")
 
 var new_count := 1
-var palete_file : String
 
 func _ready():
 	get_tree().set_auto_accept_quit(false)
@@ -45,7 +45,7 @@ func _ready():
 	Global.session_load()
 	SelectPalete.load_paletes()
 		
-	for button in $UI/Tool.get_children():
+	for button in Tool.get_children():
 		button.text = button.name
 		button.connect("pressed", Command, "tool_set", [button.name])
 	tool_set("Pencil")
@@ -71,7 +71,14 @@ func _unhandled_input(event):
 
 func _notification(message):
 	if message == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
-		if Global.dirty:
+		if UnsavedChanges.visible:
+			return
+		var dirty := false
+		for canvas in CanvasList.get_children():
+			if canvas.dirty:
+				dirty = true
+				break
+		if dirty:
 			Backdrop.show()
 			UnsavedChanges.popup_centered(Vector2(200, 100))
 		else:
@@ -82,7 +89,7 @@ func quit():
 	get_tree().quit()
 
 func tool_set(tool_name) -> void:
-	var new_tool := $UI/Tool.get_node_or_null(tool_name)
+	var new_tool := Tool.get_node_or_null(tool_name)
 	if new_tool:
 		Global.Tool = new_tool
 		UI.update_tool(tool_name)
@@ -135,11 +142,6 @@ func image_new() -> void:
 	ImageTabs.add_tab(canvas.image_name)
 	new_count += 1
 	ImageTabs.current_tab = tab
-#	Backdrop.show()
-#	NewImage.popup_centered(Vector2(200, 100))
-
-#func image_new_confirmed() -> void:
-#	Canvas.image_new()
 
 func image_save() -> void:
 	if Global.Canvas.image_file:
@@ -150,18 +152,24 @@ func image_save() -> void:
 func image_save_as() -> void:
 	Backdrop.show()
 	SaveImage.popup_centered()
+	if Global.session.get("save_dir"):
+		SaveImage.current_dir = Global.session.save_dir
 
 func image_save_confirmed(file) -> void:
 	print("Saved image to: " + file)
+	Global.session.save_dir = file.get_base_dir()
 	Global.Canvas.image_save(file)
 	OS.set_window_title("GSprite - " + Global.Canvas.title)
 
 func image_open() -> void:
 	Backdrop.show()
 	OpenImage.popup_centered()
+	if Global.session.get("open_dir"):
+		OpenImage.current_dir = Global.session.open_dir
 
 func image_open_confirmed(file : String) -> void:
 	print("Opened file: " + file)
+	Global.session.open_dir = file.get_base_dir()
 	if Global.Canvas.dirty:
 		image_new()
 		new_count -= 1
@@ -170,10 +178,13 @@ func image_open_confirmed(file : String) -> void:
 
 func import_image() -> void:
 	Backdrop.show()
-	ImportImage.popup()
+	ImportImage.popup_centered()
+	if Global.session.get("open_dir"):
+		OpenImage.current_dir = Global.session.open_dir
 
 func import_image_confirmed(file : String) -> void:
 	print("Importing file " + file)
+	Global.session.open_dir = file.get_base_dir()
 	Global.Canvas.import_image(file)
 
 func resize_canvas() -> void:
@@ -189,5 +200,5 @@ func select_palete() -> void:
 	SelectPalete.popup_centered()
 
 func palete_selected(palete) -> void:
-	palete_file = palete.file
+	Global.session.palete = palete.file
 	Colors.palete_set(palete)

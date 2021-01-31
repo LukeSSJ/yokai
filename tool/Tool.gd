@@ -7,14 +7,21 @@ var use_preview : bool
 var button_index : int
 var draw_color : Color
 var change_made : bool
+var control_pressed: bool
 
-func click(pos: Vector2, set_button_index: int) -> void:
+func click(pos: Vector2, event: InputEventMouseButton) -> void:
 	drawing = true
 	use_preview = false
 	change_made = false
 	start_pos = pos
 	prev_pos = pos
-	button_index = set_button_index
+	
+	if event.button_index == BUTTON_LEFT:
+		button_index = 0
+	elif event.button_index == BUTTON_RIGHT:
+		button_index = 1
+	control_pressed = event.control
+	
 	draw_color = Global.colors[button_index]
 	if Global.Canvas.Select.visible:
 		Global.Canvas.Select.confirm_selection()
@@ -140,74 +147,38 @@ func image_draw_ellipse(pos1: Vector2, pos2: Vector2) -> void:
 		image_draw_point(Vector2(x, 2 * center.y - y))
 		image_draw_point(Vector2(2 * center.x - x - even.x, 2 * center.y - y))
 		y += 1
-
-func image_draw_ellipse_old(pos1: Vector2, pos2: Vector2) -> void:
-	var pos := pos1.linear_interpolate(pos2, 0.5)
-	var r := ((pos1 - pos2).abs() / 2)
-	var x : float = 0
-	var y : float = r.y
-	var d1 := (r.y * r.y) - (r.x * r.x * r.y) + (0.25 * r.x * r.x)
-	var dx := 2 * r.y * r.y * x
-	var dy := 2 * r.x * r.x * y
 	
-	var xmin = 999
-	var xmax = 0
-	
-	while dx < dy:
-		image_draw_point(Vector2(x + pos.x, y + pos.y))
-		image_draw_point(Vector2(-x + pos.x, y + pos.y))
-		image_draw_point(Vector2(x + pos.x, -y + pos.y))
-		image_draw_point(Vector2(-x + pos.x, -y + pos.y))
-		if d1 < 0:
-			x += 1
-			dx += 2 * r.y * r.y
-			d1 += dx + (r.y * r.y)
-		else:
-			x += 1
-			y -= 1
-			dx += 2 * r.y * r.y
-			dy -= 2 * r.x * r.x
-			d1 += dx - dy + (r.y * r.y)
-	
-	var d2 := ((r.y * r.y) * ((x + 0.5) * (x + 0.5))) + ((r.x * r.x) * ((y - 1) * (y - 1))) - (r.x * r.x * r.y * r.y)
-	
-	while y >= 0:
-		image_draw_point(Vector2(x + pos.x, y + pos.y))
-		image_draw_point(Vector2(-x + pos.x, y + pos.y))
-		image_draw_point(Vector2(x + pos.x, -y + pos.y))
-		image_draw_point(Vector2(-x + pos.x, -y + pos.y))
-		xmin = min(xmin, -x + pos.x)
-		xmax = max(xmax, x + pos.x)
-		if d2 > 0:
-			y -= 1
-			dy = dy - (2 * r.x * r.x)
-			d2 = d2 + (r.x * r.x) - dy
-		else:
-			y -= 1
-			x += 1
-			dx = dx + (2 * r.y * r.y)
-			dy = dy - (2 * r.x * r.x)
-			d2 = d2 + dx - dy + (r.x * r.x)
-	print(xmin)
-	print(xmax)
-
 func image_fill(pos: Vector2, color_replace: Color) -> void:
-	if Global.Canvas.image_rect.has_point(pos):
-		var color_find = Global.Canvas.image.get_pixelv(pos)
-		if color_find != color_replace:
-			image_fill_recur(pos, color_find, color_replace)
+	if !Global.Canvas.image_rect.has_point(pos):
+		return
+	var color_find = Global.Canvas.image.get_pixelv(pos)
+	if color_find == color_replace:
+		return
 	
-func image_fill_recur(pos: Vector2, color_find: Color, color_replace: Color) -> void:
-	if Global.Canvas.image.get_pixelv(pos) == color_find:
-		Global.Canvas.image.set_pixelv(pos, color_replace)
-		if pos.x > 0:
-			image_fill_recur(Vector2(pos.x - 1, pos.y), color_find, color_replace)
-		if pos.x < Global.Canvas.image_size.x - 1:
-			image_fill_recur(Vector2(pos.x + 1, pos.y), color_find, color_replace)
-		if pos.y > 0:
-			image_fill_recur(Vector2(pos.x, pos.y - 1), color_find, color_replace)
-		if pos.y < Global.Canvas.image_size.y - 1:
-			image_fill_recur(Vector2(pos.x, pos.y + 1), color_find, color_replace)
+	var fill_positions := [pos]
+	
+	while len(fill_positions) > 0:
+		var current_pos = fill_positions.pop_back()
+		Global.Canvas.image.set_pixelv(current_pos, color_replace)
+		
+		if current_pos.x > 0 and Global.Canvas.image.get_pixel(current_pos.x - 1, current_pos.y) == color_find:
+			fill_positions.push_back(Vector2(current_pos.x - 1, current_pos.y))
+		if current_pos.x < Global.Canvas.image_size.x - 1 and Global.Canvas.image.get_pixel(current_pos.x + 1, current_pos.y) == color_find:
+			fill_positions.push_back(Vector2(current_pos.x + 1, current_pos.y))
+		if current_pos.y > 0 and Global.Canvas.image.get_pixel(current_pos.x, current_pos.y - 1) == color_find:
+			fill_positions.push_back(Vector2(current_pos.x, current_pos.y - 1))
+		if current_pos.y < Global.Canvas.image_size.y - 1 and Global.Canvas.image.get_pixel(current_pos.x, current_pos.y + 1) == color_find:
+			fill_positions.push_back(Vector2(current_pos.x, current_pos.y + 1))
+
+func image_fill_global(pos: Vector2, color_replace: Color):
+	if !Global.Canvas.image_rect.has_point(pos):
+		return
+	var color_find : Color = Global.Canvas.image.get_pixelv(pos)
+	
+	for x in Global.Canvas.image_size.x:
+		for y in Global.Canvas.image_size.y:
+			if Global.Canvas.image.get_pixel(x, y) == color_find:
+				Global.Canvas.image.set_pixel(x, y, color_replace)
 
 func image_grab_color(pos : Vector2) -> void:
 	if Global.Canvas.image_rect.has_point(pos):

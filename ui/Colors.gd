@@ -2,15 +2,15 @@ extends MarginContainer
 
 onready var Colors = $HBox/Drawing.get_children()
 onready var Palete = $HBox/Palete
+onready var ChangePalete = $HBox/ChangePalete
 
 onready var PaleteColor = preload("res://ui/PaleteColor.tscn")
-
-#var colors = "#9ee7d7,#6ac0bd,#5889a2,#462c4b,#724254,#c18c72,#fcebb6,#a9f05f,#5fad67,#4e5e5e"
 
 func _ready():
 	for i in range (2):
 		Colors[i].connect("color_changed", self, "color_set", [i])
 		Colors[i].color = Global.colors[i]
+	ChangePalete.connect("pressed", Command, "select_palete")
 
 func palete_set(palete : Dictionary) -> void:
 	for child in Palete.get_children():

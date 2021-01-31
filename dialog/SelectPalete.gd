@@ -38,7 +38,7 @@ func load_palete(fname):
 				palete.colors.append(line)
 		file.close()
 		paletes.append(palete)
-		if palete.file == Global.Main.palete_file:
+		if palete.file == Global.session.palete:
 			emit_signal("palete_selected", palete)
 
 func display_paletes():

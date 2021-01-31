@@ -39,14 +39,9 @@ func mouse_event(event : InputEventMouse) -> void:
 	if Select.visible and Select.mouse_event_with_pos(event, mouse_pos):
 		return
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT:
+		if event.button_index == BUTTON_LEFT or event.button_index == BUTTON_RIGHT:
 			if event.pressed:
-				Global.Tool.click(mouse_pos, 0)
-			else:
-				Global.Tool.release(mouse_pos)
-		elif event.button_index == BUTTON_RIGHT:
-			if event.pressed:
-				Global.Tool.click(mouse_pos, 1)
+				Global.Tool.click(mouse_pos, event)
 			else:
 				Global.Tool.release(mouse_pos)
 		elif event.button_index == BUTTON_WHEEL_UP:
@@ -191,7 +186,6 @@ func undo_stack_reset() -> void:
 func undo_add() -> void:
 	if !undo_stack.empty():
 		dirty = true
-		Global.dirty = true
 		update_title()
 	undo_stack.resize(undo_index + 1)
 	undo_stack.append(image.duplicate())
