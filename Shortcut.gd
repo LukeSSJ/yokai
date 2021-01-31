@@ -27,6 +27,8 @@ func _ready():
 		
 		"Shift+Control+C": "resize_canvas",
 		
+		"Control+G": "toggle_grid",
+		
 		"Control+P": "select_palete",
 		
 		"Q": "tool_set:Rubber",

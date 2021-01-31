@@ -54,6 +54,12 @@ func flip_vertical() -> void:
 func resize_canvas() -> void:
 	Global.Main.resize_canvas()
 
+func toggle_grid() -> void:
+	Global.show_grid = !Global.show_grid
+	Global.Canvas.toggle_grid(Global.show_grid)
+
+# Key only
+
 func select_palete() -> void:
 	Global.Main.select_palete()
 

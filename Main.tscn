@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=2]
 [ext_resource path="res://ui/UI.gd" type="Script" id=3]
@@ -27,6 +27,9 @@
 [sub_resource type="ButtonGroup" id=1]
 
 [sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.2288, 0.2288, 0.26, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0, 0, 0, 0.392157 )
 
 [node name="Main" type="Node2D"]
@@ -159,10 +162,23 @@ anchor_right = 0.0
 margin_right = 1024.0
 margin_bottom = 20.0
 
-[node name="ImageTabs" type="Tabs" parent="UI/VBox"]
+[node name="TabWrap" type="MarginContainer" parent="UI/VBox"]
 margin_top = 20.0
 margin_right = 1024.0
 margin_bottom = 44.0
+
+[node name="Panel" type="Panel" parent="UI/VBox/TabWrap"]
+margin_right = 1024.0
+margin_bottom = 24.0
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ImageTabs" type="Tabs" parent="UI/VBox/TabWrap"]
+margin_right = 1024.0
+margin_bottom = 24.0
+custom_constants/hseparation = 20
 tab_align = 0
 tab_close_display_policy = 2
 drag_to_rearrange_enabled = true
@@ -181,7 +197,7 @@ __meta__ = {
 [node name="Panel" type="Panel" parent="UI/Backdrop"]
 margin_right = 1024.0
 margin_bottom = 600.0
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

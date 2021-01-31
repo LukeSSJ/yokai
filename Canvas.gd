@@ -7,6 +7,7 @@ signal update_cursor
 
 const MAX_UNDOS : int = 10
 
+var title : String
 var image_file : String
 var image_name : String
 var image_size := Vector2(32, 32)
@@ -18,9 +19,12 @@ var undo_stack : Array
 var undo_index : int
 var dirty := false
 
+onready var Background := $Background
 onready var Output := $Output
 onready var Preview := $Preview
-onready var Select := $Select
+onready var TopLeft := $TopLeft
+onready var Grid := $TopLeft/Grid
+onready var Select := $TopLeft/Select
 
 func _ready() -> void:
 	position = OS.get_window_size() / 2
@@ -226,16 +230,20 @@ func resize_canvas(size : Vector2) -> void:
 func select_region(rect : Rect2) -> void:
 	Select.select_region(rect)
 
+func toggle_grid(set_to:bool):
+	Grid.visible = set_to
+
 func update_size() -> void:
 	image_size = image.get_size()
 	image_rect = Rect2(Vector2.ZERO, image_size)
 	emit_signal("update_size", image_size)
 	ImageTools.blank_image(image_preview, image_size)
-	$Background.region_rect.size = image_size
-	Select.position = -image_size / 2
+	Background.region_rect.size = image_size
+	TopLeft.position = -image_size / 2
+	Grid.set_area(image_size)
 
 func update_title():
-	var title := image_name
+	title = image_name
 	if dirty:
 		title += "*"
 	emit_signal("update_title", title)

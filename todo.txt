@@ -6,9 +6,12 @@ rotate non-square images [X]
 cut, copy, paste [X]
 zoom text + buttons [X]
 transform selection []
-tabs []
+tabs [X]
 
-test everything [X]
+resize canvas choose position []
 
 == BUGS ==
 resize background stretchs [X]
+resize then undo loses part of image []
+open + save: window name is Null []
+save as didn't save? []

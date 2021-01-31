@@ -3,7 +3,7 @@ extends Node2D
 onready var CanvasList := $CanvasList
 onready var UI := $UI
 onready var Colors := $UI/Colors
-onready var ImageTabs = $UI/VBox/ImageTabs
+onready var ImageTabs = $UI/VBox/TabWrap/ImageTabs
 onready var Backdrop := $UI/Backdrop
 onready var Dialog := $UI/Backdrop/Dialog
 onready var UnsavedChanges := $UI/Backdrop/Dialog/UnsavedChanges
@@ -92,11 +92,13 @@ func tool_set(tool_name) -> void:
 func tab_changed(tab : int):
 	Global.Canvas.hide()
 	Global.Canvas = CanvasList.get_child(tab)
+	Global.Canvas.toggle_grid(Global.show_grid)
 	Global.Canvas.show()
 
-func tab_close(_tab: int):
+func tab_close(tab: int):
 	if CanvasList.get_child_count() == 1:
 		return
+	ImageTabs.current_tab = tab
 	if Global.Canvas.dirty:
 		UnsavedTab.popup_centered(Vector2(200, 100))
 	else:

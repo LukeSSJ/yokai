@@ -8,6 +8,8 @@ var Tool : Node
 var colors := [Color.black, Color.white]
 var dirty = false
 
+var show_grid = false
+
 func session_load():
 	var file = File.new()
 	if file.open("session.json", File.READ) == 0:
