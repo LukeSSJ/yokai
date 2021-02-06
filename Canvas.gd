@@ -44,12 +44,21 @@ func mouse_event(event : InputEventMouse) -> void:
 				Global.Tool.click(mouse_pos, event)
 			else:
 				Global.Tool.release(mouse_pos)
-		elif event.button_index == BUTTON_WHEEL_UP:
-			Command.zoom_in()
-		elif event.button_index == BUTTON_WHEEL_DOWN:
-			Command.zoom_out()
+		elif event.pressed:
+			if event.button_index == BUTTON_WHEEL_UP:
+				Command.zoom_in()
+			elif event.button_index == BUTTON_WHEEL_DOWN:
+				Command.zoom_out()
 	else:
 		Global.Tool.move(mouse_pos)
+
+func make_active():
+	zoom_update()
+	update_title()
+	emit_signal("update_size", image_size)
+	toggle_grid(Global.show_grid)
+	show()
+	$Camera.current = true
 
 func image_new() -> void:
 	image_file = ""
@@ -85,7 +94,7 @@ func import_image(file : String) -> void:
 func zoom_update() -> void:
 	zoom_level = clamp(zoom_level, 1, 100)
 	var zoom : float = 1 / zoom_level
-	emit_signal("update_zoom", zoom)
+	emit_signal("update_zoom", zoom_level)
 	$Camera.zoom = Vector2(zoom, zoom)
 
 func zoom_in() -> void:

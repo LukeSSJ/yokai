@@ -99,8 +99,7 @@ func tool_set(tool_name) -> void:
 func tab_changed(tab : int):
 	Global.Canvas.hide()
 	Global.Canvas = CanvasList.get_child(tab)
-	Global.Canvas.toggle_grid(Global.show_grid)
-	Global.Canvas.show()
+	Global.Canvas.make_active()
 
 func tab_close(tab: int):
 	if CanvasList.get_child_count() == 1:
@@ -132,16 +131,17 @@ func image_new() -> void:
 	var tab := CanvasList.get_child_count()
 	CanvasList.add_child(canvas)
 	canvas.image_name = "new" + str(new_count)
+	new_count += 1
 	if Global.Canvas:
 		Global.Canvas.hide()
-	Global.Canvas = canvas
 	canvas.connect("update_title", self, "tab_rename")
 	canvas.connect("update_zoom", UI, "update_zoom")
 	canvas.connect("update_size", UI, "update_size")
 	canvas.connect("update_cursor", UI, "update_cursor")
 	ImageTabs.add_tab(canvas.image_name)
-	new_count += 1
 	ImageTabs.current_tab = tab
+	Global.Canvas = canvas
+	Global.Canvas.make_active()
 
 func image_save() -> void:
 	if Global.Canvas.image_file:

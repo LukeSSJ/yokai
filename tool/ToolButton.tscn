@@ -8,7 +8,9 @@
 margin_right = 32.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 32, 32 )
+focus_mode = 0
 toggle_mode = true
+enabled_focus_mode = 0
 group = SubResource( 1 )
 script = ExtResource( 1 )
 __meta__ = {
