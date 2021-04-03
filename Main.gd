@@ -50,6 +50,7 @@ func _ready():
 		button.connect("pressed", Command, "tool_set", [button.name])
 	tool_set("Pencil")
 	image_new()
+	Global.Canvas.blank = true
 
 func _unhandled_input(event):
 	if event is InputEventMouse:
@@ -118,6 +119,7 @@ func tab_close_confirmed():
 	if Global.Canvas.is_queued_for_deletion():
 		Global.Canvas = CanvasList.get_child(ImageTabs.current_tab + 1)
 	Global.Canvas.show()
+	Global.Canvas.make_active()
 
 func tab_move(new_index: int):
 	var canvas := CanvasList.get_child(ImageTabs.current_tab)
@@ -150,10 +152,14 @@ func image_save() -> void:
 		image_save_as()
 
 func image_save_as() -> void:
-	Backdrop.show()
-	SaveImage.popup_centered()
 	if Global.session.get("save_dir"):
 		SaveImage.current_dir = Global.session.save_dir
+		if Global.Canvas.image_name.ends_with(".png"):
+			SaveImage.current_file = Global.Canvas.image_name
+		else:
+			SaveImage.current_file = ""
+	Backdrop.show()
+	SaveImage.popup_centered()
 
 func image_save_confirmed(file) -> void:
 	print("Saved image to: " + file)
@@ -170,9 +176,10 @@ func image_open() -> void:
 func image_open_confirmed(file : String) -> void:
 	print("Opened file: " + file)
 	Global.session.open_dir = file.get_base_dir()
-	if Global.Canvas.dirty:
+	if !Global.Canvas.blank:
 		image_new()
 		new_count -= 1
+	Global.Canvas.blank = false
 	Global.Canvas.image_load(file)
 	OS.set_window_title(Global.Canvas.image_name)
 
@@ -180,7 +187,7 @@ func import_image() -> void:
 	Backdrop.show()
 	ImportImage.popup_centered()
 	if Global.session.get("open_dir"):
-		OpenImage.current_dir = Global.session.open_dir
+		ImportImage.current_dir = Global.session.open_dir
 
 func import_image_confirmed(file : String) -> void:
 	print("Importing file " + file)

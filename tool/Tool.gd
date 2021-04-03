@@ -74,9 +74,13 @@ func image_draw_point(pos: Vector2) -> void:
 		if use_preview:
 			Global.Canvas.image_preview.lock()
 			Global.Canvas.image_preview.set_pixelv(pos, draw_color)
+			Global.Canvas.image_preview.set_pixelv(pos, draw_color)
 			Global.Canvas.image_preview.unlock()
 		else:
-			Global.Canvas.image.set_pixelv(pos, draw_color)
+#			Global.Canvas.image.set_pixelv(pos, draw_color)
+			var new_color := draw_color
+			new_color.blend(Global.Canvas.image.get_pixelv(pos))
+			Global.Canvas.image.set_pixelv(pos, new_color)
 
 func image_draw_line(pos1: Vector2, pos2: Vector2) -> void:
 	var dx := abs(pos2.x - pos1.x)

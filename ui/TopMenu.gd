@@ -37,7 +37,7 @@ func _ready():
 	menu_canvas.add_item("Resize Canvas (Shift + Ctrl + C)")
 	
 	menu_transform = $Buttons/Transform.get_popup()
-	menu_transform.connect("id_pressed", self, "menu_pressed")
+	menu_transform.connect("id_pressed", self, "transform_pressed")
 	menu_transform.add_item("Flip Horizontally (Ctrl + F)")
 	menu_transform.add_item("Flip Vertically (Shift + Ctrl + F)")
 	menu_transform.add_separator()

@@ -18,6 +18,7 @@ var zoom_level : float = 10.0
 var undo_stack : Array
 var undo_index : int
 var dirty := false
+var blank := false
 
 onready var Background := $Background
 onready var Output := $Output
@@ -195,6 +196,7 @@ func undo_stack_reset() -> void:
 func undo_add() -> void:
 	if !undo_stack.empty():
 		dirty = true
+		blank = false
 		update_title()
 	undo_stack.resize(undo_index + 1)
 	undo_stack.append(image.duplicate())
