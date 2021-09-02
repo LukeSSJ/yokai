@@ -223,12 +223,15 @@ func redo() -> void:
 	else:
 		print("Nothing to redo")
 
-func resize_canvas(size : Vector2) -> void:
+func resize_canvas(size : Vector2, image_position := Vector2.ZERO) -> void:
 	print("Resize canvas to: " + str(size))
 	var old_size : Vector2 = image_size
 	var old_image : Image = image.duplicate()
 	ImageTools.blank_image(image, size)
-	image.blit_rect(old_image, Rect2(Vector2.ZERO, old_size), Vector2.ZERO)
+	var dest := (size - old_size) * image_position
+	print(image_position)
+	print(dest)
+	image.blit_rect(old_image, Rect2(Vector2.ZERO, old_size), dest)
 	update_size()
 	update_output()
 

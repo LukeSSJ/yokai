@@ -58,7 +58,6 @@ func _unhandled_input(event):
 	if event is InputEventKey and event.pressed:
 		# Keyboard shortcuts
 		var key_input = OS.get_scancode_string(event.get_scancode_with_modifiers())
-#		print(key_input)
 		var command = Shortcut.command.get(key_input)
 		if command:
 			var args : PoolStringArray = command.split(":")
@@ -200,7 +199,7 @@ func resize_canvas() -> void:
 	ResizeCanvas.on_popup()
 
 func resize_canvas_confirmed() -> void:
-	Global.Canvas.resize_canvas(ResizeCanvas.get_size())
+	Global.Canvas.resize_canvas(ResizeCanvas.get_size(), ResizeCanvas.image_position)
 	Global.Canvas.undo_add()
 
 func select_palete() -> void:

@@ -25,6 +25,7 @@ Global="*res://Global.gd"
 Command="*res://Command.gd"
 Shortcut="*res://Shortcut.gd"
 ImageTools="*res://ImageTools.gd"
+Util="*res://Util.gd"
 
 [debug]
 
