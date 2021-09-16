@@ -4,7 +4,7 @@ onready var CanvasList := $CanvasList
 onready var UI := $UI
 onready var Colors := $UI/Colors
 onready var Tool := $UI/Tool
-onready var ImageTabs = $UI/VBox/TabWrap/ImageTabs
+onready var ImageTabs = $UI/TopBar/TabWrap/ImageTabs
 onready var Backdrop := $UI/Backdrop
 onready var Dialog := $UI/Backdrop/Dialog
 onready var UnsavedChanges := $UI/Backdrop/Dialog/UnsavedChanges
@@ -21,6 +21,7 @@ onready var Canvas = preload("res://Canvas.tscn")
 var new_count := 1
 
 func _ready():
+	OS.set_window_maximized(true)
 	get_tree().set_auto_accept_quit(false)
 	
 	ImageTabs.connect("tab_changed", self, "tab_changed")
