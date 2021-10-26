@@ -24,10 +24,10 @@
 [ext_resource path="res://graphics/rubber.png" type="Texture" id=23]
 [ext_resource path="res://dialog/SelectPalete.tscn" type="PackedScene" id=24]
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.2288, 0.2288, 0.26, 1 )
 
-[sub_resource type="ButtonGroup" id=1]
+[sub_resource type="ButtonGroup" id=2]
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0, 0, 0, 0.392157 )
@@ -61,7 +61,7 @@ margin_bottom = 44.0
 [node name="Panel" type="Panel" parent="UI/TopBar/TabWrap"]
 margin_right = 1024.0
 margin_bottom = 24.0
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -86,56 +86,56 @@ __meta__ = {
 }
 
 [node name="Pencil" parent="UI/Tool" instance=ExtResource( 16 )]
-group = SubResource( 1 )
+group = SubResource( 2 )
 icon = ExtResource( 9 )
 script = ExtResource( 8 )
 
 [node name="Line" parent="UI/Tool" instance=ExtResource( 16 )]
 margin_top = 36.0
 margin_bottom = 68.0
-group = SubResource( 1 )
+group = SubResource( 2 )
 icon = ExtResource( 17 )
 script = ExtResource( 7 )
 
 [node name="Rect" parent="UI/Tool" instance=ExtResource( 16 )]
 margin_top = 72.0
 margin_bottom = 104.0
-group = SubResource( 1 )
+group = SubResource( 2 )
 icon = ExtResource( 19 )
 script = ExtResource( 6 )
 
 [node name="Circle" parent="UI/Tool" instance=ExtResource( 16 )]
 margin_top = 108.0
 margin_bottom = 140.0
-group = SubResource( 1 )
+group = SubResource( 2 )
 icon = ExtResource( 20 )
 script = ExtResource( 14 )
 
 [node name="Fill" parent="UI/Tool" instance=ExtResource( 16 )]
 margin_top = 144.0
 margin_bottom = 176.0
-group = SubResource( 1 )
+group = SubResource( 2 )
 icon = ExtResource( 18 )
 script = ExtResource( 5 )
 
 [node name="Rubber" parent="UI/Tool" instance=ExtResource( 16 )]
 margin_top = 180.0
 margin_bottom = 212.0
-group = SubResource( 1 )
+group = SubResource( 2 )
 icon = ExtResource( 23 )
 script = ExtResource( 4 )
 
 [node name="Eyedropper" parent="UI/Tool" instance=ExtResource( 16 )]
 margin_top = 216.0
 margin_bottom = 248.0
-group = SubResource( 1 )
+group = SubResource( 2 )
 icon = ExtResource( 22 )
 script = ExtResource( 10 )
 
 [node name="Select" parent="UI/Tool" instance=ExtResource( 16 )]
 margin_top = 252.0
 margin_bottom = 284.0
-group = SubResource( 1 )
+group = SubResource( 2 )
 icon = ExtResource( 21 )
 script = ExtResource( 11 )
 

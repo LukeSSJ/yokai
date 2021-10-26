@@ -71,7 +71,7 @@ func cancel_selection() -> void:
 
 func confirm_selection() -> void:
 	if visible and has_moved:
-		Global.Canvas.image.blit_rect(select_image, Rect2(Vector2.ZERO, select_rect.size), select_rect.position)
+		Global.Canvas.image.blend_rect(select_image, Rect2(Vector2.ZERO, select_rect.size), select_rect.position)
 		Global.Canvas.update_output()
 		Global.Canvas.undo_add()
 	select_texture = null
