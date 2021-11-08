@@ -40,7 +40,7 @@ func move(pos: Vector2) -> void:
 		draw(pos)
 		prev_pos = pos
 
-func cancel_drawing():
+func cancel_drawing() -> void:
 	if drawing:
 		drawing = false
 		Global.Canvas.image_preview.lock()
@@ -53,7 +53,6 @@ func cancel_drawing():
 # Drawing functions
 
 func image_draw_start() -> void:
-	change_made = true
 	if use_preview:
 		Global.Canvas.image_preview.lock()
 		Global.Canvas.image_preview.fill(Color.transparent)
@@ -69,7 +68,6 @@ func image_draw_end() -> void:
 		Global.Canvas.update_output()
 
 func image_draw_point(pos: Vector2) -> void:
-#	pos = pos.round()
 	if Global.Canvas.image_rect.has_point(pos):
 		if use_preview:
 			Global.Canvas.image_preview.lock()
@@ -77,10 +75,10 @@ func image_draw_point(pos: Vector2) -> void:
 			Global.Canvas.image_preview.set_pixelv(pos, draw_color)
 			Global.Canvas.image_preview.unlock()
 		else:
-#			Global.Canvas.image.set_pixelv(pos, draw_color)
 			var new_color := draw_color
 			new_color.blend(Global.Canvas.image.get_pixelv(pos))
 			Global.Canvas.image.set_pixelv(pos, new_color)
+			change_made = true
 
 func image_draw_line(pos1: Vector2, pos2: Vector2) -> void:
 	var dx := abs(pos2.x - pos1.x)
@@ -158,6 +156,7 @@ func image_fill(pos: Vector2, color_replace: Color) -> void:
 	var color_find = Global.Canvas.image.get_pixelv(pos)
 	if color_find == color_replace:
 		return
+	change_made = true
 	
 	var fill_positions := [pos]
 	
@@ -174,9 +173,10 @@ func image_fill(pos: Vector2, color_replace: Color) -> void:
 		if current_pos.y < Global.Canvas.image_size.y - 1 and Global.Canvas.image.get_pixel(current_pos.x, current_pos.y + 1) == color_find:
 			fill_positions.push_back(Vector2(current_pos.x, current_pos.y + 1))
 
-func image_fill_global(pos: Vector2, color_replace: Color):
+func image_fill_global(pos: Vector2, color_replace: Color) -> void:
 	if !Global.Canvas.image_rect.has_point(pos):
 		return
+	change_made = true
 	var color_find : Color = Global.Canvas.image.get_pixelv(pos)
 	
 	for x in Global.Canvas.image_size.x:

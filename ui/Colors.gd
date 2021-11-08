@@ -10,7 +10,6 @@ func _ready():
 	for i in range (2):
 		Colors[i].connect("color_changed", self, "color_set", [i])
 		Colors[i].color = Global.colors[i]
-		Colors[i].get_picker().margin_left = 20
 	ChangePalete.connect("pressed", Command, "select_palete")
 
 func palete_set(palete : Dictionary) -> void:

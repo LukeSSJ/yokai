@@ -1,7 +1,5 @@
 extends Node2D
 
-onready var Selection = $Selection
-
 var select_rect : Rect2
 var original_pos : Vector2
 var dragging : bool = false
@@ -21,6 +19,8 @@ func _draw():
 	if has_moved:
 		draw_texture(select_texture, draw_rect.position)
 	draw_rect(draw_rect, Color.black, false)
+	draw_rect = draw_rect.grow(-0.1)
+	draw_rect(draw_rect, Color.white, false)
 
 func select_region(rect) -> void:
 	confirm_selection()
