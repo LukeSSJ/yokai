@@ -21,7 +21,6 @@ onready var Canvas = preload("res://Canvas.tscn")
 var new_count := 1
 
 func _ready():
-	OS.set_window_maximized(true)
 	get_tree().set_auto_accept_quit(false)
 	
 	ImageTabs.connect("tab_changed", self, "tab_changed")

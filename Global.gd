@@ -22,10 +22,15 @@ func session_load():
 		var error := validate_json(json)
 		if error == "":
 			session = parse_json(json)
+			if session.get("maximized"):
+				print("maximized")
+				OS.window_maximized = true
 		else:
 			print("Failed to parse session JSON: " + error)
 
 func session_save():
+	session.maximized = OS.window_maximized
+	
 	var file := File.new()
 	if file.open("session.json", File.WRITE) == 0:
 		file.store_string(to_json(session))
