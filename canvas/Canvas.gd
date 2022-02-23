@@ -37,6 +37,7 @@ func mouse_event(event : InputEventMouse) -> void:
 	mouse_pos.x = floor(mouse_pos.x)
 	mouse_pos.y = floor(mouse_pos.y)
 	emit_signal("update_cursor", mouse_pos)
+	
 	if Select.visible and Select.mouse_event_with_pos(event, mouse_pos):
 		return
 	if event is InputEventMouseButton:

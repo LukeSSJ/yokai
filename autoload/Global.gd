@@ -1,23 +1,24 @@
 extends Node
 
+const SESSION_FILE = ".gsprite"
+
 var Main : Node
 var Canvas : Node
 var Colors : Node
 var Tool : Node
 
 var colors := [Color.black, Color.white]
-
-var show_grid = false
-
+var show_grid := false
 var session := {
 	"save_dir": "",
 	"open_dir": "",
 	"palete": "",
 }
+var session_has_changed := false
 
-func session_load():
+func session_load() -> void:
 	var file = File.new()
-	if file.open("session.json", File.READ) == 0:
+	if file.open(SESSION_FILE, File.READ) == 0:
 		var json : String = file.get_as_text()
 		var error := validate_json(json)
 		if error == "":
@@ -28,10 +29,17 @@ func session_load():
 		else:
 			print("Failed to parse session JSON: " + error)
 
-func session_save():
+func session_save() -> void:
+	if !session_has_changed:
+		return
+	
 	session.maximized = OS.window_maximized
 	
 	var file := File.new()
-	if file.open("session.json", File.WRITE) == 0:
+	if file.open(SESSION_FILE, File.WRITE) == 0:
 		file.store_string(to_json(session))
 		file.close()
+
+func session_set(key: String, value: String) -> void:
+	session_has_changed = true
+	session[key] = value

@@ -9,7 +9,7 @@ func get_texture(image : Image) -> ImageTexture:
 	tex.set_data(image)
 	return tex
 
-func image_rotate(image: Image, clockwise):
+func image_rotate(image: Image, clockwise) -> void:
 	var image_size = image.get_size()
 	var image_copy : Image = image.duplicate()
 	blank_image(image, Vector2(image_size.y, image_size.x))
@@ -25,7 +25,7 @@ func image_rotate(image: Image, clockwise):
 	image.unlock()
 	image_copy.unlock()
 
-func image_flip(image : Image, horizontal : bool):
+func image_flip(image : Image, horizontal : bool) -> void:
 	var image_size := image.get_size()
 	var image_copy : Image = image.duplicate()
 	image.lock()

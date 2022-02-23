@@ -3,7 +3,7 @@ extends Node2D
 onready var CanvasList := $CanvasList
 onready var UI := $UI
 onready var Colors := $UI/Colors
-onready var Tool := $UI/Tool
+onready var Tools := $UI/Tools
 onready var ImageTabs = $UI/TopBar/TabWrap/ImageTabs
 onready var Backdrop := $UI/Backdrop
 onready var Dialog := $UI/Backdrop/Dialog
@@ -16,11 +16,11 @@ onready var ImportImage := $UI/Backdrop/Dialog/ImportImage
 onready var ResizeCanvas := $UI/Backdrop/Dialog/ResizeCanvas
 onready var SelectPalete := $UI/Backdrop/Dialog/SelectPalete
 
-onready var Canvas = preload("res://Canvas.tscn")
+onready var Canvas = preload("res://canvas/Canvas.tscn")
 
 var new_count := 1
 
-func _ready():
+func _ready() -> void:
 	get_tree().set_auto_accept_quit(false)
 	
 	ImageTabs.connect("tab_changed", self, "tab_changed")
@@ -36,7 +36,7 @@ func _ready():
 	SaveImage.connect("file_selected", self, "image_save_confirmed")
 	OpenImage.connect("file_selected", self, "image_open_confirmed")
 	ImportImage.connect("file_selected", self, "import_image_confirmed")
-	ResizeCanvas.connect("confirmed", self, "resize_canvas_confirmed")
+	ResizeCanvas.connect("resize_canvas", self, "resize_canvas_confirmed")
 	SelectPalete.connect("palete_selected", self, "palete_selected")
 	
 	Global.Main = self
@@ -45,18 +45,19 @@ func _ready():
 	Global.session_load()
 	SelectPalete.load_paletes()
 		
-	for button in Tool.get_children():
+	for button in Tools.get_children():
 		button.text = button.name
 		button.connect("pressed", Command, "tool_set", [button.name])
 	tool_set("Pencil")
 	image_new()
 	Global.Canvas.blank = true
 
-func _unhandled_input(event):
+func _unhandled_input(event) -> void:
 	if event is InputEventMouse:
 		Global.Canvas.mouse_event(event)
+	
+	# Keyboard shortcuts
 	if event is InputEventKey and event.pressed:
-		# Keyboard shortcuts
 		var key_input = OS.get_scancode_string(event.get_scancode_with_modifiers())
 		var command = Shortcut.command.get(key_input)
 		if command:
@@ -69,7 +70,7 @@ func _unhandled_input(event):
 			else:
 				print("Error unkown command: " + command)
 
-func _notification(message):
+func _notification(message) -> void:
 	if message == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 		if UnsavedChanges.visible:
 			return
@@ -89,19 +90,19 @@ func quit():
 	get_tree().quit()
 
 func tool_set(tool_name) -> void:
-	var new_tool := Tool.get_node_or_null(tool_name)
+	var new_tool := Tools.get_node_or_null(tool_name)
 	if new_tool:
 		Global.Tool = new_tool
 		UI.update_tool(tool_name)
 	else:
 		print("Error unknown tool: " + str(tool_name))
 
-func tab_changed(tab : int):
+func tab_changed(tab : int) -> void:
 	Global.Canvas.hide()
 	Global.Canvas = CanvasList.get_child(tab)
 	Global.Canvas.make_active()
 
-func tab_close(tab: int):
+func tab_close(tab: int) -> void:
 	if CanvasList.get_child_count() == 1:
 		return
 	ImageTabs.current_tab = tab
@@ -110,7 +111,7 @@ func tab_close(tab: int):
 	else:
 		tab_close_confirmed()
 
-func tab_close_confirmed():
+func tab_close_confirmed() -> void:
 	var tab : int = ImageTabs.current_tab
 	ImageTabs.remove_tab(tab)
 	CanvasList.get_child(tab).queue_free()
@@ -162,7 +163,7 @@ func image_save_as() -> void:
 
 func image_save_confirmed(file) -> void:
 	print("Saved image to: " + file)
-	Global.session.save_dir = file.get_base_dir()
+	Global.session_set("save_dir", file.get_base_dir())
 	Global.Canvas.image_save(file)
 	OS.set_window_title("GSprite - " + Global.Canvas.title)
 
@@ -174,7 +175,7 @@ func image_open() -> void:
 
 func image_open_confirmed(file : String) -> void:
 	print("Opened file: " + file)
-	Global.session.open_dir = file.get_base_dir()
+	Global.session_set("open_dir", file.get_base_dir())
 	if !Global.Canvas.blank:
 		image_new()
 		new_count -= 1
@@ -190,7 +191,7 @@ func import_image() -> void:
 
 func import_image_confirmed(file : String) -> void:
 	print("Importing file " + file)
-	Global.session.open_dir = file.get_base_dir()
+	Global.session_set("open_dir", file.get_base_dir())
 	Global.Canvas.import_image(file)
 
 func resize_canvas() -> void:
@@ -198,13 +199,13 @@ func resize_canvas() -> void:
 	ResizeCanvas.popup_centered(Vector2(200, 100))
 	ResizeCanvas.on_popup()
 
-func resize_canvas_confirmed() -> void:
-	Global.Canvas.resize_canvas(ResizeCanvas.get_size(), ResizeCanvas.image_position)
+func resize_canvas_confirmed(size: Vector2, image_position: Vector2) -> void:
+	Global.Canvas.resize_canvas(size, image_position)
 	Global.Canvas.undo_add()
 
 func select_palete() -> void:
 	SelectPalete.popup_centered()
 
 func palete_selected(palete) -> void:
-	Global.session.palete = palete.file
+	Global.session_set("palete", palete.file)
 	Colors.palete_set(palete)

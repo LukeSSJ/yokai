@@ -6,4 +6,7 @@ func _ready():
 	self.connect("focus_exited", self, "force_int")
 
 func force_int(_val=null):
-	text = str(text.to_int())
+	var expression := Expression.new()
+	expression.parse(text)
+	var result := int(expression.execute())
+	text = str(result)

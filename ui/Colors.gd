@@ -28,10 +28,13 @@ func palete_color_input(event: InputEvent, palete_index: int) -> void:
 		if event.button_index in [1,2]:
 			Command.palete_select(str(palete_index), str(event.button_index - 1))
 
-func color_set(new_color : Color, color_index: int):
+func color_set(new_color : Color, color_index: int) -> void:
 	Colors[color_index].color = new_color
 	Global.colors[color_index] = new_color
 
-func palete_select_color(palete_number : int, color_index: int):
-	var color : Color = Palete.get_child(int(palete_number) - 1).get("custom_styles/panel").bg_color
+func palete_select_color(palete_number : int, color_index: int) -> void:
+	var i := palete_number - 1
+	if i >= Palete.get_child_count():
+		return
+	var color : Color = Palete.get_child(i).get("custom_styles/panel").bg_color
 	color_set(color, color_index)

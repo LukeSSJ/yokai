@@ -7,7 +7,6 @@ var menu_transform : PopupMenu
 var menu_view : PopupMenu
 
 func _ready():
-	
 	menu_file = $Buttons/File.get_popup()
 	menu_file.connect("id_pressed", self, "file_pressed")
 	menu_file.add_item("New (Ctrl + N)")

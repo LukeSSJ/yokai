@@ -1,5 +1,7 @@
 extends WindowDialog
 
+const PALETE_DIR = "usr://paletes"
+
 signal palete_selected
 
 var paletes
@@ -11,8 +13,8 @@ onready var Paletes = $ScrollContainer/Paletes
 func load_paletes():
 	paletes = []
 	var dir := Directory.new()
-	if dir.open("paletes") != 0:
-		print("Failed to read ./paletes")
+	if dir.open(PALETE_DIR) != 0:
+		print("Failed to read " + PALETE_DIR)
 	dir.list_dir_begin()
 	var file = dir.get_next()
 	while file != "":
@@ -23,7 +25,7 @@ func load_paletes():
 
 func load_palete(fname):
 	var file := File.new()
-	if file.open("paletes/" + fname, File.READ) == 0:
+	if file.open(PALETE_DIR + "/" + fname, File.READ) == 0:
 		var palete = {
 			"file": fname,
 			"name": "Palete",

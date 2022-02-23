@@ -10,7 +10,6 @@ config_version=4
 
 _global_script_classes=[  ]
 _global_script_class_icons={
-
 }
 
 [application]
@@ -21,11 +20,11 @@ config/icon="res://graphics/GS.png"
 
 [autoload]
 
-Global="*res://Global.gd"
-Command="*res://Command.gd"
-Shortcut="*res://Shortcut.gd"
-ImageTools="*res://ImageTools.gd"
-Util="*res://Util.gd"
+Global="*res://autoload/Global.gd"
+Command="*res://autoload/Command.gd"
+Shortcut="*res://autoload/Shortcut.gd"
+ImageTools="*res://autoload/ImageTools.gd"
+Util="*res://autoload/Util.gd"
 
 [debug]
 
