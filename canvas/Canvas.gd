@@ -19,6 +19,8 @@ var undo_stack : Array
 var undo_index : int
 var dirty := false
 var blank := false
+var panning := false
+var pan_start := Vector2.ZERO
 
 onready var Background := $Background
 onready var Output := $Output
@@ -38,14 +40,27 @@ func mouse_event(event : InputEventMouse) -> void:
 	mouse_pos.y = floor(mouse_pos.y)
 	emit_signal("update_cursor", mouse_pos)
 	
+	# Panning
+	if panning and event is InputEventMouseMotion:
+		$Camera.offset -= event.relative * $Camera.zoom
+		return
+	
+	# Handle events for selection
 	if Select.visible and Select.mouse_event_with_pos(event, mouse_pos):
 		return
+	
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT or event.button_index == BUTTON_RIGHT:
 			if event.pressed:
 				Global.Tool.click(mouse_pos, event)
 			else:
 				Global.Tool.release(mouse_pos)
+		elif event.button_index == BUTTON_MIDDLE:
+			if event.pressed:
+				panning = true
+				pan_start = get_viewport().get_mouse_position()
+			else:
+				panning = false
 		elif event.pressed:
 			if event.button_index == BUTTON_WHEEL_UP:
 				Command.zoom_in()
@@ -54,7 +69,7 @@ func mouse_event(event : InputEventMouse) -> void:
 	else:
 		Global.Tool.move(mouse_pos)
 
-func make_active():
+func make_active() -> void:
 	zoom_update()
 	update_title()
 	emit_signal("update_size", image_size)
@@ -108,7 +123,7 @@ func zoom_out() -> void:
 	zoom_update()
 
 func zoom_reset() -> void:
-	zoom_level = 1.0
+	zoom_level = 10.0
 	zoom_update()
 
 func select_all() -> void:
@@ -116,6 +131,9 @@ func select_all() -> void:
 
 func deselect() -> void:
 	Select.confirm_selection()
+
+func shift_selection(vector) -> void:
+	Select.shift(vector)
 
 func cut() -> void:
 	if Select.visible:
@@ -200,18 +218,23 @@ func undo_add() -> void:
 		blank = false
 		update_title()
 	undo_stack.resize(undo_index + 1)
-	undo_stack.append(image.duplicate())
+	var image_copy = image.duplicate()
+	undo_stack.append(image_copy)
 	if len(undo_stack) > MAX_UNDOS:
 		undo_stack.pop_front()
 	else:
 		undo_index += 1
+	var sprite = Sprite.new()
+	sprite.texture = ImageTools.get_texture(image_copy)
+	sprite.position.y += $Undos.get_child_count() * 34
+	$Undos.add_child(sprite)
 
 func undo() -> void:
 	if undo_index > 0:
 		undo_index -= 1
 		image = undo_stack[undo_index].duplicate()
+		image_size = image.get_size()
 		resize_canvas(image.get_size())
-		update_output()
 	else:
 		print("Nothing to undo")
 
@@ -220,7 +243,6 @@ func redo() -> void:
 		undo_index += 1
 		image = undo_stack[undo_index].duplicate()
 		resize_canvas(image.get_size())
-		update_output()
 	else:
 		print("Nothing to redo")
 
@@ -228,10 +250,9 @@ func resize_canvas(size : Vector2, image_position := Vector2.ZERO) -> void:
 	print("Resize canvas to: " + str(size))
 	var old_size : Vector2 = image_size
 	var old_image : Image = image.duplicate()
+	
 	ImageTools.blank_image(image, size)
 	var dest := (size - old_size) * image_position
-	print(image_position)
-	print(dest)
 	image.blit_rect(old_image, Rect2(Vector2.ZERO, old_size), dest)
 	update_size()
 	update_output()

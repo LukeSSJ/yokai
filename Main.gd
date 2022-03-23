@@ -43,6 +43,7 @@ func _ready() -> void:
 	Global.Colors = Colors
 	
 	Global.session_load()
+	Shortcut.load_shortcuts()
 	SelectPalete.load_paletes()
 		
 	for button in Tools.get_children():

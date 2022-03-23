@@ -1,6 +1,6 @@
 extends WindowDialog
 
-const PALETE_DIR = "usr://paletes"
+const PALETE_DIR = "user://paletes"
 
 signal palete_selected
 

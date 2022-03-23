@@ -2,13 +2,13 @@ extends Node2D
 
 var select_rect : Rect2
 var original_pos : Vector2
-var dragging : bool = false
+var dragging := false
 var drag_offset : Vector2
-var has_moved : bool
-var is_new : bool
+var has_moved := false
+var is_new := false
+var selecting := false
 var select_image := Image.new()
 var select_texture : ImageTexture
-var clipboard_image : Image
 
 func _ready():
 	select_rect = Rect2(Vector2(-16, -16), Vector2(32, 32))
@@ -22,13 +22,19 @@ func _draw():
 	draw_rect = draw_rect.grow(-0.1)
 	draw_rect(draw_rect, Color.white, false)
 
+func shift(pos):
+	if selecting:
+		grab_selection()
+		select_rect.position += pos
+		update()
+
 func select_region(rect) -> void:
 	confirm_selection()
 	select_rect = rect
 	original_pos = rect.position
 	has_moved = false
 	is_new = false
-	select_texture = null
+	selecting = true
 	select_image = Global.Canvas.image.get_rect(select_rect)
 	select_texture = ImageTools.get_texture(select_image)
 	update()
@@ -66,6 +72,7 @@ func cancel_selection() -> void:
 	if visible and has_moved and !is_new:
 		Global.Canvas.image.blit_rect(select_image, Rect2(Vector2.ZERO, select_rect.size), original_pos)
 		Global.Canvas.update_output()
+	selecting = false
 	select_texture = null
 	hide()
 
@@ -74,17 +81,18 @@ func confirm_selection() -> void:
 		Global.Canvas.image.blend_rect(select_image, Rect2(Vector2.ZERO, select_rect.size), select_rect.position)
 		Global.Canvas.update_output()
 		Global.Canvas.undo_add()
+	selecting = false
 	select_texture = null
 	hide()
 
 func copy_selection() -> void:
 	if visible and select_image:
-		clipboard_image = select_image.duplicate()
+		Global.clipboard_image = select_image.duplicate()
 
 func paste() -> void:
 	confirm_selection()
-	if clipboard_image:
-		select_image = clipboard_image.duplicate()
+	if Global.clipboard_image:
+		select_image = Global.clipboard_image.duplicate()
 		select_texture = ImageTools.get_texture(select_image)
 		select_rect = Rect2(Vector2.ZERO, select_image.get_size())
 		has_moved = true

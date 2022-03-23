@@ -16,10 +16,12 @@ var session := {
 }
 var session_has_changed := false
 
+var clipboard_image : Image
+
 func session_load() -> void:
-	var file = File.new()
+	var file := File.new()
 	if file.open(SESSION_FILE, File.READ) == 0:
-		var json : String = file.get_as_text()
+		var json := file.get_as_text()
 		var error := validate_json(json)
 		if error == "":
 			session = parse_json(json)

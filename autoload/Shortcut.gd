@@ -20,6 +20,11 @@ func _ready():
 		"Enter": "confirm",
 		"Escape": "cancel",
 		
+		"Left": "shift_left",
+		"Right": "shift_right",
+		"Up": "shift_up",
+		"Down": "shift_down",
+		
 		"Control+R": "rotate_clockwise",
 		"Shift+Control+R": "rotate_anticlockwise",
 		"Control+F": "flip_horizontal",
@@ -55,3 +60,13 @@ func _ready():
 		"9": "palete_select:9",
 		"0": "palete_select:10",
 	}
+
+# Load custom shortcuts from config file
+func load_shortcuts():
+	var config = ConfigFile.new()
+	var err = config.load("user://shortcuts.ini")
+	if err != OK:
+		print("Error: " + str(err))
+		return
+		
+	print(config.get_sections())

@@ -83,3 +83,15 @@ func zoom_out() -> void:
 
 func zoom_reset() -> void:
 	Global.Canvas.zoom_reset()
+
+func shift_left() -> void:
+	Global.Canvas.shift_selection(Vector2(-1, 0))
+
+func shift_right() -> void:
+	Global.Canvas.shift_selection(Vector2(1, 0))
+
+func shift_up() -> void:
+	Global.Canvas.shift_selection(Vector2(0, -1))
+
+func shift_down() -> void:
+	Global.Canvas.shift_selection(Vector2(0, 1))

@@ -1,17 +1,21 @@
 
-new file [X]
-circle tool [X] - needs perfecting [X]
-fix line tool [X]
-rotate non-square images [X]
-cut, copy, paste [X]
-zoom text + buttons [X]
-transform selection []
-tabs [X]
-
-resize canvas choose position []
+== FEATURES ==
+New file [X]
+Circle tool [X] - needs perfecting [X]
+Fix line tool [X]
+Rotate non-square images [X]
+Cut, copy, paste [X]
+Zoom text + buttons [X]
+Transform selection [X]
+Tabs [X]
+Resize canvas choose position [X]
+Shift selection with arrow keys [X]
+Panning [X] - Zoom towards mouse
+Animations
 
 == BUGS ==
-resize background stretchs [X]
-resize then undo loses part of image []
-open + save: window name is Null []
-save as didn't save? []
+Resize background stretchs [X]
+Resize then undo loses part of image [X]
+Open + save: window name is Null []
+Save as didn't save? []
+Select copy/paste is per tab [X]
