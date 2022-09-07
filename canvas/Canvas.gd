@@ -11,7 +11,7 @@ var title : String
 var image_file : String
 var image_name : String
 var image_size := Vector2(32, 32)
-var image_rect = Rect2(Vector2.ZERO, Vector2(32, 32))
+var image_rect : Rect2
 var image := Image.new()
 var image_preview := Image.new()
 var zoom_level : float = 10.0
@@ -80,6 +80,9 @@ func make_active() -> void:
 func image_new() -> void:
 	image_file = ""
 	image_name = ""
+	image_rect = Rect2(Vector2.ZERO, image_size)
+	Background.region_rect.size = image_size
+	TopLeft.position = -image_size / 2
 	ImageTools.blank_image(image, image_size)
 	ImageTools.blank_image(image_preview, image_size)
 	undo_stack_reset()

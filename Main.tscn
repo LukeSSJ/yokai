@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://ui/Tools.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
 [ext_resource path="res://ui/UI.gd" type="Script" id=3]
+[ext_resource path="res://dialog/NewImage.tscn" type="PackedScene" id=4]
 [ext_resource path="res://dialog/ResizeCanvas.tscn" type="PackedScene" id=12]
 [ext_resource path="res://ui/TopMenu.tscn" type="PackedScene" id=13]
 [ext_resource path="res://ui/Colors.tscn" type="PackedScene" id=15]
@@ -127,7 +128,6 @@ __meta__ = {
 }
 
 [node name="Dialog" type="MarginContainer" parent="UI/Backdrop"]
-visible = false
 margin_right = 1024.0
 margin_bottom = 600.0
 custom_constants/margin_right = 20
@@ -153,14 +153,15 @@ rect_min_size = Vector2( 150, 52.5 )
 window_title = "Unsaved changes"
 dialog_text = "Discard unsaved changes to image?"
 
-[node name="NewImage" type="ConfirmationDialog" parent="UI/Backdrop/Dialog"]
+[node name="NewImage" parent="UI/Backdrop/Dialog" instance=ExtResource( 4 )]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_left = 20.0
 margin_top = 20.0
 margin_right = 1004.0
 margin_bottom = 580.0
-rect_min_size = Vector2( 150, 52.5 )
-window_title = "New Image"
-dialog_text = "Dicard current image?"
 
 [node name="OpenImage" type="FileDialog" parent="UI/Backdrop/Dialog"]
 margin_left = 20.0
@@ -172,9 +173,6 @@ window_title = "Open a File"
 mode = 0
 access = 2
 filters = PoolStringArray( "*.png" )
-current_dir = "/home/luke/Pictures"
-current_file = "image.png"
-current_path = "/home/luke/Pictures/image.png"
 
 [node name="SaveImage" type="FileDialog" parent="UI/Backdrop/Dialog"]
 margin_left = 20.0
@@ -184,9 +182,6 @@ margin_bottom = 580.0
 rect_min_size = Vector2( 150, 52.5 )
 access = 2
 filters = PoolStringArray( "*.png" )
-current_dir = "/home/luke/Pictures"
-current_file = "image.png"
-current_path = "/home/luke/Pictures/image.png"
 
 [node name="ImportImage" type="FileDialog" parent="UI/Backdrop/Dialog"]
 margin_left = 20.0
@@ -198,9 +193,6 @@ window_title = "Open a File"
 mode = 0
 access = 2
 filters = PoolStringArray( "*.png" )
-current_dir = "/home/luke/Pictures"
-current_file = "image.png"
-current_path = "/home/luke/Pictures/image.png"
 
 [node name="ResizeCanvas" parent="UI/Backdrop/Dialog" instance=ExtResource( 12 )]
 anchor_left = 0.0
