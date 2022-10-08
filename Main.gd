@@ -50,7 +50,6 @@ func _ready() -> void:
 		button.text = button.name
 		button.connect("pressed", Command, "tool_set", [button.name])
 	tool_set("Pencil")
-	image_new()
 	
 	image_new_confirmed(Vector2(32, 32))
 	Global.Canvas.blank = true
