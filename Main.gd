@@ -51,7 +51,12 @@ func _ready() -> void:
 		button.connect("pressed", Command, "tool_set", [button.name])
 	tool_set("Pencil")
 	image_new()
+	
 	Global.Canvas.blank = true
+	
+	# Open files from cmd args
+	for arg in OS.get_cmdline_args():
+		image_open_confirmed(arg)
 
 func _unhandled_input(event) -> void:
 	if event is InputEventMouse:
@@ -181,8 +186,8 @@ func image_open_confirmed(file : String) -> void:
 		image_new()
 		new_count -= 1
 	Global.Canvas.blank = false
-	Global.Canvas.image_load(file)
-	OS.set_window_title(Global.Canvas.image_name)
+	if Global.Canvas.image_load(file):
+		OS.set_window_title(Global.Canvas.image_name)
 
 func import_image() -> void:
 	Backdrop.show()

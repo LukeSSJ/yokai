@@ -93,20 +93,26 @@ func image_save(file : String) -> void:
 	dirty = false
 	update_title()
 
-func image_load(file : String) -> void:
-	image.load(file)
-	image_file = file
-	image_name = file.get_file()
-	update_size()
-	undo_stack_reset()
-	update_title()
-	update_output()
-	update_preview()
+func image_load(file : String) -> bool:
+	var err = image.load(file)
+	if err == OK:
+		image_file = file
+		image_name = file.get_file()
+		update_size()
+		undo_stack_reset()
+		update_title()
+		update_output()
+		update_preview()
+		return true
+	return false
 
-func import_image(file : String) -> void:
+func import_image(file : String) -> bool:
 	var add_image := Image.new()
-	add_image.load(file)
-	Select.add_image(add_image)
+	var err = add_image.load(file)
+	if err == OK:
+		Select.add_image(add_image)
+		return true
+	return false
 
 func zoom_update() -> void:
 	zoom_level = clamp(zoom_level, 1, 100)
