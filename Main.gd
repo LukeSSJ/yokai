@@ -32,7 +32,7 @@ func _ready() -> void:
 			popup.connect("popup_hide", Backdrop, "hide")
 	UnsavedChanges.connect("confirmed", self, "quit")
 	UnsavedTab.connect("confirmed", self, "tab_close_confirmed")
-	NewImage.connect("confirmed", self, "image_new_confirmed")
+	NewImage.connect("new_image", self, "image_new_confirmed")
 	SaveImage.connect("file_selected", self, "image_save_confirmed")
 	OpenImage.connect("file_selected", self, "image_open_confirmed")
 	ImportImage.connect("file_selected", self, "import_image_confirmed")
@@ -52,6 +52,7 @@ func _ready() -> void:
 	tool_set("Pencil")
 	image_new()
 	
+	image_new_confirmed(Vector2(32, 32))
 	Global.Canvas.blank = true
 	
 	# Open files from cmd args
@@ -135,10 +136,18 @@ func tab_rename(new_name):
 	ImageTabs.set_tab_title(ImageTabs.current_tab, new_name)
 
 func image_new() -> void:
+	NewImage.popup_centered(Vector2(200, 100))
+	NewImage.on_popup()
+
+func image_new_confirmed(size:=Vector2.ZERO) -> void:
 	var canvas = Canvas.instance()
 	var tab := CanvasList.get_child_count()
+	if size != Vector2.ZERO:
+		canvas.image_size = size
+	
 	CanvasList.add_child(canvas)
 	canvas.image_name = "new" + str(new_count)
+	
 	new_count += 1
 	if Global.Canvas:
 		Global.Canvas.hide()
@@ -182,8 +191,8 @@ func image_open() -> void:
 func image_open_confirmed(file : String) -> void:
 	print("Opened file: " + file)
 	Global.session_set("open_dir", file.get_base_dir())
-	if !Global.Canvas.blank:
-		image_new()
+	if not Global.Canvas.blank:
+		image_new_confirmed()
 		new_count -= 1
 	Global.Canvas.blank = false
 	if Global.Canvas.image_load(file):

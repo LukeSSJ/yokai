@@ -21,7 +21,7 @@ func on_popup() -> void:
 	Width.select_all()
 	Width.grab_focus()
 
-func on_confirmed():
+func on_confirmed() -> void:
 	var size := Vector2(Width.text, Height.text)
 	if size.x > 0 and size.y > 0:
 		emit_signal("resize_canvas", size, image_position)
