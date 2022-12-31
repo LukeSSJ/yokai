@@ -45,7 +45,7 @@ func _ready() -> void:
 	Global.session_load()
 	Shortcut.load_shortcuts()
 	SelectPalete.load_paletes()
-		
+	
 	for button in Tools.get_children():
 		button.text = button.name
 		button.connect("pressed", Command, "tool_set", [button.name])
