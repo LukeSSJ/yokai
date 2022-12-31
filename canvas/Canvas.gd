@@ -14,6 +14,7 @@ var image_size := Vector2(32, 32)
 var image_rect : Rect2
 var image := Image.new()
 var image_preview := Image.new()
+var prev_image := Image.new()
 var zoom_level : float = 10.0
 var undo_stack : Array
 var undo_index : int
@@ -21,6 +22,8 @@ var dirty := false
 var blank := false
 var panning := false
 var pan_start := Vector2.ZERO
+var change_list := []
+var change_cursor := -1
 
 onready var Background := $Background
 onready var Output := $Output
@@ -28,6 +31,8 @@ onready var Preview := $Preview
 onready var TopLeft := $TopLeft
 onready var Grid := $TopLeft/Grid
 onready var Select := $TopLeft/Select
+
+onready var Change = preload("res://canvas/Change.gd")
 
 func _ready() -> void:
 	position = OS.get_window_size() / 2
@@ -180,46 +185,10 @@ func delete_selection() -> void:
 	image.blit_rect(blank_image, Rect2(Vector2.ZERO, rect.size), rect.position)
 	update_output()
 
-func rotate_clockwise() -> void:
-	print("Rotate clockwise")
-	if Select.visible:
-		Select.rotate_selection(true)
-		return
-	ImageTools.image_rotate(image, true)
-	update_size()
-	update_output()
-	undo_add()
-
-func rotate_anticlockwise() -> void:
-	print("Rotate anticlockwise")
-	if Select.visible:
-		Select.rotate_selection(false)
-		return
-	ImageTools.image_rotate(image, false)
-	update_size()
-	update_output()
-	undo_add()
-
-func flip_horizontal() -> void:
-	if Select.visible:
-		Select.flip_selection(true)
-		return
-	image.flip_x()
-	update_output()
-	undo_add()
-
-func flip_vertical() -> void:
-	if Select.visible:
-		Select.flip_selection(false)
-		return
-	image.flip_y()
-	update_output()
-	undo_add()
-
 func undo_stack_reset() -> void:
-	undo_stack = []
-	undo_index = -1
-	undo_add()
+	change_list = []
+	change_cursor = -1
+	prev_image = image.duplicate()
 
 func undo_add() -> void:
 	if !undo_stack.empty():
@@ -233,32 +202,41 @@ func undo_add() -> void:
 		undo_stack.pop_front()
 	else:
 		undo_index += 1
-	var sprite = Sprite.new()
+	var sprite := Sprite.new()
 	sprite.texture = ImageTools.get_texture(image_copy)
 	sprite.position.y += $Undos.get_child_count() * 34
 	$Undos.add_child(sprite)
 
 func undo() -> void:
-	if undo_index > 0:
-		undo_index -= 1
-		image = undo_stack[undo_index].duplicate()
-		image_size = image.get_size()
+	# Cancel selection if there is one
+	if Select.visible:
+		Select.cancel_selection()
+		return
+	
+	if change_cursor > -1:
+		var change = change_list[change_cursor]
+		change.undo()
+		change_cursor -= 1
 		resize_canvas(image.get_size())
+		prev_image = image.duplicate()
 	else:
 		print("Nothing to undo")
 
 func redo() -> void:
-	if undo_index < len(undo_stack) - 1:
-		undo_index += 1
-		image = undo_stack[undo_index].duplicate()
+	if change_cursor < len(change_list) - 1:
+		change_cursor += 1
+		var change = change_list[change_cursor]
+		print("Redoing change %d" % change_cursor)
+		change.apply()
 		resize_canvas(image.get_size())
+		prev_image = image.duplicate()
 	else:
 		print("Nothing to redo")
 
 func resize_canvas(size : Vector2, image_position := Vector2.ZERO) -> void:
 	print("Resize canvas to: " + str(size))
-	var old_size : Vector2 = image_size
-	var old_image : Image = image.duplicate()
+	var old_size := image_size
+	var old_image := image.duplicate()
 	
 	ImageTools.blank_image(image, size)
 	var dest := (size - old_size) * image_position
@@ -292,3 +270,63 @@ func update_output() -> void:
 
 func update_preview() -> void:
 	Preview.texture = ImageTools.get_texture(image_preview)
+
+func make_change(change:Node) -> void:
+	# Delete undone changes
+	if len(change_list) > change_cursor + 1:
+		change_list.resize(change_cursor + 1)
+		print("reszing to %d" % (change_cursor + 1))
+	print(change_list)
+	
+	change.canvas = self
+	change_list.append(change)
+	change_cursor += 1
+	print(change_list)
+	change.apply()
+	update_output()
+	
+	prev_image = image.duplicate()
+	
+	# Limit undos
+	if len(change_list) >= MAX_UNDOS:
+		change_list.pop_front()
+
+# Canvas operations
+
+func blend_image(add_image: Image, pos: Vector2) -> void:
+	var rect := Rect2(Vector2.ZERO, add_image.get_size())
+	image.blend_rect(add_image, rect, pos)
+
+func blit_image(add_image: Image, pos: Vector2) -> void:
+	var rect := Rect2(Vector2.ZERO, add_image.get_size())
+	image.blit_rect(add_image, rect, pos)
+
+func rotate_clockwise() -> void:
+	print("Rotate clockwise")
+	if Select.visible:
+		Select.rotate_selection(true)
+		return
+	ImageTools.image_rotate(image, true)
+	update_size()
+
+func rotate_anticlockwise() -> void:
+	print("Rotate anticlockwise")
+	if Select.visible:
+		Select.rotate_selection(false)
+		return
+	ImageTools.image_rotate(image, false)
+	update_size()
+
+func flip_horizontal() -> void:
+	if Select.visible:
+		Select.flip_selection(true)
+		return
+	image.flip_x()
+
+func flip_vertical() -> void:
+	if Select.visible:
+		Select.flip_selection(false)
+		return
+	image.flip_y()
+
+# end of Canvas operations

@@ -1,5 +1,7 @@
 extends Node
 
+onready var Change = preload("res://canvas/Change.gd")
+
 func new() -> void:
 	Global.Main.image_new()
 
@@ -40,16 +42,28 @@ func import() -> void:
 	Global.Main.import_image()
 
 func rotate_clockwise() -> void:
-	Global.Canvas.rotate_clockwise()
+	var change = Change.new()
+	change.action = "rotate_clockwise"
+	change.undo_action = "rotate_anticlockwise"
+	Global.Canvas.make_change(change)
 
 func rotate_anticlockwise() -> void:
-	Global.Canvas.rotate_anticlockwise()
+	var change = Change.new()
+	change.action = "rotate_anticlockwise"
+	change.undo_action = "rotate_clockwise"
+	Global.Canvas.make_change(change)
 
 func flip_horizontal() -> void:
-	Global.Canvas.flip_horizontal()
+	var change = Change.new()
+	change.action = "flip_horizontal"
+	change.undo_action = "flip_horizontal"
+	Global.Canvas.make_change(change)
 
 func flip_vertical() -> void:
-	Global.Canvas.flip_vertical()
+	var change = Change.new()
+	change.action = "flip_vertical"
+	change.undo_action = "flip_vertical"
+	Global.Canvas.make_change(change)
 
 func resize_canvas() -> void:
 	Global.Main.resize_canvas()

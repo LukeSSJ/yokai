@@ -10,6 +10,8 @@ var selecting := false
 var select_image := Image.new()
 var select_texture : ImageTexture
 
+onready var Change = preload("res://canvas/Change.gd")
+
 func _ready():
 	select_rect = Rect2(Vector2(-16, -16), Vector2(32, 32))
 	hide()
@@ -69,7 +71,7 @@ func mouse_event_with_pos(event : InputEventMouse, mouse_pos) -> bool:
 	return false
 
 func cancel_selection() -> void:
-	if visible and has_moved and !is_new:
+	if visible and has_moved and not is_new:
 		Global.Canvas.image.blit_rect(select_image, Rect2(Vector2.ZERO, select_rect.size), original_pos)
 		Global.Canvas.update_output()
 	selecting = false
@@ -79,8 +81,14 @@ func cancel_selection() -> void:
 func confirm_selection() -> void:
 	if visible and has_moved:
 		Global.Canvas.image.blend_rect(select_image, Rect2(Vector2.ZERO, select_rect.size), select_rect.position)
-		Global.Canvas.update_output()
-		Global.Canvas.undo_add()
+		
+		var change = Change.new()
+		change.action = "blend_image"
+		#change.params = [select_image.duplicate(), select_rect.position]
+		change.params = [Global.Canvas.image.duplicate(), Vector2.ZERO]
+		change.undo_action = "blit_image"
+		change.undo_params = [Global.Canvas.prev_image.duplicate(), Vector2.ZERO]
+		Global.Canvas.make_change(change)
 	selecting = false
 	select_texture = null
 	hide()

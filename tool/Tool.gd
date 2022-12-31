@@ -9,6 +9,8 @@ var draw_color : Color
 var change_made : bool
 var control_pressed: bool
 
+onready var Change = preload("res://canvas/Change.gd")
+
 func click(pos: Vector2, event: InputEventMouseButton) -> void:
 	drawing = true
 	use_preview = false
@@ -32,7 +34,7 @@ func release(pos: Vector2) -> void:
 	if !drawing:
 		return
 	end(pos)
-	cancel_drawing()
+	stop_drawing()
 	
 
 func move(pos: Vector2) -> void:
@@ -40,7 +42,7 @@ func move(pos: Vector2) -> void:
 		draw(pos)
 		prev_pos = pos
 
-func cancel_drawing() -> void:
+func stop_drawing() -> void:
 	if drawing:
 		drawing = false
 		Global.Canvas.image_preview.lock()
@@ -48,7 +50,13 @@ func cancel_drawing() -> void:
 		Global.Canvas.image_preview.unlock()
 		Global.Canvas.update_preview()
 		if change_made:
-			Global.Canvas.undo_add()
+			#Global.Canvas.undo_add()
+			var change = Change.new()
+			change.action = "blit_image"
+			change.params = [Global.Canvas.image.duplicate(), Vector2.ZERO]
+			change.undo_action = "blit_image"
+			change.undo_params = [Global.Canvas.prev_image.duplicate(), Vector2.ZERO]
+			Global.Canvas.make_change(change)
 
 # Drawing functions
 
@@ -151,30 +159,13 @@ func image_draw_ellipse(pos1: Vector2, pos2: Vector2) -> void:
 		y += 1
 	
 func image_fill(pos: Vector2, color_replace: Color) -> void:
-	if !Global.Canvas.image_rect.has_point(pos):
+	if not Global.Canvas.image_rect.has_point(pos):
 		return
-	var color_find = Global.Canvas.image.get_pixelv(pos)
-	if color_find == color_replace:
-		return
-	change_made = true
-	
-	var fill_positions := [pos]
-	
-	while len(fill_positions) > 0:
-		var current_pos = fill_positions.pop_back()
-		Global.Canvas.image.set_pixelv(current_pos, color_replace)
-		
-		if current_pos.x > 0 and Global.Canvas.image.get_pixel(current_pos.x - 1, current_pos.y) == color_find:
-			fill_positions.push_back(Vector2(current_pos.x - 1, current_pos.y))
-		if current_pos.x < Global.Canvas.image_size.x - 1 and Global.Canvas.image.get_pixel(current_pos.x + 1, current_pos.y) == color_find:
-			fill_positions.push_back(Vector2(current_pos.x + 1, current_pos.y))
-		if current_pos.y > 0 and Global.Canvas.image.get_pixel(current_pos.x, current_pos.y - 1) == color_find:
-			fill_positions.push_back(Vector2(current_pos.x, current_pos.y - 1))
-		if current_pos.y < Global.Canvas.image_size.y - 1 and Global.Canvas.image.get_pixel(current_pos.x, current_pos.y + 1) == color_find:
-			fill_positions.push_back(Vector2(current_pos.x, current_pos.y + 1))
+	if ImageTools.image_flood_fill(Global.Canvas.image, pos, color_replace):
+		change_made = true
 
 func image_fill_global(pos: Vector2, color_replace: Color) -> void:
-	if !Global.Canvas.image_rect.has_point(pos):
+	if not Global.Canvas.image_rect.has_point(pos):
 		return
 	change_made = true
 	var color_find : Color = Global.Canvas.image.get_pixelv(pos)
