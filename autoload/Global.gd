@@ -1,6 +1,6 @@
 extends Node
 
-const SESSION_FILE = ".gsprite"
+const SESSION_FILE := ".gsprite"
 
 var Main : Node
 var Canvas : Node

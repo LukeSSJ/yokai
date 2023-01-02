@@ -12,7 +12,7 @@ func _ready():
 		Colors[i].color = Global.colors[i]
 	ChangePalete.connect("pressed", Command, "select_palete")
 
-func palete_set(palete : Dictionary) -> void:
+func palete_set(palete: Dictionary) -> void:
 	for child in Palete.get_children():
 		child.queue_free()
 	var i := 1
@@ -28,13 +28,13 @@ func palete_color_input(event: InputEvent, palete_index: int) -> void:
 		if event.button_index in [1,2]:
 			Command.palete_select(str(palete_index), str(event.button_index - 1))
 
-func color_set(new_color : Color, color_index: int) -> void:
+func color_set(new_color: Color, color_index: int) -> void:
 	Colors[color_index].color = new_color
 	Global.colors[color_index] = new_color
 
-func palete_select_color(palete_number : int, color_index: int) -> void:
+func palete_select_color(palete_number: int, color_index: int) -> void:
 	var i := palete_number - 1
 	if i >= Palete.get_child_count():
 		return
-	var color : Color = Palete.get_child(i).get("custom_styles/panel").bg_color
+	var color: Color = Palete.get_child(i).get("custom_styles/panel").bg_color
 	color_set(color, color_index)

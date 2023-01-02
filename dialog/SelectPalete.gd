@@ -1,6 +1,6 @@
 extends WindowDialog
 
-const PALETE_DIR = "user://paletes"
+const PALETE_DIR := "user://paletes"
 
 signal palete_selected
 
@@ -14,7 +14,8 @@ func load_paletes():
 	paletes = []
 	var dir := Directory.new()
 	if dir.open(PALETE_DIR) != 0:
-		print("Failed to read " + PALETE_DIR)
+		print("Creating palete folder " + PALETE_DIR)
+		dir.make_dir(PALETE_DIR)
 	dir.list_dir_begin()
 	var file = dir.get_next()
 	while file != "":

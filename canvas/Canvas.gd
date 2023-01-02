@@ -5,17 +5,17 @@ signal update_zoom
 signal update_size
 signal update_cursor
 
-const MAX_UNDOS : int = 10
+const MAX_UNDOS := 10
 
-var title : String
-var image_file : String
-var image_name : String
+var title := ""
+var image_file := ""
+var image_name := ""
 var image_size := Vector2(32, 32)
 var image_rect : Rect2
 var image := Image.new()
 var image_preview := Image.new()
 var prev_image := Image.new()
-var zoom_level : float = 10.0
+var zoom_level := 10.0
 var dirty := false
 var blank := false
 var panning := false
@@ -38,7 +38,7 @@ func _ready() -> void:
 	update_size()
 
 func mouse_event(event : InputEventMouse) -> void:
-	var mouse_pos : Vector2 = get_global_mouse_position() - position + image_size / 2
+	var mouse_pos := get_global_mouse_position() - position + image_size / 2
 	mouse_pos.x = floor(mouse_pos.x)
 	mouse_pos.y = floor(mouse_pos.y)
 	emit_signal("update_cursor", mouse_pos)
@@ -263,6 +263,7 @@ func make_change(change:Node) -> void:
 	# Limit undos
 	if len(change_list) >= MAX_UNDOS:
 		change_list.pop_front()
+		change_cursor -= 1
 	
 	dirty = true
 	blank = false
