@@ -17,6 +17,7 @@ onready var ResizeCanvas := $UI/Backdrop/Dialog/ResizeCanvas
 onready var SelectPalete := $UI/Backdrop/Dialog/SelectPalete
 
 onready var Canvas = preload("res://canvas/Canvas.tscn")
+onready var Change = preload("res://canvas/Change.gd")
 
 var new_count := 1
 
@@ -214,8 +215,14 @@ func resize_canvas() -> void:
 	ResizeCanvas.on_popup()
 
 func resize_canvas_confirmed(size: Vector2, image_position: Vector2) -> void:
-	Global.Canvas.resize_canvas(size, image_position)
-	Global.Canvas.undo_add()
+	#Global.Canvas.resize_canvas(size, image_position)
+	#Global.Canvas.undo_add()
+	var change = Change.new()
+	change.action = "resize_canvas"
+	change.params = [size, image_position]
+	change.undo_action = "load_image"
+	change.undo_params = [Global.Canvas.image.duplicate()]
+	Global.Canvas.make_change(change)
 
 func select_palete() -> void:
 	SelectPalete.popup_centered()

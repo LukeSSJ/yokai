@@ -217,7 +217,8 @@ func undo() -> void:
 		var change = change_list[change_cursor]
 		change.undo()
 		change_cursor -= 1
-		resize_canvas(image.get_size())
+		update_size()
+		update_output()
 		prev_image = image.duplicate()
 	else:
 		print("Nothing to undo")
@@ -228,21 +229,11 @@ func redo() -> void:
 		var change = change_list[change_cursor]
 		print("Redoing change %d" % change_cursor)
 		change.apply()
-		resize_canvas(image.get_size())
+		update_size()
+		update_output()
 		prev_image = image.duplicate()
 	else:
 		print("Nothing to redo")
-
-func resize_canvas(size : Vector2, image_position := Vector2.ZERO) -> void:
-	print("Resize canvas to: " + str(size))
-	var old_size := image_size
-	var old_image := image.duplicate()
-	
-	ImageTools.blank_image(image, size)
-	var dest := (size - old_size) * image_position
-	image.blit_rect(old_image, Rect2(Vector2.ZERO, old_size), dest)
-	update_size()
-	update_output()
 
 func select_region(rect : Rect2) -> void:
 	Select.select_region(rect)
@@ -283,6 +274,7 @@ func make_change(change:Node) -> void:
 	change_cursor += 1
 	print(change_list)
 	change.apply()
+	update_size()
 	update_output()
 	
 	prev_image = image.duplicate()
@@ -307,7 +299,6 @@ func rotate_clockwise() -> void:
 		Select.rotate_selection(true)
 		return
 	ImageTools.image_rotate(image, true)
-	update_size()
 
 func rotate_anticlockwise() -> void:
 	print("Rotate anticlockwise")
@@ -315,7 +306,6 @@ func rotate_anticlockwise() -> void:
 		Select.rotate_selection(false)
 		return
 	ImageTools.image_rotate(image, false)
-	update_size()
 
 func flip_horizontal() -> void:
 	if Select.visible:
@@ -328,5 +318,17 @@ func flip_vertical() -> void:
 		Select.flip_selection(false)
 		return
 	image.flip_y()
+
+func resize_canvas(size : Vector2, image_position := Vector2.ZERO) -> void:
+	print("Resize canvas to: " + str(size))
+	var old_size := image_size
+	var old_image := image.duplicate()
+	
+	ImageTools.blank_image(image, size)
+	var dest := (size - old_size) * image_position
+	image.blit_rect(old_image, Rect2(Vector2.ZERO, old_size), dest)
+
+func load_image(new_image: Image):
+	Global.Canvas.image = new_image.duplicate()
 
 # end of Canvas operations
