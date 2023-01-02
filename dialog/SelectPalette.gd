@@ -41,7 +41,7 @@ func load_palette(fname):
 				palette.colors.append(line)
 		file.close()
 		palettes.append(palette)
-		if palette.file == Global.session.palette:
+		if palette.file == Global.session.get("palette"):
 			emit_signal("palette_selected", palette)
 
 func display_palettes():

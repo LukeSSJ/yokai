@@ -15,7 +15,7 @@ __meta__ = {
 
 [node name="HBox" type="HBoxContainer" parent="."]
 margin_left = 20.0
-margin_right = 196.0
+margin_right = 201.0
 margin_bottom = 40.0
 custom_constants/separation = 20
 
@@ -51,11 +51,12 @@ __meta__ = {
 margin_left = 104.0
 margin_right = 104.0
 margin_bottom = 40.0
+custom_constants/separation = 0
 
 [node name="ChangePalette" type="Button" parent="HBox"]
 margin_left = 124.0
-margin_right = 176.0
+margin_right = 181.0
 margin_bottom = 40.0
 focus_mode = 0
 enabled_focus_mode = 0
-text = "Palete"
+text = "Palette"

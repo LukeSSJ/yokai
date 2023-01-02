@@ -50,7 +50,11 @@ margin_bottom = 14.0
 mouse_filter = 1
 text = "Palete Name"
 
-[node name="Colors" type="HBoxContainer" parent="Content/VBox"]
+[node name="Colors" type="GridContainer" parent="Content/VBox"]
 margin_top = 18.0
 margin_right = 1006.0
 margin_bottom = 18.0
+size_flags_horizontal = 3
+custom_constants/vseparation = 0
+custom_constants/hseparation = 0
+columns = 20

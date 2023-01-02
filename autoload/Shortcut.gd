@@ -66,7 +66,7 @@ func load_shortcuts():
 	var config = ConfigFile.new()
 	var err = config.load("user://shortcuts.ini")
 	if err != OK:
-		print("Error: " + str(err))
+		print("No shortcuts.ini")
 		return
 		
 	print(config.get_sections())

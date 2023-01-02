@@ -36,5 +36,5 @@ func palette_select_color(palette_number: int, color_index: int) -> void:
 	var i := palette_number - 1
 	if i >= Palette.get_child_count():
 		return
-	var color: Color = Palette.get_child(i).get("custom_styles/panel").bg_color
+	var color: Color = Palette.get_child(i).color
 	color_set(color, color_index)
