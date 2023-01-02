@@ -14,7 +14,7 @@ onready var SaveImage := $UI/Backdrop/Dialog/SaveImage
 onready var OpenImage := $UI/Backdrop/Dialog/OpenImage
 onready var ImportImage := $UI/Backdrop/Dialog/ImportImage
 onready var ResizeCanvas := $UI/Backdrop/Dialog/ResizeCanvas
-onready var SelectPalete := $UI/Backdrop/Dialog/SelectPalete
+onready var SelectPalette := $UI/Backdrop/Dialog/SelectPalette
 
 onready var Canvas = preload("res://canvas/Canvas.tscn")
 onready var Change = preload("res://canvas/Change.gd")
@@ -38,14 +38,14 @@ func _ready() -> void:
 	OpenImage.connect("file_selected", self, "image_open_confirmed")
 	ImportImage.connect("file_selected", self, "import_image_confirmed")
 	ResizeCanvas.connect("resize_canvas", self, "resize_canvas_confirmed")
-	SelectPalete.connect("palete_selected", self, "palete_selected")
+	SelectPalette.connect("palette_selected", self, "palette_selected")
 	
 	Global.Main = self
 	Global.Colors = Colors
 	
 	Global.session_load()
 	Shortcut.load_shortcuts()
-	SelectPalete.load_paletes()
+	SelectPalette.load_palettes()
 	
 	for button in Tools.get_children():
 		button.text = button.name
@@ -222,9 +222,9 @@ func resize_canvas_confirmed(size: Vector2, image_position: Vector2) -> void:
 	change.undo_params = [Global.Canvas.image.duplicate()]
 	Global.Canvas.make_change(change)
 
-func select_palete() -> void:
-	SelectPalete.popup_centered()
+func select_palette() -> void:
+	SelectPalette.popup_centered()
 
-func palete_selected(palete) -> void:
-	Global.session_set("palete", palete.file)
-	Colors.palete_set(palete)
+func palette_selected(palette) -> void:
+	Global.session_set("palette", palette.file)
+	Colors.palette_set(palette)

@@ -12,7 +12,7 @@ var show_grid := false
 var session := {
 	"save_dir": "",
 	"open_dir": "",
-	"palete": "",
+	"palette": "",
 }
 var session_has_changed := false
 

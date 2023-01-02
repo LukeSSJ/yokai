@@ -34,7 +34,7 @@ func _ready():
 		
 		"Control+G": "toggle_grid",
 		
-		"Control+P": "select_palete",
+		"Control+P": "select_palette",
 		
 		"Q": "tool_set:Rubber",
 		"D": "tool_set:Pencil",
@@ -49,16 +49,16 @@ func _ready():
 		"Control+Minus": "zoom_out",
 		"Control+0": "zoom_reset",
 		
-		"1": "palete_select:1",
-		"2": "palete_select:2",
-		"3": "palete_select:3",
-		"4": "palete_select:4",
-		"5": "palete_select:5",
-		"6": "palete_select:6",
-		"7": "palete_select:7",
-		"8": "palete_select:8",
-		"9": "palete_select:9",
-		"0": "palete_select:10",
+		"1": "palette_select:1",
+		"2": "palette_select:2",
+		"3": "palette_select:3",
+		"4": "palette_select:4",
+		"5": "palette_select:5",
+		"6": "palette_select:6",
+		"7": "palette_select:7",
+		"8": "palette_select:8",
+		"9": "palette_select:9",
+		"0": "palette_select:10",
 	}
 
 # Load custom shortcuts from config file

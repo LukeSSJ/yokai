@@ -74,8 +74,8 @@ func toggle_grid() -> void:
 
 # Key only
 
-func select_palete() -> void:
-	Global.Main.select_palete()
+func select_palette() -> void:
+	Global.Main.select_palette()
 
 func confirm() -> void:
 	Global.Canvas.confirm()
@@ -86,8 +86,8 @@ func cancel() -> void:
 func tool_set(new_tool : String) -> void:
 	Global.Main.tool_set(new_tool)
 
-func palete_select(palete_number: String, color_index:="0"):
-	Global.Colors.palete_select_color(int(palete_number), int(color_index))
+func palette_select(palette_number: String, color_index:="0"):
+	Global.Colors.palette_select_color(int(palette_number), int(color_index))
 
 func zoom_in() -> void:
 	Global.Canvas.zoom_in()

@@ -7,7 +7,7 @@
 [ext_resource path="res://dialog/ResizeCanvas.tscn" type="PackedScene" id=12]
 [ext_resource path="res://ui/TopMenu.tscn" type="PackedScene" id=13]
 [ext_resource path="res://ui/Colors.tscn" type="PackedScene" id=15]
-[ext_resource path="res://dialog/SelectPalete.tscn" type="PackedScene" id=24]
+[ext_resource path="res://dialog/SelectPalette.tscn" type="PackedScene" id=24]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.2288, 0.2288, 0.26, 1 )
@@ -204,4 +204,4 @@ margin_top = 20.0
 margin_right = 1004.0
 margin_bottom = 580.0
 
-[node name="SelectPalete" parent="UI/Backdrop/Dialog" instance=ExtResource( 24 )]
+[node name="SelectPalette" parent="UI/Backdrop/Dialog" instance=ExtResource( 24 )]

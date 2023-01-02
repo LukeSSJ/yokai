@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://dialog/SelectPalete.gd" type="Script" id=1]
+[ext_resource path="res://dialog/SelectPalette.gd" type="Script" id=1]
 
 [node name="SelectPalete" type="WindowDialog"]
 margin_left = 20.0
@@ -21,7 +21,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Paletes" type="VBoxContainer" parent="ScrollContainer"]
+[node name="Palettes" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 984.0
 margin_bottom = 560.0
 size_flags_horizontal = 3

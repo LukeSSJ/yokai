@@ -5,19 +5,19 @@ signal pressed
 onready var Name = $Content/VBox/Name
 onready var Colors = $Content/VBox/Colors
 
-onready var PaleteColor = preload("res://ui/PaleteColor.tscn")
+onready var PaletteColor = preload("res://ui/PaletteColor.tscn")
 
 func _ready():
 	connect("gui_input", self, "gui_input")
 
-func set_data(palete: Dictionary) -> void:
-	Name.text = palete.name
+func set_data(palette: Dictionary) -> void:
+	Name.text = palette.name
 	var i := 1
-	for color in palete.colors:
-		var paleteColor = PaleteColor.instance()
-		Colors.add_child(paleteColor)
-		paleteColor.mouse_filter = MOUSE_FILTER_PASS
-		paleteColor.set_number_and_color(i, color)
+	for color in palette.colors:
+		var paletteColor = PaletteColor.instance()
+		Colors.add_child(paletteColor)
+		paletteColor.mouse_filter = MOUSE_FILTER_PASS
+		paletteColor.set_number_and_color(i, color)
 		i += 1
 
 func gui_input(event : InputEvent):

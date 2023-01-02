@@ -47,12 +47,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Palete" type="HBoxContainer" parent="HBox"]
+[node name="Palette" type="HBoxContainer" parent="HBox"]
 margin_left = 104.0
 margin_right = 104.0
 margin_bottom = 40.0
 
-[node name="ChangePalete" type="Button" parent="HBox"]
+[node name="ChangePalette" type="Button" parent="HBox"]
 margin_left = 124.0
 margin_right = 176.0
 margin_bottom = 40.0
