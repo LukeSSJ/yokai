@@ -16,8 +16,6 @@ var image := Image.new()
 var image_preview := Image.new()
 var prev_image := Image.new()
 var zoom_level : float = 10.0
-var undo_stack : Array
-var undo_index : int
 var dirty := false
 var blank := false
 var panning := false
@@ -90,7 +88,7 @@ func image_new() -> void:
 	TopLeft.position = -image_size / 2
 	ImageTools.blank_image(image, image_size)
 	ImageTools.blank_image(image_preview, image_size)
-	undo_stack_reset()
+	change_list_reset()
 	Select.cancel_selection()
 	update_output()
 
@@ -107,7 +105,7 @@ func image_load(file : String) -> bool:
 		image_file = file
 		image_name = file.get_file()
 		update_size()
-		undo_stack_reset()
+		change_list_reset()
 		update_title()
 		update_output()
 		update_preview()
@@ -154,7 +152,6 @@ func cut() -> void:
 		Select.copy_selection()
 		Select.hide()
 		delete_selection()
-		undo_add()
 
 func copy() -> void:
 	if Select.visible:
@@ -167,7 +164,6 @@ func delete() -> void:
 	if Select.visible:
 		Select.hide()
 		delete_selection()
-		undo_add()
 
 func confirm() -> void:
 	Select.confirm_selection()
@@ -179,33 +175,18 @@ func cancel() -> void:
 	Global.Tool.cancel_drawing()
 
 func delete_selection() -> void:
-	var blank_image := Image.new()
-	var rect : Rect2 = Select.select_rect
-	ImageTools.blank_image(blank_image, rect.size)
-	image.blit_rect(blank_image, Rect2(Vector2.ZERO, rect.size), rect.position)
-	update_output()
+	var rect: Rect2 = Select.select_rect
+	var change = Change.new()
+	change.action = "delete_rect"
+	change.params = [rect]
+	change.undo_action = "load_image"
+	change.undo_params = [image.duplicate()]
+	make_change(change)
 
-func undo_stack_reset() -> void:
+func change_list_reset() -> void:
 	change_list = []
 	change_cursor = -1
 	prev_image = image.duplicate()
-
-func undo_add() -> void:
-	if !undo_stack.empty():
-		dirty = true
-		blank = false
-		update_title()
-	undo_stack.resize(undo_index + 1)
-	var image_copy = image.duplicate()
-	undo_stack.append(image_copy)
-	if len(undo_stack) > MAX_UNDOS:
-		undo_stack.pop_front()
-	else:
-		undo_index += 1
-	var sprite := Sprite.new()
-	sprite.texture = ImageTools.get_texture(image_copy)
-	sprite.position.y += $Undos.get_child_count() * 34
-	$Undos.add_child(sprite)
 
 func undo() -> void:
 	# Cancel selection if there is one
@@ -282,6 +263,10 @@ func make_change(change:Node) -> void:
 	# Limit undos
 	if len(change_list) >= MAX_UNDOS:
 		change_list.pop_front()
+	
+	dirty = true
+	blank = false
+	update_title()
 
 # Canvas operations
 
@@ -330,5 +315,10 @@ func resize_canvas(size : Vector2, image_position := Vector2.ZERO) -> void:
 
 func load_image(new_image: Image):
 	Global.Canvas.image = new_image.duplicate()
+
+func delete_rect(rect: Rect2) -> void:
+	var blank_image := Image.new()
+	ImageTools.blank_image(blank_image, rect.size)
+	image.blit_rect(blank_image, Rect2(Vector2.ZERO, rect.size), rect.position)
 
 # end of Canvas operations

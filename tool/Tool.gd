@@ -50,7 +50,6 @@ func stop_drawing() -> void:
 		Global.Canvas.image_preview.unlock()
 		Global.Canvas.update_preview()
 		if change_made:
-			#Global.Canvas.undo_add()
 			var change = Change.new()
 			change.action = "blit_image"
 			change.params = [Global.Canvas.image.duplicate(), Vector2.ZERO]

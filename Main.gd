@@ -215,8 +215,6 @@ func resize_canvas() -> void:
 	ResizeCanvas.on_popup()
 
 func resize_canvas_confirmed(size: Vector2, image_position: Vector2) -> void:
-	#Global.Canvas.resize_canvas(size, image_position)
-	#Global.Canvas.undo_add()
 	var change = Change.new()
 	change.action = "resize_canvas"
 	change.params = [size, image_position]
