@@ -25,22 +25,6 @@ func image_rotate(image: Image, clockwise) -> void:
 	image.unlock()
 	image_copy.unlock()
 
-# Obsolete. Turns out Godot has a built in function for this
-func image_flip(image : Image, horizontal : bool) -> void:
-	var image_size := image.get_size()
-	var image_copy : Image = image.duplicate()
-	image.lock()
-	image_copy.lock()
-	for x in image_size.x:
-		for y in image_size.y:
-			var color = image_copy.get_pixel(x, y)
-			if horizontal:
-				image.set_pixel(image_size.y - 1 - x, y, color)
-			else:
-				image.set_pixel(x, image_size.y - 1 - y, color)
-	image.unlock()
-	image_copy.unlock()
-
 func image_flood_fill(image: Image, pos: Vector2, color_replace: Color):
 	var color_find = image.get_pixelv(pos)
 	if color_find == color_replace:

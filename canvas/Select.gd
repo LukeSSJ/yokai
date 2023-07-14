@@ -84,7 +84,6 @@ func confirm_selection() -> void:
 		
 		var change = Change.new()
 		change.action = "blend_image"
-		#change.params = [select_image.duplicate(), select_rect.position]
 		change.params = [Global.Canvas.image.duplicate(), Vector2.ZERO]
 		change.undo_action = "blit_image"
 		change.undo_params = [Global.Canvas.prev_image.duplicate(), Vector2.ZERO]

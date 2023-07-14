@@ -8,6 +8,8 @@ var button_index : int
 var draw_color : Color
 var change_made : bool
 var control_pressed: bool
+var dirty : bool
+var dirty_rect : Rect2
 
 onready var Change = preload("res://canvas/Change.gd")
 
@@ -15,6 +17,7 @@ func click(pos: Vector2, event: InputEventMouseButton) -> void:
 	drawing = true
 	use_preview = false
 	change_made = false
+	dirty = false
 	start_pos = pos
 	prev_pos = pos
 	
@@ -35,7 +38,6 @@ func release(pos: Vector2) -> void:
 		return
 	end(pos)
 	stop_drawing()
-	
 
 func move(pos: Vector2) -> void:
 	if drawing:
@@ -43,19 +45,39 @@ func move(pos: Vector2) -> void:
 		prev_pos = pos
 
 func stop_drawing() -> void:
-	if drawing:
-		drawing = false
-		Global.Canvas.image_preview.lock()
-		Global.Canvas.image_preview.fill(Color.transparent)
-		Global.Canvas.image_preview.unlock()
-		Global.Canvas.update_preview()
-		if change_made:
-			var change = Change.new()
-			change.action = "blit_image"
-			change.params = [Global.Canvas.image.duplicate(), Vector2.ZERO]
-			change.undo_action = "blit_image"
-			change.undo_params = [Global.Canvas.prev_image.duplicate(), Vector2.ZERO]
-			Global.Canvas.make_change(change)
+	if not drawing:
+		return
+	
+	drawing = false
+	Global.Canvas.image_preview.lock()
+	Global.Canvas.image_preview.fill(Color.transparent)
+	Global.Canvas.image_preview.unlock()
+	Global.Canvas.update_preview()
+	
+	if change_made:
+		var new_image: Image
+		var prev_image: Image
+		var change_pos: Vector2
+		
+		if dirty:
+			change_pos = dirty_rect.position
+			dirty_rect.size += Vector2(1, 1)
+			new_image = Global.Canvas.image.get_rect(dirty_rect)
+			prev_image = Global.Canvas.prev_image.get_rect(dirty_rect)
+		else:
+			change_pos = Vector2.ZERO
+			new_image = Global.Canvas.image.duplicate()
+			prev_image = Global.Canvas.prev_image.duplicate()
+		
+		var change = Change.new()
+		change.action = "blit_image"
+		change.params = [new_image, change_pos]
+		change.undo_action = "blit_image"
+		change.undo_params = [prev_image, change_pos]
+		Global.Canvas.make_change(change)
+	
+	if dirty:
+		print(dirty_rect)
 
 # Drawing functions
 
@@ -75,17 +97,25 @@ func image_draw_end() -> void:
 		Global.Canvas.update_output()
 
 func image_draw_point(pos: Vector2) -> void:
-	if Global.Canvas.image_rect.has_point(pos):
-		if use_preview:
-			Global.Canvas.image_preview.lock()
-			Global.Canvas.image_preview.set_pixelv(pos, draw_color)
-			Global.Canvas.image_preview.set_pixelv(pos, draw_color)
-			Global.Canvas.image_preview.unlock()
-		else:
-			var new_color := draw_color
-			new_color.blend(Global.Canvas.image.get_pixelv(pos))
-			Global.Canvas.image.set_pixelv(pos, new_color)
-			change_made = true
+	if not Global.Canvas.image_rect.has_point(pos):
+		return
+	
+	if use_preview:
+		Global.Canvas.image_preview.lock()
+		Global.Canvas.image_preview.set_pixelv(pos, draw_color)
+		Global.Canvas.image_preview.set_pixelv(pos, draw_color)
+		Global.Canvas.image_preview.unlock()
+	else:
+		var new_color := draw_color
+		new_color.blend(Global.Canvas.image.get_pixelv(pos))
+		Global.Canvas.image.set_pixelv(pos, new_color)
+		change_made = true
+	
+	if dirty:
+		dirty_rect = dirty_rect.expand(pos)
+	else:
+		dirty_rect = Rect2(pos, Vector2(1, 1))
+		dirty = true
 
 func image_draw_line(pos1: Vector2, pos2: Vector2) -> void:
 	var dx := abs(pos2.x - pos1.x)
@@ -135,7 +165,6 @@ func image_draw_ellipse(pos1: Vector2, pos2: Vector2) -> void:
 	if r.y == 0:
 		r.y = 1
 	
-#	for x in range(top_left.x, center.x):
 	var x := int(top_left.x)
 	while x <= center.x:
 		var angle := acos((x - center.x) / r.x)
