@@ -27,10 +27,12 @@ func _ready() -> void:
 	ImageTabs.connect("tab_changed", self, "tab_changed")
 	ImageTabs.connect("tab_close", self, "tab_close")
 	ImageTabs.connect("reposition_active_tab_request", self, "tab_move")
+	
 	for popup in Dialog.get_children():
 		if popup is Popup:
 			popup.connect("about_to_show", Backdrop, "show")
 			popup.connect("popup_hide", Backdrop, "hide")
+	
 	UnsavedChanges.connect("confirmed", self, "quit")
 	UnsavedTab.connect("confirmed", self, "tab_close_confirmed")
 	NewImage.connect("new_image", self, "image_new_confirmed")
@@ -106,7 +108,7 @@ func tool_set(tool_name) -> void:
 		Global.Tool = new_tool
 		UI.update_tool(tool_name)
 	else:
-		print("Error unknown tool: " + str(tool_name))
+		printerr("Error unknown tool: " + str(tool_name))
 
 
 func tab_changed(tab : int) -> void:

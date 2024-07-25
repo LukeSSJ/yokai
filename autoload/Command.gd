@@ -138,3 +138,6 @@ func shift_up() -> void:
 
 func shift_down() -> void:
 	Global.Canvas.shift_selection(Vector2(0, 1))
+
+func run_tests() -> void:
+	Testing.run_tests()

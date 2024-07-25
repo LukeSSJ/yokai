@@ -20,7 +20,7 @@ var clipboard_image : Image
 
 func session_load() -> void:
 	var file := File.new()
-	if file.open(SESSION_FILE, File.READ) == 0:
+	if file.open(SESSION_FILE, File.READ) == OK:
 		var json := file.get_as_text()
 		var error := validate_json(json)
 		if error == "":
@@ -29,6 +29,7 @@ func session_load() -> void:
 				OS.window_maximized = true
 		else:
 			print("Failed to parse session JSON: " + error)
+		file.close()
 
 func session_save() -> void:
 	if not session_has_changed:

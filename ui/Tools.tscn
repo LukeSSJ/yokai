@@ -24,9 +24,6 @@
 margin_top = 192.0
 margin_right = 32.0
 margin_bottom = 476.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Pencil" parent="." instance=ExtResource( 17 )]
 group = SubResource( 2 )

@@ -25,6 +25,7 @@ Command="*res://autoload/Command.gd"
 Shortcut="*res://autoload/Shortcut.gd"
 ImageTools="*res://autoload/ImageTools.gd"
 Util="*res://autoload/Util.gd"
+Testing="*res://autoload/Testing.gd"
 
 [debug]
 

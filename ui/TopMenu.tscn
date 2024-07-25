@@ -45,3 +45,11 @@ margin_left = 219.0
 margin_right = 261.0
 margin_bottom = 20.0
 text = "View"
+
+[node name="Testing" type="MenuButton" parent="Buttons"]
+visible = false
+margin_left = 265.0
+margin_right = 323.0
+margin_bottom = 20.0
+focus_mode = 2
+text = "Testing"

@@ -59,13 +59,13 @@ func _ready():
 		"8": "palette_select:8",
 		"9": "palette_select:9",
 		"0": "palette_select:10",
+		
+		"Control+T": "run_tests",
 	}
 
 
 # Load custom shortcuts from config file
 func load_shortcuts():
-	var config = ConfigFile.new()
-	var err = config.load("user://shortcuts.ini")
-	if err != OK:
-		print("No shortcuts.ini")
-		return
+	#var config = ConfigFile.new()
+	#config.load("user://shortcuts.ini")
+	pass
