@@ -59,6 +59,7 @@ func _ready() -> void:
 	for arg in OS.get_cmdline_args():
 		image_open_confirmed(arg)
 
+
 func _unhandled_input(event) -> void:
 	if event is InputEventMouse:
 		Global.Canvas.mouse_event(event)
@@ -77,6 +78,7 @@ func _unhandled_input(event) -> void:
 			else:
 				print("Error unkown command: " + command)
 
+
 func _notification(message) -> void:
 	if message == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 		if UnsavedChanges.visible:
@@ -92,9 +94,11 @@ func _notification(message) -> void:
 		else:
 			quit()
 
+
 func quit():
 	Global.session_save()
 	get_tree().quit()
+
 
 func tool_set(tool_name) -> void:
 	var new_tool := Tools.get_node_or_null(tool_name)
@@ -104,10 +108,12 @@ func tool_set(tool_name) -> void:
 	else:
 		print("Error unknown tool: " + str(tool_name))
 
+
 func tab_changed(tab : int) -> void:
 	Global.Canvas.hide()
 	Global.Canvas = CanvasList.get_child(tab)
 	Global.Canvas.make_active()
+
 
 func tab_close(tab: int) -> void:
 	if CanvasList.get_child_count() == 1:
@@ -117,6 +123,7 @@ func tab_close(tab: int) -> void:
 		UnsavedTab.popup_centered(Vector2(200, 100))
 	else:
 		tab_close_confirmed()
+
 
 func tab_close_confirmed() -> void:
 	var tab : int = ImageTabs.current_tab
@@ -128,16 +135,20 @@ func tab_close_confirmed() -> void:
 	Global.Canvas.show()
 	Global.Canvas.make_active()
 
+
 func tab_move(new_index: int):
 	var canvas := CanvasList.get_child(ImageTabs.current_tab)
 	CanvasList.move_child(canvas, new_index)
 
+
 func tab_rename(new_name):
 	ImageTabs.set_tab_title(ImageTabs.current_tab, new_name)
+
 
 func image_new() -> void:
 	NewImage.popup_centered(Vector2(200, 100))
 	NewImage.on_popup()
+
 
 func image_new_confirmed(size:=Vector2.ZERO) -> void:
 	var canvas = Canvas.instance()
@@ -160,11 +171,13 @@ func image_new_confirmed(size:=Vector2.ZERO) -> void:
 	Global.Canvas = canvas
 	Global.Canvas.make_active()
 
+
 func image_save() -> void:
 	if Global.Canvas.image_file:
 		image_save_confirmed(Global.Canvas.image_file)
 	else:
 		image_save_as()
+
 
 func image_save_as() -> void:
 	if Global.session.get("save_dir"):
@@ -176,17 +189,20 @@ func image_save_as() -> void:
 	Backdrop.show()
 	SaveImage.popup_centered()
 
+
 func image_save_confirmed(file) -> void:
 	print("Saved image to: " + file)
 	Global.session_set("save_dir", file.get_base_dir())
 	Global.Canvas.image_save(file)
 	OS.set_window_title("GSprite - " + Global.Canvas.title)
 
+
 func image_open() -> void:
 	Backdrop.show()
 	OpenImage.popup_centered()
 	if Global.session.get("open_dir"):
 		OpenImage.current_dir = Global.session.open_dir
+
 
 func image_open_confirmed(file : String) -> void:
 	print("Opened file: " + file)
@@ -198,21 +214,25 @@ func image_open_confirmed(file : String) -> void:
 	if Global.Canvas.image_load(file):
 		OS.set_window_title(Global.Canvas.image_name)
 
+
 func import_image() -> void:
 	Backdrop.show()
 	ImportImage.popup_centered()
 	if Global.session.get("open_dir"):
 		ImportImage.current_dir = Global.session.open_dir
 
+
 func import_image_confirmed(file : String) -> void:
 	print("Importing file " + file)
 	Global.session_set("open_dir", file.get_base_dir())
 	Global.Canvas.import_image(file)
 
+
 func resize_canvas() -> void:
 	Backdrop.show()
 	ResizeCanvas.popup_centered(Vector2(200, 100))
 	ResizeCanvas.on_popup()
+
 
 func resize_canvas_confirmed(size: Vector2, image_position: Vector2) -> void:
 	var change = Change.new()
@@ -222,8 +242,10 @@ func resize_canvas_confirmed(size: Vector2, image_position: Vector2) -> void:
 	change.undo_params = [Global.Canvas.image.duplicate()]
 	Global.Canvas.make_change(change)
 
+
 func select_palette() -> void:
 	SelectPalette.popup_centered()
+
 
 func palette_selected(palette) -> void:
 	Global.session_set("palette", palette.file)

@@ -47,21 +47,26 @@ func _ready():
 	menu_view.connect("id_pressed", self, "view_pressed")
 	menu_view.add_check_item("Toggle Grid")
 
+
 func file_pressed(id):
 	var cmds := ["new", "", "open", "", "save", "save_as"]
 	Command.call(cmds[id])
+
 
 func edit_pressed(id):
 	var cmds := ["undo", "redo", "", "select_all", "deselect", "", "delete", "cut", "copy", "paste", "", "import"]
 	Command.call(cmds[id])
 
+
 func canvas_pressed(id):
 	var cmds := ["resize_canvas"]
 	Command.call(cmds[id])
 
+
 func transform_pressed(id):
 	var cmds := ["flip_horizontal", "flip_vertical", "", "rotate_clockwise", "rotate_anticlockwise"]
 	Command.call(cmds[id])
+
 
 func view_pressed(id):
 	var cmds := ["toggle_grid"]

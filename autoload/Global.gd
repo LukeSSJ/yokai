@@ -26,13 +26,12 @@ func session_load() -> void:
 		if error == "":
 			session = parse_json(json)
 			if session.get("maximized"):
-				print("maximized")
 				OS.window_maximized = true
 		else:
 			print("Failed to parse session JSON: " + error)
 
 func session_save() -> void:
-	if !session_has_changed:
+	if not session_has_changed:
 		return
 	
 	session.maximized = OS.window_maximized

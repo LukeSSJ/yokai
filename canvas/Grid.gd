@@ -9,6 +9,7 @@ func _draw():
 	for y in range(snap, area.y, snap):
 		draw_line(Vector2(0, y), Vector2(area.x, y), Color.black)
 
+
 func set_area(size: Vector2):
 	area = size
 	update()

@@ -61,6 +61,7 @@ func _ready():
 		"0": "palette_select:10",
 	}
 
+
 # Load custom shortcuts from config file
 func load_shortcuts():
 	var config = ConfigFile.new()
@@ -68,5 +69,3 @@ func load_shortcuts():
 	if err != OK:
 		print("No shortcuts.ini")
 		return
-		
-	print(config.get_sections())

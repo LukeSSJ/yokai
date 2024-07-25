@@ -37,6 +37,7 @@ func _ready() -> void:
 	image_new()
 	update_size()
 
+
 func mouse_event(event : InputEventMouse) -> void:
 	var mouse_pos := get_global_mouse_position() - position + image_size / 2
 	mouse_pos.x = floor(mouse_pos.x)
@@ -72,6 +73,7 @@ func mouse_event(event : InputEventMouse) -> void:
 	else:
 		Global.Tool.move(mouse_pos)
 
+
 func make_active() -> void:
 	zoom_update()
 	update_title()
@@ -79,6 +81,7 @@ func make_active() -> void:
 	toggle_grid(Global.show_grid)
 	show()
 	$Camera.current = true
+
 
 func image_new() -> void:
 	image_file = ""
@@ -92,12 +95,14 @@ func image_new() -> void:
 	Select.cancel_selection()
 	update_output()
 
+
 func image_save(file : String) -> void:
 	image.save_png(file)
 	image_file = file
 	image_name = file.get_file()
 	dirty = false
 	update_title()
+
 
 func image_load(file : String) -> bool:
 	var err = image.load(file)
@@ -112,6 +117,7 @@ func image_load(file : String) -> bool:
 		return true
 	return false
 
+
 func import_image(file : String) -> bool:
 	var add_image := Image.new()
 	var err = add_image.load(file)
@@ -120,32 +126,40 @@ func import_image(file : String) -> bool:
 		return true
 	return false
 
+
 func zoom_update() -> void:
 	zoom_level = clamp(zoom_level, 1, 100)
 	var zoom : float = 1 / zoom_level
 	emit_signal("update_zoom", zoom_level)
 	$Camera.zoom = Vector2(zoom, zoom)
 
+
 func zoom_in() -> void:
 	zoom_level += 1
 	zoom_update()
+
 
 func zoom_out() -> void:
 	zoom_level -= 1
 	zoom_update()
 
+
 func zoom_reset() -> void:
 	zoom_level = 10.0
 	zoom_update()
 
+
 func select_all() -> void:
 	Select.select_region(Rect2(Vector2.ZERO, image_size))
+
 
 func deselect() -> void:
 	Select.confirm_selection()
 
+
 func shift_selection(vector) -> void:
 	Select.shift(vector)
+
 
 func cut() -> void:
 	if Select.visible:
@@ -153,26 +167,32 @@ func cut() -> void:
 		Select.hide()
 		delete_selection()
 
+
 func copy() -> void:
 	if Select.visible:
 		Select.copy_selection()
 
+
 func paste() -> void:
 	Select.paste()
+
 
 func delete() -> void:
 	if Select.visible:
 		Select.hide()
 		delete_selection()
 
+
 func confirm() -> void:
 	Select.confirm_selection()
+
 
 func cancel() -> void:
 	if Select.visible:
 		Select.cancel_selection()
 		return
 	Global.Tool.cancel_drawing()
+
 
 func delete_selection() -> void:
 	var rect: Rect2 = Select.select_rect
@@ -183,10 +203,12 @@ func delete_selection() -> void:
 	change.undo_params = [image.duplicate()]
 	make_change(change)
 
+
 func change_list_reset() -> void:
 	change_list = []
 	change_cursor = -1
 	prev_image = image.duplicate()
+
 
 func undo() -> void:
 	# Cancel selection if there is one
@@ -201,26 +223,25 @@ func undo() -> void:
 		update_size()
 		update_output()
 		prev_image = image.duplicate()
-	else:
-		print("Nothing to undo")
+
 
 func redo() -> void:
 	if change_cursor < len(change_list) - 1:
 		change_cursor += 1
 		var change = change_list[change_cursor]
-		print("Redoing change %d" % change_cursor)
 		change.apply()
 		update_size()
 		update_output()
 		prev_image = image.duplicate()
-	else:
-		print("Nothing to redo")
+
 
 func select_region(rect : Rect2) -> void:
 	Select.select_region(rect)
 
+
 func toggle_grid(set_to:bool):
 	Grid.visible = set_to
+
 
 func update_size() -> void:
 	image_size = image.get_size()
@@ -231,30 +252,32 @@ func update_size() -> void:
 	TopLeft.position = -image_size / 2
 	Grid.set_area(image_size)
 
+
 func update_title():
 	title = image_name
 	if dirty:
 		title += "*"
 	emit_signal("update_title", title)
 
+
 func update_output() -> void:
 	Output.texture = ImageTools.get_texture(image)
 
+
 func update_preview() -> void:
 	Preview.texture = ImageTools.get_texture(image_preview)
+
 
 func make_change(change:Node) -> void:
 	# Delete undone changes
 	if len(change_list) > change_cursor + 1:
 		change_list.resize(change_cursor + 1)
-		print("reszing to %d" % (change_cursor + 1))
-	print(change_list)
 	
 	change.canvas = self
 	change_list.append(change)
 	change_cursor += 1
-	print(change_list)
 	change.apply()
+	
 	update_size()
 	update_output()
 	
@@ -280,14 +303,12 @@ func blit_image(add_image: Image, pos: Vector2) -> void:
 	image.blit_rect(add_image, rect, pos)
 
 func rotate_clockwise() -> void:
-	print("Rotate clockwise")
 	if Select.visible:
 		Select.rotate_selection(true)
 		return
 	ImageTools.image_rotate(image, true)
 
 func rotate_anticlockwise() -> void:
-	print("Rotate anticlockwise")
 	if Select.visible:
 		Select.rotate_selection(false)
 		return
@@ -306,7 +327,6 @@ func flip_vertical() -> void:
 	image.flip_y()
 
 func resize_canvas(size : Vector2, image_position := Vector2.ZERO) -> void:
-	print("Resize canvas to: " + str(size))
 	var old_size := image_size
 	var old_image := image.duplicate()
 	

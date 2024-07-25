@@ -13,6 +13,3 @@ toggle_mode = true
 enabled_focus_mode = 0
 group = SubResource( 1 )
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
