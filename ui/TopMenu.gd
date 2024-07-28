@@ -47,6 +47,10 @@ func _ready():
 	menu_view = $Buttons/View.get_popup()
 	menu_view.connect("id_pressed", self, "view_pressed")
 	menu_view.add_check_item("Toggle Grid")
+	menu_view.add_separator()
+	menu_view.add_item("Zoom In (Ctrl + =)")
+	menu_view.add_item("Zoom Out (Ctrl + -)")
+	menu_view.add_item("Zoom Reset (Ctrl + 0)")
 	
 	if OS.is_debug_build():
 		$Buttons/Testing.show()
@@ -76,7 +80,7 @@ func transform_pressed(id: int):
 
 
 func view_pressed(id: int):
-	var cmds := ["toggle_grid"]
+	var cmds := ["toggle_grid", "", "zoom_in", "zoom_out", "zoom_reset"]
 	menu_view.toggle_item_checked(id)
 	Command.call(cmds[id])
 
