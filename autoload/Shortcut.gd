@@ -8,6 +8,7 @@ func _ready():
 		"Control+O": "open",
 		"Control+S": "save",
 		"Shift+Control+S": "save_as",
+		"Control+W": "close_tab",
 		
 		"Control+A": "select_all",
 		"Control+D": "deselect",

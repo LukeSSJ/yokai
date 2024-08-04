@@ -104,11 +104,11 @@ func quit():
 
 func tool_set(tool_name) -> void:
 	var new_tool := Tools.get_node_or_null(tool_name)
-	if new_tool:
-		Global.Tool = new_tool
-		UI.update_tool(tool_name)
-	else:
+	if not new_tool:
 		printerr("Error unknown tool: " + str(tool_name))
+	
+	Global.Tool = new_tool
+	UI.update_tool(tool_name)
 
 
 func tab_changed(tab : int) -> void:
@@ -120,11 +120,18 @@ func tab_changed(tab : int) -> void:
 func tab_close(tab: int) -> void:
 	if CanvasList.get_child_count() == 1:
 		return
+	
 	ImageTabs.current_tab = tab
 	if Global.Canvas.dirty:
 		UnsavedTab.popup_centered(Vector2(200, 100))
-	else:
-		tab_close_confirmed()
+		return
+	
+	tab_close_confirmed()
+
+
+func tab_close_current() -> void:
+	tab_close(ImageTabs.current_tab)
+
 
 
 func tab_close_confirmed() -> void:
@@ -192,7 +199,7 @@ func image_save_as() -> void:
 	SaveImage.popup_centered()
 
 
-func image_save_confirmed(file) -> void:
+func image_save_confirmed(file: String) -> void:
 	print("Saved image to: " + file)
 	Global.session_set("save_dir", file.get_base_dir())
 	Global.Canvas.image_save(file)
@@ -209,10 +216,12 @@ func image_open() -> void:
 func image_open_confirmed(file : String) -> void:
 	print("Opened file: " + file)
 	Global.session_set("open_dir", file.get_base_dir())
+	
 	if not Global.Canvas.blank:
 		image_new_confirmed()
 		new_count -= 1
-	Global.Canvas.blank = false
+		Global.Canvas.blank = false
+		
 	if Global.Canvas.image_load(file):
 		OS.set_window_title(Global.Canvas.image_name)
 
@@ -220,6 +229,7 @@ func image_open_confirmed(file : String) -> void:
 func import_image() -> void:
 	Backdrop.show()
 	ImportImage.popup_centered()
+	
 	if Global.session.get("open_dir"):
 		ImportImage.current_dir = Global.session.open_dir
 

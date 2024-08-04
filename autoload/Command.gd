@@ -90,6 +90,22 @@ func toggle_grid() -> void:
 	Global.show_grid = not Global.show_grid
 	Global.Canvas.toggle_grid(Global.show_grid)
 
+
+func zoom_in() -> void:
+	Global.Canvas.zoom_in()
+
+
+func zoom_out() -> void:
+	Global.Canvas.zoom_out()
+
+
+func zoom_reset() -> void:
+	Global.Canvas.zoom_reset()
+
+
+func close_tab():
+	Global.Main.tab_close_current()
+
 # Key only
 
 func select_palette() -> void:
@@ -112,18 +128,6 @@ func palette_select(palette_number: String, color_index:="0"):
 	Global.Colors.palette_select_color(int(palette_number), int(color_index))
 
 
-func zoom_in() -> void:
-	Global.Canvas.zoom_in()
-
-
-func zoom_out() -> void:
-	Global.Canvas.zoom_out()
-
-
-func zoom_reset() -> void:
-	Global.Canvas.zoom_reset()
-
-
 func shift_left() -> void:
 	Global.Canvas.shift_selection(Vector2(-1, 0))
 
@@ -138,6 +142,7 @@ func shift_up() -> void:
 
 func shift_down() -> void:
 	Global.Canvas.shift_selection(Vector2(0, 1))
+
 
 func run_tests() -> void:
 	Testing.run_tests()

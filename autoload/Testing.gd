@@ -7,7 +7,7 @@ var assertions_failed : int
 var tests_run: int
 var tests_failed: int
 
-func run_tests():
+func run_tests() -> void:
 	if not OS.is_debug_build():
 		print("Not running tests in release build")
 		return
@@ -34,8 +34,8 @@ func run_tests():
 		print("All %d Tests Passed" % tests_run)
 
 
-func run_test_script(file: String):
-	if file == "." or file == ".." or file == "Test.gd":
+func run_test_script(file: String) -> void:
+	if file == "." or file == ".." or file == "Test.gd" or file == "assets":
 		return
 	
 	var main := get_tree().current_scene
@@ -48,7 +48,7 @@ func run_test_script(file: String):
 			print("Running test: %s -> %s" % [file, method.name])
 			run_test(method.name)
 
-func run_test(method: String):
+func run_test(method: String) -> void:
 	assertions = 0
 	assertions_failed = 0
 	
@@ -61,10 +61,19 @@ func run_test(method: String):
 		tests_failed += 1
 	elif assertions_failed > 0:
 		tests_failed += 1
-	else:
-		print("Test passed")
 
-func assertion_made(passed: bool):
+func assertion_made(passed: bool) -> void:
 	assertions += 1
 	if not passed:
 		assertions_failed += 1
+
+
+func assertion_passed() -> void:
+	assertion_made(true)
+	assertions += 1
+
+
+func assertion_failed(error: String) -> void:
+	printerr(error)
+	assertions += 1
+	assertions_failed += 1

@@ -106,16 +106,17 @@ func image_save(file : String) -> void:
 
 func image_load(file : String) -> bool:
 	var err = image.load(file)
-	if err == OK:
-		image_file = file
-		image_name = file.get_file()
-		update_size()
-		change_list_reset()
-		update_title()
-		update_output()
-		update_preview()
-		return true
-	return false
+	if err != OK:
+		return false
+	
+	image_file = file
+	image_name = file.get_file()
+	update_size()
+	change_list_reset()
+	update_title()
+	update_output()
+	update_preview()
+	return true
 
 
 func import_image(file : String) -> bool:
@@ -298,9 +299,11 @@ func blend_image(add_image: Image, pos: Vector2) -> void:
 	var rect := Rect2(Vector2.ZERO, add_image.get_size())
 	image.blend_rect(add_image, rect, pos)
 
+
 func blit_image(add_image: Image, pos: Vector2) -> void:
 	var rect := Rect2(Vector2.ZERO, add_image.get_size())
 	image.blit_rect(add_image, rect, pos)
+
 
 func rotate_clockwise() -> void:
 	if Select.visible:
@@ -308,11 +311,13 @@ func rotate_clockwise() -> void:
 		return
 	ImageTools.image_rotate(image, true)
 
+
 func rotate_anticlockwise() -> void:
 	if Select.visible:
 		Select.rotate_selection(false)
 		return
 	ImageTools.image_rotate(image, false)
+
 
 func flip_horizontal() -> void:
 	if Select.visible:
@@ -320,11 +325,13 @@ func flip_horizontal() -> void:
 		return
 	image.flip_x()
 
+
 func flip_vertical() -> void:
 	if Select.visible:
 		Select.flip_selection(false)
 		return
 	image.flip_y()
+
 
 func resize_canvas(size : Vector2, image_position := Vector2.ZERO) -> void:
 	var old_size := image_size
@@ -334,8 +341,10 @@ func resize_canvas(size : Vector2, image_position := Vector2.ZERO) -> void:
 	var dest := (size - old_size) * image_position
 	image.blit_rect(old_image, Rect2(Vector2.ZERO, old_size), dest)
 
+
 func load_image(new_image: Image):
 	Global.Canvas.image = new_image.duplicate()
+
 
 func delete_rect(rect: Rect2) -> void:
 	var blank_image := Image.new()
