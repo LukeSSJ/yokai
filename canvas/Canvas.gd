@@ -192,7 +192,8 @@ func cancel() -> void:
 	if Select.visible:
 		Select.cancel_selection()
 		return
-	Global.Tool.cancel_drawing()
+	
+	#Global.Tool.cancel_drawing()
 
 
 func delete_selection() -> void:

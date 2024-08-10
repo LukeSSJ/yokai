@@ -60,6 +60,8 @@ func display_palettes():
 		Palettes.add_child(palettePreview)
 		palettePreview.set_data(palette)
 		palettePreview.connect("pressed", self, "palette_selected", [palette])
+	
+	$NoPalettes.visible = len(palettes) == 0
 
 func palette_selected(palette):
 	emit_signal("palette_selected", palette)

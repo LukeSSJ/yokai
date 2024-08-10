@@ -17,9 +17,6 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 scroll_horizontal_enabled = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Palettes" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 984.0
@@ -29,3 +26,18 @@ size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="NoPalettes" type="MarginContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="NoPalettes"]
+margin_left = 10.0
+margin_top = 13.0
+margin_right = 145.0
+margin_bottom = 27.0
+text = "No Palettes in folder."

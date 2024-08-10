@@ -115,6 +115,7 @@ func tab_changed(tab : int) -> void:
 	Global.Canvas.hide()
 	Global.Canvas = CanvasList.get_child(tab)
 	Global.Canvas.make_active()
+	update_window_title()
 
 
 func tab_close(tab: int) -> void:
@@ -131,7 +132,6 @@ func tab_close(tab: int) -> void:
 
 func tab_close_current() -> void:
 	tab_close(ImageTabs.current_tab)
-
 
 
 func tab_close_confirmed() -> void:
@@ -189,12 +189,14 @@ func image_save() -> void:
 
 
 func image_save_as() -> void:
+	# NOTE: When saving the filename defaults to the top filename
+	
 	if Global.session.get("save_dir"):
 		SaveImage.current_dir = Global.session.save_dir
-		if Global.Canvas.image_name.ends_with(".png"):
-			SaveImage.current_file = Global.Canvas.image_name
-		else:
-			SaveImage.current_file = ""
+		
+	if Global.Canvas.image_name.ends_with(".png"):
+		SaveImage.current_file = Global.Canvas.image_name
+	
 	Backdrop.show()
 	SaveImage.popup_centered()
 
@@ -203,7 +205,7 @@ func image_save_confirmed(file: String) -> void:
 	print("Saved image to: " + file)
 	Global.session_set("save_dir", file.get_base_dir())
 	Global.Canvas.image_save(file)
-	OS.set_window_title("GSprite - " + Global.Canvas.title)
+	update_window_title()
 
 
 func image_open() -> void:
@@ -220,10 +222,11 @@ func image_open_confirmed(file : String) -> void:
 	if not Global.Canvas.blank:
 		image_new_confirmed()
 		new_count -= 1
-		Global.Canvas.blank = false
-		
+	
+	
 	if Global.Canvas.image_load(file):
-		OS.set_window_title(Global.Canvas.image_name)
+		Global.Canvas.blank = false
+		update_window_title()
 
 
 func import_image() -> void:
@@ -262,3 +265,6 @@ func select_palette() -> void:
 func palette_selected(palette) -> void:
 	Global.session_set("palette", palette.file)
 	Colors.palette_set(palette)
+
+func update_window_title():
+	OS.set_window_title(Global.Canvas.title + " - GSprite")
