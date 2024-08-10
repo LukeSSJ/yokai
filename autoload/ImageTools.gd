@@ -30,9 +30,9 @@ func image_rotate(image: Image, clockwise) -> void:
 	image_copy.unlock()
 
 
-func image_flood_fill(image: Image, pos: Vector2, color_replace: Color):
+func image_flood_fill(image: Image, pos: Vector2, color_replace: Color) -> bool:
 	var color_find = image.get_pixelv(pos)
-	if color_find == color_replace:
+	if colors_match(color_find, color_replace):
 		return false
 	
 	var image_size := image.get_size()
@@ -42,13 +42,19 @@ func image_flood_fill(image: Image, pos: Vector2, color_replace: Color):
 		var current_pos = fill_positions.pop_back()
 		Global.Canvas.image.set_pixelv(current_pos, color_replace)
 		
-		if current_pos.x > 0 and image.get_pixel(current_pos.x - 1, current_pos.y) == color_find:
+		if current_pos.x > 0 and colors_match(image.get_pixel(current_pos.x - 1, current_pos.y), color_find):
 			fill_positions.push_back(Vector2(current_pos.x - 1, current_pos.y))
-		if current_pos.x < image_size.x - 1 and image.get_pixel(current_pos.x + 1, current_pos.y) == color_find:
+		
+		if current_pos.x < image_size.x - 1 and colors_match(image.get_pixel(current_pos.x + 1, current_pos.y), color_find):
 			fill_positions.push_back(Vector2(current_pos.x + 1, current_pos.y))
-		if current_pos.y > 0 and image.get_pixel(current_pos.x, current_pos.y - 1) == color_find:
+		
+		if current_pos.y > 0 and colors_match(image.get_pixel(current_pos.x, current_pos.y - 1), color_find):
 			fill_positions.push_back(Vector2(current_pos.x, current_pos.y - 1))
-		if current_pos.y < image_size.y - 1 and image.get_pixel(current_pos.x, current_pos.y + 1) == color_find:
+		
+		if current_pos.y < image_size.y - 1 and colors_match(image.get_pixel(current_pos.x, current_pos.y + 1), color_find):
 			fill_positions.push_back(Vector2(current_pos.x, current_pos.y + 1))
 	
 	return true
+
+func colors_match(color_1: Color, color_2: Color) -> bool:
+	return color_1 == color_2 or (color_1.a8 == 0 and color_2.a8 == 0)

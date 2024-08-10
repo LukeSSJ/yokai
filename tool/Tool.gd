@@ -218,7 +218,7 @@ func image_fill_global(pos: Vector2, color_replace: Color) -> void:
 	
 	for x in Global.Canvas.image_size.x:
 		for y in Global.Canvas.image_size.y:
-			if Global.Canvas.image.get_pixel(x, y) == color_find:
+			if ImageTools.colors_match(Global.Canvas.image.get_pixel(x, y), color_find):
 				Global.Canvas.image.set_pixel(x, y, color_replace)
 
 
