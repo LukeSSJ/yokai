@@ -17,7 +17,6 @@ var image_preview := Image.new()
 var prev_image := Image.new()
 var zoom_level := 10.0
 var dirty := false
-var blank := false
 var panning := false
 var pan_start := Vector2.ZERO
 var change_list := []
@@ -77,9 +76,11 @@ func mouse_event(event : InputEventMouse) -> void:
 func make_active() -> void:
 	zoom_update()
 	update_title()
-	emit_signal("update_size", image_size)
-	toggle_grid(Global.show_grid)
+	toggle_grid()
 	show()
+	
+	emit_signal("update_size", image_size)	
+	
 	$Camera.current = true
 
 
@@ -193,7 +194,7 @@ func cancel() -> void:
 		Select.cancel_selection()
 		return
 	
-	#Global.Tool.cancel_drawing()
+	Global.Tool.cancel()
 
 
 func delete_selection() -> void:
@@ -241,8 +242,8 @@ func select_region(rect : Rect2) -> void:
 	Select.select_region(rect)
 
 
-func toggle_grid(set_to:bool):
-	Grid.visible = set_to
+func toggle_grid():
+	Grid.visible = Global.show_grid
 
 
 func update_size() -> void:
@@ -270,7 +271,7 @@ func update_preview() -> void:
 	Preview.texture = ImageTools.get_texture(image_preview)
 
 
-func make_change(change:Node) -> void:
+func make_change(change: Node) -> void:
 	# Delete undone changes
 	if len(change_list) > change_cursor + 1:
 		change_list.resize(change_cursor + 1)
@@ -291,7 +292,6 @@ func make_change(change:Node) -> void:
 		change_cursor -= 1
 	
 	dirty = true
-	blank = false
 	update_title()
 
 # Canvas operations

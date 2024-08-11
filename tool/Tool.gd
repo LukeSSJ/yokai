@@ -28,8 +28,10 @@ func click(pos: Vector2, event: InputEventMouseButton) -> void:
 	control_pressed = event.control
 	
 	draw_color = Global.colors[button_index]
+	
 	if Global.Canvas.Select.visible:
 		Global.Canvas.Select.confirm_selection()
+		
 	start(pos)
 	draw(pos)
 

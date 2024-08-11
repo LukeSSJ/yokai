@@ -2,6 +2,7 @@ extends Node2D
 
 onready var CanvasList := $CanvasList
 onready var UI := $UI
+onready var Dashboard := $UI/Dashboard
 onready var Colors := $UI/Colors
 onready var Tools := $UI/Tools
 onready var ImageTabs = $UI/TopBar/TabWrap/ImageTabs
@@ -42,16 +43,13 @@ func _ready() -> void:
 	
 	tool_set("Pencil")
 	
-	image_new_confirmed(Vector2(32, 32))
-	Global.Canvas.blank = true
-	
 	# Open files from cmd args
 	for arg in OS.get_cmdline_args():
 		image_open_confirmed(arg)
 
 
 func _unhandled_input(event) -> void:
-	if event is InputEventMouse:
+	if event is InputEventMouse and Global.Canvas:
 		Global.Canvas.mouse_event(event)
 	
 	# Keyboard shortcuts
@@ -100,16 +98,14 @@ func tool_set(tool_name) -> void:
 
 
 func tab_changed(tab : int) -> void:
-	Global.Canvas.hide()
-	Global.Canvas = CanvasList.get_child(tab)
-	Global.Canvas.make_active()
-	update_window_title()
+	if Global.Canvas:
+		Global.Canvas.hide()
+		Global.Canvas = CanvasList.get_child(tab)
+		Global.Canvas.make_active()
+		update_window_title()
 
 
 func tab_close(tab: int) -> void:
-	if CanvasList.get_child_count() == 1:
-		return
-	
 	ImageTabs.current_tab = tab
 	if Global.Canvas.dirty:
 		UnsavedTab.popup_centered(Vector2(200, 100))
@@ -126,9 +122,17 @@ func tab_close_confirmed() -> void:
 	var tab : int = ImageTabs.current_tab
 	ImageTabs.remove_tab(tab)
 	CanvasList.get_child(tab).queue_free()
+	
+	if ImageTabs.current_tab == -1:
+		Global.Canvas = null
+		Dashboard.show()
+		return
+	
 	Global.Canvas = CanvasList.get_child(ImageTabs.current_tab)
+	
 	if Global.Canvas.is_queued_for_deletion():
 		Global.Canvas = CanvasList.get_child(ImageTabs.current_tab + 1)
+	
 	Global.Canvas.show()
 	Global.Canvas.make_active()
 
@@ -150,6 +154,7 @@ func image_new() -> void:
 func image_new_confirmed(size := Vector2.ZERO) -> void:
 	var canvas = Canvas.instance()
 	var tab := CanvasList.get_child_count()
+	
 	if size != Vector2.ZERO:
 		canvas.image_size = size
 	
@@ -160,6 +165,8 @@ func image_new_confirmed(size := Vector2.ZERO) -> void:
 	
 	if Global.Canvas:
 		Global.Canvas.hide()
+	
+	Dashboard.hide()
 	
 	canvas.connect("update_title", self, "tab_rename")
 	canvas.connect("update_zoom", UI, "update_zoom")
@@ -173,6 +180,10 @@ func image_new_confirmed(size := Vector2.ZERO) -> void:
 
 
 func image_save() -> void:
+	if not Global.Canvas:
+		return
+	
+	
 	if Global.Canvas.image_file:
 		image_save_confirmed(Global.Canvas.image_file)
 	else:
@@ -180,6 +191,9 @@ func image_save() -> void:
 
 
 func image_save_as() -> void:
+	if not Global.Canvas:
+		return
+	
 	# NOTE: When saving the filename defaults to the top filename
 	
 	if Global.session.get("save_dir"):
@@ -202,6 +216,7 @@ func image_save_confirmed(file: String) -> void:
 func image_open() -> void:
 	Backdrop.show()
 	OpenImage.popup_centered()
+	
 	if Global.session.get("open_dir"):
 		OpenImage.current_dir = Global.session.open_dir
 
@@ -210,17 +225,17 @@ func image_open_confirmed(file : String) -> void:
 	print("Opened file: " + file)
 	Global.session_set("open_dir", file.get_base_dir())
 	
-	if not Global.Canvas.blank:
-		image_new_confirmed()
-		new_count -= 1
-	
+	image_new_confirmed()
+	new_count -= 1
 	
 	if Global.Canvas.image_load(file):
-		Global.Canvas.blank = false
 		update_window_title()
 
 
 func import_image() -> void:
+	if not Global.Canvas:
+		return
+	
 	Backdrop.show()
 	ImportImage.popup_centered()
 	
@@ -235,6 +250,9 @@ func import_image_confirmed(file : String) -> void:
 
 
 func resize_canvas() -> void:
+	if not Global.Canvas:
+		return
+	
 	Backdrop.show()
 	ResizeCanvas.popup_centered(Vector2(200, 100))
 	ResizeCanvas.on_popup()
