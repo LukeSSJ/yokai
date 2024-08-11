@@ -202,3 +202,15 @@ margin_right = 1004.0
 margin_bottom = 580.0
 
 [node name="SelectPalette" parent="UI/Backdrop/Dialog" instance=ExtResource( 24 )]
+
+[connection signal="reposition_active_tab_request" from="UI/TopBar/TabWrap/ImageTabs" to="." method="tab_move"]
+[connection signal="tab_changed" from="UI/TopBar/TabWrap/ImageTabs" to="." method="tab_changed"]
+[connection signal="tab_close" from="UI/TopBar/TabWrap/ImageTabs" to="." method="tab_close"]
+[connection signal="confirmed" from="UI/Backdrop/Dialog/UnsavedChanges" to="." method="quit"]
+[connection signal="confirmed" from="UI/Backdrop/Dialog/UnsavedTab" to="." method="tab_close_confirmed"]
+[connection signal="new_image" from="UI/Backdrop/Dialog/NewImage" to="." method="image_new_confirmed"]
+[connection signal="file_selected" from="UI/Backdrop/Dialog/OpenImage" to="." method="image_open_confirmed"]
+[connection signal="file_selected" from="UI/Backdrop/Dialog/SaveImage" to="." method="image_save_confirmed"]
+[connection signal="file_selected" from="UI/Backdrop/Dialog/ImportImage" to="." method="import_image_confirmed"]
+[connection signal="resize_canvas" from="UI/Backdrop/Dialog/ResizeCanvas" to="." method="resize_canvas_confirmed"]
+[connection signal="palette_selected" from="UI/Backdrop/Dialog/SelectPalette" to="." method="palette_selected"]

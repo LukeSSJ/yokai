@@ -1,6 +1,7 @@
 extends Node
 
-var main : Node
+var main: Node
+var tree: SceneTree
 
 func assert_true(condition: bool):
 	if condition:
@@ -30,16 +31,16 @@ func assert_image_matches(file: String):
 		Testing.assertion_failed("Assert image failed: could not open file %s" % file)
 		return
 	
-	var canvas_size = get_canvas_size()
-	if canvas_size[0] != image.get_width() or canvas_size[1] != image.get_height():
+	var canvas_size := get_canvas_size()
+	if canvas_size.x != image.get_width() or canvas_size.y != image.get_height():
 		Testing.assertion_failed("Assert image failed: size does not match")
 		return
 	
 	image.lock()
 	Global.Canvas.image.lock()
 	
-	for x in canvas_size[0]:
-		for y in canvas_size[1]:
+	for x in canvas_size.x:
+		for y in canvas_size.y:
 			var canvas_pixel = Global.Canvas.image.get_pixel(x, y)
 			var image_pixel = image.get_pixel(x, y)
 			if canvas_pixel != image_pixel:
@@ -50,5 +51,10 @@ func assert_image_matches(file: String):
 	
 	Testing.assertion_passed()
 
+
 func get_canvas_size() -> Vector2:
 	return Global.Canvas.image_size
+
+
+func node_by_group(group: String) -> Node:
+	return tree.get_nodes_in_group(group)[0]

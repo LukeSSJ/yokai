@@ -38,10 +38,9 @@ func run_test_script(file: String) -> void:
 	if file == "." or file == ".." or file == "Test.gd" or file == "assets":
 		return
 	
-	var main := get_tree().current_scene
-	
 	node.set_script(load("res://tests/" + file))
-	node.main = main
+	node.tree = get_tree()
+	node.main = node.tree.current_scene
 	
 	for method in node.get_method_list():
 		if method.name.begins_with("test_"):

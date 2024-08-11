@@ -24,23 +24,10 @@ var new_count := 1
 func _ready() -> void:
 	get_tree().set_auto_accept_quit(false)
 	
-	ImageTabs.connect("tab_changed", self, "tab_changed")
-	ImageTabs.connect("tab_close", self, "tab_close")
-	ImageTabs.connect("reposition_active_tab_request", self, "tab_move")
-	
 	for popup in Dialog.get_children():
 		if popup is Popup:
 			popup.connect("about_to_show", Backdrop, "show")
 			popup.connect("popup_hide", Backdrop, "hide")
-	
-	UnsavedChanges.connect("confirmed", self, "quit")
-	UnsavedTab.connect("confirmed", self, "tab_close_confirmed")
-	NewImage.connect("new_image", self, "image_new_confirmed")
-	SaveImage.connect("file_selected", self, "image_save_confirmed")
-	OpenImage.connect("file_selected", self, "image_open_confirmed")
-	ImportImage.connect("file_selected", self, "import_image_confirmed")
-	ResizeCanvas.connect("resize_canvas", self, "resize_canvas_confirmed")
-	SelectPalette.connect("palette_selected", self, "palette_selected")
 	
 	Global.Main = self
 	Global.Colors = Colors
@@ -52,6 +39,7 @@ func _ready() -> void:
 	for button in Tools.get_children():
 		button.text = button.name
 		button.connect("pressed", Command, "tool_set", [button.name])
+	
 	tool_set("Pencil")
 	
 	image_new_confirmed(Vector2(32, 32))
@@ -159,7 +147,7 @@ func image_new() -> void:
 	NewImage.on_popup()
 
 
-func image_new_confirmed(size:=Vector2.ZERO) -> void:
+func image_new_confirmed(size := Vector2.ZERO) -> void:
 	var canvas = Canvas.instance()
 	var tab := CanvasList.get_child_count()
 	if size != Vector2.ZERO:
@@ -169,12 +157,15 @@ func image_new_confirmed(size:=Vector2.ZERO) -> void:
 	canvas.image_name = "new" + str(new_count)
 	
 	new_count += 1
+	
 	if Global.Canvas:
 		Global.Canvas.hide()
+	
 	canvas.connect("update_title", self, "tab_rename")
 	canvas.connect("update_zoom", UI, "update_zoom")
 	canvas.connect("update_size", UI, "update_size")
 	canvas.connect("update_cursor", UI, "update_cursor")
+	
 	ImageTabs.add_tab(canvas.image_name)
 	ImageTabs.current_tab = tab
 	Global.Canvas = canvas

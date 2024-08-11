@@ -30,7 +30,7 @@ margin_bottom = 24.0
 size_flags_vertical = 0
 alignment = 1
 
-[node name="Width" parent="Content/Size" instance=ExtResource( 2 )]
+[node name="Width" parent="Content/Size" groups=["new_image_width"] instance=ExtResource( 2 )]
 text = "32"
 
 [node name="Label" type="Label" parent="Content/Size"]
@@ -40,5 +40,5 @@ margin_right = 95.0
 margin_bottom = 19.0
 text = "x"
 
-[node name="Height" parent="Content/Size" instance=ExtResource( 2 )]
+[node name="Height" parent="Content/Size" groups=["new_image_height"] instance=ExtResource( 2 )]
 text = "32"

@@ -106,7 +106,7 @@ func zoom_reset() -> void:
 func close_tab():
 	Global.Main.tab_close_current()
 
-# Key only
+# Keyboard only
 
 func select_palette() -> void:
 	Global.Main.select_palette()
