@@ -8,7 +8,8 @@ var palettes: Array
 
 onready var PalettePreview = preload("res://dialog/PalettePreview.tscn")
 
-onready var Palettes = $ScrollContainer/Palettes
+onready var palette_items = $ScrollContainer/Palettes
+onready var no_palettes = $NoPalettes
 
 func load_palettes():
 	palettes = []
@@ -57,11 +58,11 @@ func load_palette(fname):
 func display_palettes():
 	for palette in palettes:
 		var palettePreview = PalettePreview.instance()
-		Palettes.add_child(palettePreview)
+		palette_items.add_child(palettePreview)
 		palettePreview.set_data(palette)
 		palettePreview.connect("pressed", self, "palette_selected", [palette])
 	
-	$NoPalettes.visible = len(palettes) == 0
+	no_palettes.visible = len(palettes) == 0
 
 func palette_selected(palette):
 	emit_signal("palette_selected", palette)

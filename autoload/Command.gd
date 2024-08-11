@@ -3,168 +3,168 @@ extends Node
 onready var Change = preload("res://canvas/Change.gd")
 
 func new() -> void:
-	Global.Main.image_new()
+	Global.main.image_new()
 
 
 func save() -> void:
-	Global.Main.image_save()
+	Global.main.image_save()
 
 
 func save_as() -> void:
-	Global.Main.image_save_as()
+	Global.main.image_save_as()
 
 
 func open() -> void:
-	Global.Main.image_open()
+	Global.main.image_open()
 
 
 func undo() -> void:
-	if Global.Canvas:
-		Global.Canvas.undo()
+	if Global.canvas:
+		Global.canvas.undo()
 
 
 func redo() -> void:
-	if Global.Canvas:
-		Global.Canvas.redo()
+	if Global.canvas:
+		Global.canvas.redo()
 
 
 func select_all() -> void:
-	if Global.Canvas:
-		Global.Canvas.select_all()
+	if Global.canvas:
+		Global.canvas.select_all()
 
 
 func deselect() -> void:
-	if Global.Canvas:
-		Global.Canvas.deselect()
+	if Global.canvas:
+		Global.canvas.deselect()
 
 
 func delete() -> void:
-	if Global.Canvas:
-		Global.Canvas.delete()
+	if Global.canvas:
+		Global.canvas.delete()
 
 
 func cut() -> void:
-	if Global.Canvas:
-		Global.Canvas.cut()
+	if Global.canvas:
+		Global.canvas.cut()
 
 
 func copy() -> void:
-	if Global.Canvas:
-		Global.Canvas.copy()
+	if Global.canvas:
+		Global.canvas.copy()
 
 
 func paste() -> void:
-	if Global.Canvas:
-		Global.Canvas.paste()
+	if Global.canvas:
+		Global.canvas.paste()
 
 
 func import() -> void:
-	Global.Main.import_image()
+	Global.main.import_image()
 
 
 func rotate_clockwise() -> void:
-	if Global.Canvas:
+	if Global.canvas:
 		var change = Change.new()
 		change.action = "rotate_clockwise"
 		change.undo_action = "rotate_anticlockwise"
-		Global.Canvas.make_change(change)
+		Global.canvas.make_change(change)
 
 
 func rotate_anticlockwise() -> void:
-	if Global.Canvas:
+	if Global.canvas:
 		var change = Change.new()
 		change.action = "rotate_anticlockwise"
 		change.undo_action = "rotate_clockwise"
-		Global.Canvas.make_change(change)
+		Global.canvas.make_change(change)
 
 
 func flip_horizontal() -> void:
-	if Global.Canvas:
+	if Global.canvas:
 		var change = Change.new()
 		change.action = "flip_horizontal"
 		change.undo_action = "flip_horizontal"
-		Global.Canvas.make_change(change)
+		Global.canvas.make_change(change)
 
 
 func flip_vertical() -> void:
-	if Global.Canvas:
+	if Global.canvas:
 		var change = Change.new()
 		change.action = "flip_vertical"
 		change.undo_action = "flip_vertical"
-		Global.Canvas.make_change(change)
+		Global.canvas.make_change(change)
 
 
 func resize_canvas() -> void:
-	Global.Main.resize_canvas()
+	Global.main.resize_canvas()
 
 
 func toggle_grid() -> void:
 	Global.show_grid = not Global.show_grid
 	
-	if Global.Canvas:
-		Global.Canvas.toggle_grid()
+	if Global.canvas:
+		Global.canvas.toggle_grid()
 
 
 func zoom_in() -> void:
-	if Global.Canvas:
-		Global.Canvas.zoom_in()
+	if Global.canvas:
+		Global.canvas.zoom_in()
 
 
 func zoom_out() -> void:
-	if Global.Canvas:
-		Global.Canvas.zoom_out()
+	if Global.canvas:
+		Global.canvas.zoom_out()
 
 
 func zoom_reset() -> void:
-	if Global.Canvas:
-		Global.Canvas.zoom_reset()
+	if Global.canvas:
+		Global.canvas.zoom_reset()
 
 
 func close_tab():
-	Global.Main.tab_close_current()
+	Global.main.tab_close_current()
 
 # Keyboard only
 
 func select_palette() -> void:
-	Global.Main.select_palette()
+	Global.main.select_palette()
 
 
 func confirm() -> void:
-	if Global.Canvas:
-		Global.Canvas.confirm()
+	if Global.canvas:
+		Global.canvas.confirm()
 
 
 func cancel() -> void:
-	if Global.Canvas:
-		Global.Canvas.cancel()
+	if Global.canvas:
+		Global.canvas.cancel()
 
 
 func tool_set(new_tool : String) -> void:
-	Global.Main.tool_set(new_tool)
+	Global.main.tool_set(new_tool)
 
 
 func palette_select(palette_number: String, color_index:="0"):
-	Global.Colors.palette_select_color(int(palette_number), int(color_index))
+	Global.color_section.palette_select_color(int(palette_number), int(color_index))
 
 
 func shift_left() -> void:
-	if Global.Canvas:
-		Global.Canvas.shift_selection(Vector2(-1, 0))
+	if Global.canvas:
+		Global.canvas.shift_selection(Vector2(-1, 0))
 
 
 func shift_right() -> void:
-	if Global.Canvas:
-		Global.Canvas.shift_selection(Vector2(1, 0))
+	if Global.canvas:
+		Global.canvas.shift_selection(Vector2(1, 0))
 
 
 func shift_up() -> void:
-	if Global.Canvas:
-		Global.Canvas.shift_selection(Vector2(0, -1))
+	if Global.canvas:
+		Global.canvas.shift_selection(Vector2(0, -1))
 
 
 func shift_down() -> void:
-	if Global.Canvas:
-		Global.Canvas.shift_selection(Vector2(0, 1))
+	if Global.canvas:
+		Global.canvas.shift_selection(Vector2(0, 1))
 
 
 func run_tests() -> void:

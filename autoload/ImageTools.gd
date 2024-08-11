@@ -40,7 +40,7 @@ func image_flood_fill(image: Image, pos: Vector2, color_replace: Color) -> bool:
 	
 	while len(fill_positions) > 0:
 		var current_pos = fill_positions.pop_back()
-		Global.Canvas.image.set_pixelv(current_pos, color_replace)
+		Global.canvas.image.set_pixelv(current_pos, color_replace)
 		
 		if current_pos.x > 0 and colors_match(image.get_pixel(current_pos.x - 1, current_pos.y), color_find):
 			fill_positions.push_back(Vector2(current_pos.x - 1, current_pos.y))

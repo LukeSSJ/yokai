@@ -2,10 +2,12 @@ extends Panel
 
 var color: Color
 
+onready var label = $Label
+
 func set_number_and_color(set_number: int, set_color: Color):
 	color = set_color
 	
-	$Label.text = str(set_number)
+	label.text = str(set_number)
 	
 	var style := StyleBoxFlat.new()
 	style.bg_color = set_color

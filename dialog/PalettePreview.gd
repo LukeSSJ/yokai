@@ -2,8 +2,8 @@ extends MarginContainer
 
 signal pressed
 
-onready var Name = $Content/VBox/Name
-onready var Colors = $Content/VBox/Colors
+onready var palette_name = $Content/VBox/Name
+onready var palette_colors = $Content/VBox/Colors
 
 onready var PaletteColor = preload("res://ui/PaletteColor.tscn")
 
@@ -12,12 +12,12 @@ func _ready():
 
 
 func set_data(palette: Dictionary) -> void:
-	Name.text = palette.name
+	palette_name.text = palette.name
 	
 	var i := 1
 	for color in palette.colors:
 		var paletteColor = PaletteColor.instance()
-		Colors.add_child(paletteColor)
+		palette_colors.add_child(paletteColor)
 		paletteColor.mouse_filter = MOUSE_FILTER_PASS
 		paletteColor.set_number_and_color(i, color)
 		i += 1

@@ -6,7 +6,7 @@ func test_resize_canvas() -> void:
 	main.resize_canvas()
 	node_by_group("resize_canvas_width").text = "48"
 	node_by_group("resize_canvas_height").text = "24"
-	main.ResizeCanvas.on_confirmed()
+	main.resize_canvas_dialog.on_confirmed()
 	
 	assert_canvas_size(Vector2(48, 24))
 

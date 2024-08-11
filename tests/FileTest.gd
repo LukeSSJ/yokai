@@ -4,7 +4,7 @@ func test_new() -> void:
 	Command.new()
 	node_by_group("new_image_width").text = "61"
 	node_by_group("new_image_height").text = "42"
-	main.NewImage.on_confirmed()
+	main.new_image_dialog.on_confirmed()
 	assert_canvas_size(Vector2(61, 42))
 
 func test_open() -> void:

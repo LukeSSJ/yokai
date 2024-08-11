@@ -37,23 +37,23 @@ func assert_image_matches(file: String):
 		return
 	
 	image.lock()
-	Global.Canvas.image.lock()
+	Global.canvas.image.lock()
 	
 	for x in canvas_size.x:
 		for y in canvas_size.y:
-			var canvas_pixel = Global.Canvas.image.get_pixel(x, y)
+			var canvas_pixel = Global.canvas.image.get_pixel(x, y)
 			var image_pixel = image.get_pixel(x, y)
 			if canvas_pixel != image_pixel:
 				Testing.assertion_failed("Assert image failed: pixel does not match at %d,%d" % [x, y])
 				return
 	
-	Global.Canvas.image.unlock()
+	Global.canvas.image.unlock()
 	
 	Testing.assertion_passed()
 
 
 func get_canvas_size() -> Vector2:
-	return Global.Canvas.image_size
+	return Global.canvas.image_size
 
 
 func node_by_group(group: String) -> Node:

@@ -133,7 +133,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Colors" parent="UI" instance=ExtResource( 15 )]
+[node name="ColorSection" parent="UI" instance=ExtResource( 15 )]
 margin_right = 202.0
 
 [node name="Backdrop" type="MarginContainer" parent="UI"]
@@ -236,7 +236,7 @@ margin_bottom = 580.0
 [connection signal="reposition_active_tab_request" from="UI/TopBar/TabWrap/ImageTabs" to="." method="tab_move"]
 [connection signal="tab_changed" from="UI/TopBar/TabWrap/ImageTabs" to="." method="tab_changed"]
 [connection signal="tab_close" from="UI/TopBar/TabWrap/ImageTabs" to="." method="tab_close"]
-[connection signal="confirmed" from="UI/Backdrop/Dialog/UnsavedChanges" to="." method="quit"]
+[connection signal="confirmed" from="UI/Backdrop/Dialog/UnsavedChanges" to="." method="quit_confirmed"]
 [connection signal="confirmed" from="UI/Backdrop/Dialog/UnsavedTab" to="." method="tab_close_confirmed"]
 [connection signal="new_image" from="UI/Backdrop/Dialog/NewImage" to="." method="image_new_confirmed"]
 [connection signal="file_selected" from="UI/Backdrop/Dialog/OpenImage" to="." method="image_open_confirmed"]

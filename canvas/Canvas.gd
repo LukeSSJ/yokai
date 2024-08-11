@@ -22,12 +22,13 @@ var pan_start := Vector2.ZERO
 var change_list := []
 var change_cursor := -1
 
-onready var Background := $Background
-onready var Output := $Output
-onready var Preview := $Preview
-onready var TopLeft := $TopLeft
-onready var Grid := $TopLeft/Grid
-onready var Select := $TopLeft/Select
+onready var background := $Background
+onready var output := $Output
+onready var preview := $Preview
+onready var top_left := $TopLeft
+onready var grid := $TopLeft/Grid
+onready var select := $TopLeft/Select
+onready var camera := $Camera
 
 onready var Change = preload("res://canvas/Change.gd")
 
@@ -41,36 +42,46 @@ func mouse_event(event : InputEventMouse) -> void:
 	var mouse_pos := get_global_mouse_position() - position + image_size / 2
 	mouse_pos.x = floor(mouse_pos.x)
 	mouse_pos.y = floor(mouse_pos.y)
+	
 	emit_signal("update_cursor", mouse_pos)
 	
 	# Panning
 	if panning and event is InputEventMouseMotion:
-		$Camera.offset -= event.relative * $Camera.zoom
+		camera.offset -= event.relative * camera.zoom
 		return
 	
 	# Handle events for selection
-	if Select.visible and Select.mouse_event_with_pos(event, mouse_pos):
+	if select.visible and select.mouse_event_with_pos(event, mouse_pos):
 		return
 	
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT or event.button_index == BUTTON_RIGHT:
-			if event.pressed:
-				Global.Tool.click(mouse_pos, event)
-			else:
-				Global.Tool.release(mouse_pos)
-		elif event.button_index == BUTTON_MIDDLE:
-			if event.pressed:
-				panning = true
-				pan_start = get_viewport().get_mouse_position()
-			else:
-				panning = false
-		elif event.pressed:
-			if event.button_index == BUTTON_WHEEL_UP:
-				Command.zoom_in()
-			elif event.button_index == BUTTON_WHEEL_DOWN:
-				Command.zoom_out()
-	else:
-		Global.Tool.move(mouse_pos)
+		mouse_button_event(event, mouse_pos)
+		return
+	
+	Global.selected_tool.move(mouse_pos)
+
+
+func mouse_button_event(event: InputEventMouseButton, mouse_pos: Vector2):
+	if event.button_index == BUTTON_LEFT or event.button_index == BUTTON_RIGHT:
+		if event.pressed:
+			Global.selected_tool.click(mouse_pos, event)
+		else:
+			Global.selected_tool.release(mouse_pos)
+		return
+			
+	if event.button_index == BUTTON_MIDDLE:
+		if event.pressed:
+			panning = true
+			pan_start = get_viewport().get_mouse_position()
+		else:
+			panning = false
+		return
+			
+	if event.pressed:
+		if event.button_index == BUTTON_WHEEL_UP:
+			Command.zoom_in()
+		elif event.button_index == BUTTON_WHEEL_DOWN:
+			Command.zoom_out()
 
 
 func make_active() -> void:
@@ -79,29 +90,33 @@ func make_active() -> void:
 	toggle_grid()
 	show()
 	
-	emit_signal("update_size", image_size)	
+	emit_signal("update_size", image_size)
 	
-	$Camera.current = true
+	camera.current = true
 
 
 func image_new() -> void:
 	image_file = ""
 	image_name = ""
 	image_rect = Rect2(Vector2.ZERO, image_size)
-	Background.region_rect.size = image_size
-	TopLeft.position = -image_size / 2
+	background.region_rect.size = image_size
+	top_left.position = -image_size / 2
+	
 	ImageTools.blank_image(image, image_size)
 	ImageTools.blank_image(image_preview, image_size)
+	
 	change_list_reset()
-	Select.cancel_selection()
+	select.cancel_selection()
 	update_output()
 
 
 func image_save(file : String) -> void:
 	image.save_png(file)
+	
 	image_file = file
 	image_name = file.get_file()
 	dirty = false
+	
 	update_title()
 
 
@@ -112,20 +127,24 @@ func image_load(file : String) -> bool:
 	
 	image_file = file
 	image_name = file.get_file()
+	
 	update_size()
 	change_list_reset()
 	update_title()
 	update_output()
 	update_preview()
+	
 	return true
 
 
 func import_image(file : String) -> bool:
 	var add_image := Image.new()
 	var err = add_image.load(file)
+	
 	if err == OK:
-		Select.add_image(add_image)
+		select.add_image(add_image)
 		return true
+	
 	return false
 
 
@@ -152,53 +171,53 @@ func zoom_reset() -> void:
 
 
 func select_all() -> void:
-	Select.select_region(Rect2(Vector2.ZERO, image_size))
+	select.select_region(Rect2(Vector2.ZERO, image_size))
 
 
 func deselect() -> void:
-	Select.confirm_selection()
+	select.confirm_selection()
 
 
 func shift_selection(vector) -> void:
-	Select.shift(vector)
+	select.shift(vector)
 
 
 func cut() -> void:
-	if Select.visible:
-		Select.copy_selection()
-		Select.hide()
+	if select.visible:
+		select.copy_selection()
+		select.hide()
 		delete_selection()
 
 
 func copy() -> void:
-	if Select.visible:
-		Select.copy_selection()
+	if select.visible:
+		select.copy_selection()
 
 
 func paste() -> void:
-	Select.paste()
+	select.paste()
 
 
 func delete() -> void:
-	if Select.visible:
-		Select.hide()
+	if select.visible:
+		select.hide()
 		delete_selection()
 
 
 func confirm() -> void:
-	Select.confirm_selection()
+	select.confirm_selection()
 
 
 func cancel() -> void:
-	if Select.visible:
-		Select.cancel_selection()
+	if select.visible:
+		select.cancel_selection()
 		return
 	
-	Global.Tool.cancel()
+	Global.selected_tool.cancel()
 
 
 func delete_selection() -> void:
-	var rect: Rect2 = Select.select_rect
+	var rect: Rect2 = select.select_rect
 	var change = Change.new()
 	change.action = "delete_rect"
 	change.params = [rect]
@@ -214,9 +233,8 @@ func change_list_reset() -> void:
 
 
 func undo() -> void:
-	# Cancel selection if there is one
-	if Select.visible:
-		Select.cancel_selection()
+	if select.visible:
+		select.cancel_selection()
 		return
 	
 	if change_cursor > -1:
@@ -239,21 +257,24 @@ func redo() -> void:
 
 
 func select_region(rect : Rect2) -> void:
-	Select.select_region(rect)
+	select.select_region(rect)
 
 
 func toggle_grid():
-	Grid.visible = Global.show_grid
+	grid.visible = Global.show_grid
 
 
 func update_size() -> void:
 	image_size = image.get_size()
 	image_rect = Rect2(Vector2.ZERO, image_size)
+	
 	emit_signal("update_size", image_size)
+	
 	ImageTools.blank_image(image_preview, image_size)
-	Background.region_rect.size = image_size
-	TopLeft.position = -image_size / 2
-	Grid.set_area(image_size)
+	
+	background.region_rect.size = image_size
+	top_left.position = -image_size / 2
+	grid.set_area(image_size)
 
 
 func update_title():
@@ -264,11 +285,11 @@ func update_title():
 
 
 func update_output() -> void:
-	Output.texture = ImageTools.get_texture(image)
+	output.texture = ImageTools.get_texture(image)
 
 
 func update_preview() -> void:
-	Preview.texture = ImageTools.get_texture(image_preview)
+	preview.texture = ImageTools.get_texture(image_preview)
 
 
 func make_change(change: Node) -> void:
@@ -307,29 +328,29 @@ func blit_image(add_image: Image, pos: Vector2) -> void:
 
 
 func rotate_clockwise() -> void:
-	if Select.visible:
-		Select.rotate_selection(true)
+	if select.visible:
+		select.rotate_selection(true)
 		return
 	ImageTools.image_rotate(image, true)
 
 
 func rotate_anticlockwise() -> void:
-	if Select.visible:
-		Select.rotate_selection(false)
+	if select.visible:
+		select.rotate_selection(false)
 		return
 	ImageTools.image_rotate(image, false)
 
 
 func flip_horizontal() -> void:
-	if Select.visible:
-		Select.flip_selection(true)
+	if select.visible:
+		select.flip_selection(true)
 		return
 	image.flip_x()
 
 
 func flip_vertical() -> void:
-	if Select.visible:
-		Select.flip_selection(false)
+	if select.visible:
+		select.flip_selection(false)
 		return
 	image.flip_y()
 
@@ -344,7 +365,7 @@ func resize_canvas(size : Vector2, image_position := Vector2.ZERO) -> void:
 
 
 func load_image(new_image: Image):
-	Global.Canvas.image = new_image.duplicate()
+	Global.canvas.image = new_image.duplicate()
 
 
 func delete_rect(rect: Rect2) -> void:

@@ -40,7 +40,7 @@ func select_region(rect) -> void:
 	has_moved = false
 	is_new = false
 	selecting = true
-	select_image = Global.Canvas.image.get_rect(select_rect)
+	select_image = Global.canvas.image.get_rect(select_rect)
 	select_texture = ImageTools.get_texture(select_image)
 	update()
 	show()
@@ -50,7 +50,7 @@ func grab_selection():
 	if not has_moved:
 		has_moved = true
 		update()
-		Global.Canvas.delete_selection()
+		Global.canvas.delete_selection()
 
 
 func mouse_event_with_pos(event : InputEventMouse, mouse_pos) -> bool:
@@ -81,8 +81,8 @@ func mouse_event_with_pos(event : InputEventMouse, mouse_pos) -> bool:
 
 func cancel_selection() -> void:
 	if visible and has_moved and not is_new:
-		Global.Canvas.image.blit_rect(select_image, Rect2(Vector2.ZERO, select_rect.size), original_pos)
-		Global.Canvas.update_output()
+		Global.canvas.image.blit_rect(select_image, Rect2(Vector2.ZERO, select_rect.size), original_pos)
+		Global.canvas.update_output()
 		
 	selecting = false
 	select_texture = null
@@ -91,14 +91,14 @@ func cancel_selection() -> void:
 
 func confirm_selection() -> void:
 	if visible and has_moved:
-		Global.Canvas.image.blend_rect(select_image, Rect2(Vector2.ZERO, select_rect.size), select_rect.position)
+		Global.canvas.image.blend_rect(select_image, Rect2(Vector2.ZERO, select_rect.size), select_rect.position)
 		
 		var change = Change.new()
 		change.action = "blend_image"
-		change.params = [Global.Canvas.image.duplicate(), Vector2.ZERO]
+		change.params = [Global.canvas.image.duplicate(), Vector2.ZERO]
 		change.undo_action = "blit_image"
-		change.undo_params = [Global.Canvas.prev_image.duplicate(), Vector2.ZERO]
-		Global.Canvas.make_change(change)
+		change.undo_params = [Global.canvas.prev_image.duplicate(), Vector2.ZERO]
+		Global.canvas.make_change(change)
 	
 	selecting = false
 	select_texture = null

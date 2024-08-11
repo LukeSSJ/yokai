@@ -29,8 +29,8 @@ func click(pos: Vector2, event: InputEventMouseButton) -> void:
 	
 	draw_color = Global.colors[button_index]
 	
-	if Global.Canvas.Select.visible:
-		Global.Canvas.Select.confirm_selection()
+	if Global.canvas.select.visible:
+		Global.canvas.select.confirm_selection()
 		
 	start(pos)
 	draw(pos)
@@ -55,10 +55,11 @@ func stop_drawing() -> void:
 		return
 	
 	drawing = false
-	Global.Canvas.image_preview.lock()
-	Global.Canvas.image_preview.fill(Color.transparent)
-	Global.Canvas.image_preview.unlock()
-	Global.Canvas.update_preview()
+	
+	Global.canvas.image_preview.lock()
+	Global.canvas.image_preview.fill(Color.transparent)
+	Global.canvas.image_preview.unlock()
+	Global.canvas.update_preview()
 	
 	if change_made:
 		var new_image: Image
@@ -68,53 +69,57 @@ func stop_drawing() -> void:
 		if dirty:
 			change_pos = dirty_rect.position
 			dirty_rect.size += Vector2(1, 1)
-			new_image = Global.Canvas.image.get_rect(dirty_rect)
-			prev_image = Global.Canvas.prev_image.get_rect(dirty_rect)
+			new_image = Global.canvas.image.get_rect(dirty_rect)
+			prev_image = Global.canvas.prev_image.get_rect(dirty_rect)
 		else:
 			change_pos = Vector2.ZERO
-			new_image = Global.Canvas.image.duplicate()
-			prev_image = Global.Canvas.prev_image.duplicate()
+			new_image = Global.canvas.image.duplicate()
+			prev_image = Global.canvas.prev_image.duplicate()
 		
 		var change = Change.new()
 		change.action = "blit_image"
 		change.params = [new_image, change_pos]
 		change.undo_action = "blit_image"
 		change.undo_params = [prev_image, change_pos]
-		Global.Canvas.make_change(change)
+		Global.canvas.make_change(change)
 
 
 # Drawing functions
 
 func image_draw_start() -> void:
 	if use_preview:
-		Global.Canvas.image_preview.lock()
-		Global.Canvas.image_preview.fill(Color.transparent)
+		Global.canvas.image_preview.lock()
+		Global.canvas.image_preview.fill(Color.transparent)
 	else:
-		Global.Canvas.image.lock()
+		Global.canvas.image.lock()
 
 
 func image_draw_end() -> void:
 	if use_preview:
-		Global.Canvas.image_preview.unlock()
-		Global.Canvas.update_preview()
+		Global.canvas.image_preview.unlock()
+		Global.canvas.update_preview()
 	else:
-		Global.Canvas.image.unlock()
-		Global.Canvas.update_output()
+		Global.canvas.image.unlock()
+		Global.canvas.update_output()
+
+
+func cancel() -> void:
+	stop_drawing()
 
 
 func image_draw_point(pos: Vector2) -> void:
-	if not Global.Canvas.image_rect.has_point(pos):
+	if not Global.canvas.image_rect.has_point(pos):
 		return
 	
 	if use_preview:
-		Global.Canvas.image_preview.lock()
-		Global.Canvas.image_preview.set_pixelv(pos, draw_color)
-		Global.Canvas.image_preview.set_pixelv(pos, draw_color)
-		Global.Canvas.image_preview.unlock()
+		Global.canvas.image_preview.lock()
+		Global.canvas.image_preview.set_pixelv(pos, draw_color)
+		Global.canvas.image_preview.set_pixelv(pos, draw_color)
+		Global.canvas.image_preview.unlock()
 	else:
 		var new_color := draw_color
-		new_color.blend(Global.Canvas.image.get_pixelv(pos))
-		Global.Canvas.image.set_pixelv(pos, new_color)
+		new_color.blend(Global.canvas.image.get_pixelv(pos))
+		Global.canvas.image.set_pixelv(pos, new_color)
 		change_made = true
 	
 	if dirty:
@@ -204,29 +209,29 @@ func image_draw_ellipse(pos1: Vector2, pos2: Vector2) -> void:
 
 
 func image_fill(pos: Vector2, color_replace: Color) -> void:
-	if not Global.Canvas.image_rect.has_point(pos):
+	if not Global.canvas.image_rect.has_point(pos):
 		return
 	
-	if ImageTools.image_flood_fill(Global.Canvas.image, pos, color_replace):
+	if ImageTools.image_flood_fill(Global.canvas.image, pos, color_replace):
 		change_made = true
 
 
 func image_fill_global(pos: Vector2, color_replace: Color) -> void:
-	if not Global.Canvas.image_rect.has_point(pos):
+	if not Global.canvas.image_rect.has_point(pos):
 		return
 	
 	change_made = true
-	var color_find : Color = Global.Canvas.image.get_pixelv(pos)
+	var color_find : Color = Global.canvas.image.get_pixelv(pos)
 	
-	for x in Global.Canvas.image_size.x:
-		for y in Global.Canvas.image_size.y:
-			if ImageTools.colors_match(Global.Canvas.image.get_pixel(x, y), color_find):
-				Global.Canvas.image.set_pixel(x, y, color_replace)
+	for x in Global.canvas.image_size.x:
+		for y in Global.canvas.image_size.y:
+			if ImageTools.colors_match(Global.canvas.image.get_pixel(x, y), color_find):
+				Global.canvas.image.set_pixel(x, y, color_replace)
 
 
 func image_grab_color(pos : Vector2) -> void:
-	if Global.Canvas.image_rect.has_point(pos):
-		Global.Colors.color_set(Global.Canvas.image.get_pixelv(pos), button_index)
+	if Global.canvas.image_rect.has_point(pos):
+		Global.color_section.color_set(Global.canvas.image.get_pixelv(pos), button_index)
 
 
 # Methods for overriding
@@ -240,8 +245,4 @@ func draw(_pos : Vector2) -> void:
 
 
 func end(_pos : Vector2) -> void:
-	pass
-
-
-func cancel() -> void:
 	pass

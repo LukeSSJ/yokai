@@ -1,14 +1,21 @@
 extends MarginContainer
 
-var menu_file : PopupMenu
-var menu_edit : PopupMenu
-var menu_canvas : PopupMenu
-var menu_transform : PopupMenu
-var menu_view : PopupMenu
-var menu_testing : PopupMenu
+onready var file_button = $Buttons/File
+onready var edit_button = $Buttons/Edit
+onready var canvas_button = $Buttons/Canvas
+onready var transform_button = $Buttons/Transform
+onready var view_button = $Buttons/View
+onready var testing_button = $Buttons/Testing
+
+var menu_file: PopupMenu
+var menu_edit: PopupMenu
+var menu_canvas: PopupMenu
+var menu_transform: PopupMenu
+var menu_view: PopupMenu
+var menu_testing: PopupMenu
 
 func _ready():
-	menu_file = $Buttons/File.get_popup()
+	menu_file = file_button.get_popup()
 	menu_file.connect("id_pressed", self, "file_pressed")
 	menu_file.add_item("New (Ctrl + N)")
 	menu_file.add_separator()
@@ -17,7 +24,7 @@ func _ready():
 	menu_file.add_item("Save (Ctrl + S)")
 	menu_file.add_item("Save As (Shift + Ctrl + S)")
 	
-	menu_edit = $Buttons/Edit.get_popup()
+	menu_edit = edit_button.get_popup()
 	menu_edit.connect("id_pressed", self, "edit_pressed")
 	menu_edit.add_item("Undo (Ctrl + Z)")
 	menu_edit.add_item("Redo (Ctrl + Y)")
@@ -32,11 +39,11 @@ func _ready():
 	menu_edit.add_separator()
 	menu_edit.add_item("Import (Ctrl + I)")
 	
-	menu_canvas = $Buttons/Canvas.get_popup()
+	menu_canvas = canvas_button.get_popup()
 	menu_canvas.connect("id_pressed", self, "canvas_pressed")
 	menu_canvas.add_item("Resize Canvas (Shift + Ctrl + C)")
 	
-	menu_transform = $Buttons/Transform.get_popup()
+	menu_transform = transform_button.get_popup()
 	menu_transform.connect("id_pressed", self, "transform_pressed")
 	menu_transform.add_item("Flip Horizontally (Ctrl + F)")
 	menu_transform.add_item("Flip Vertically (Shift + Ctrl + F)")
@@ -44,7 +51,7 @@ func _ready():
 	menu_transform.add_item("Rotate 90° Clockwise (Ctrl + R)")
 	menu_transform.add_item("Rotate 90° Anticlockwise (Shift + Ctrl + R)")
 	
-	menu_view = $Buttons/View.get_popup()
+	menu_view = view_button.get_popup()
 	menu_view.connect("id_pressed", self, "view_pressed")
 	menu_view.add_check_item("Toggle Grid")
 	menu_view.add_separator()
@@ -53,8 +60,8 @@ func _ready():
 	menu_view.add_item("Zoom Reset (Ctrl + 0)")
 	
 	if OS.is_debug_build():
-		$Buttons/Testing.show()
-		menu_testing = $Buttons/Testing.get_popup()
+		testing_button.show()
+		menu_testing = testing_button.get_popup()
 		menu_testing.connect("id_pressed", self, "testing_pressed")
 		menu_testing.add_item("Run Tests")
 

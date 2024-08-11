@@ -12,4 +12,4 @@ func test_tools() -> void:
 
 func check_tool(tool_name: String):
 	Command.tool_set(tool_name)
-	assert_true(Global.Tool.name == tool_name)
+	assert_true(Global.selected_tool.name == tool_name)
