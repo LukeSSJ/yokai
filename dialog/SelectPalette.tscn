@@ -1,12 +1,14 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://dialog/SelectPalette.gd" type="Script" id=1]
+[ext_resource path="res://themes/default.tres" type="Theme" id=2]
 
 [node name="SelectPalete" type="WindowDialog"]
 margin_left = 20.0
 margin_top = 20.0
 margin_right = 1004.0
 margin_bottom = 580.0
+theme = ExtResource( 2 )
 window_title = "Paletes"
 script = ExtResource( 1 )
 __meta__ = {

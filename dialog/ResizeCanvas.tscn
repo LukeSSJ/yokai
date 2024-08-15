@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://dialog/ResizeCanvas.gd" type="Script" id=1]
 [ext_resource path="res://ui/NumberEdit.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://graphics/canvas_right.png" type="Texture" id=9]
 [ext_resource path="res://graphics/canvas_left.png" type="Texture" id=10]
 [ext_resource path="res://graphics/canvas_top_left.png" type="Texture" id=11]
+[ext_resource path="res://themes/default.tres" type="Theme" id=12]
 
 [sub_resource type="ButtonGroup" id=1]
 
@@ -24,6 +25,7 @@ margin_top = -300.0
 margin_right = -312.0
 margin_bottom = -124.0
 rect_min_size = Vector2( 200, 100 )
+theme = ExtResource( 12 )
 window_title = "Resize Canvas"
 dialog_hide_on_ok = false
 script = ExtResource( 1 )

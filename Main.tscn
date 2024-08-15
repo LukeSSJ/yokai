@@ -1,16 +1,19 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://ui/Tools.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
 [ext_resource path="res://ui/UI.gd" type="Script" id=3]
 [ext_resource path="res://dialog/NewImage.tscn" type="PackedScene" id=4]
+[ext_resource path="res://themes/default.tres" type="Theme" id=5]
 [ext_resource path="res://dialog/ResizeCanvas.tscn" type="PackedScene" id=12]
 [ext_resource path="res://ui/TopMenu.tscn" type="PackedScene" id=13]
 [ext_resource path="res://ui/Colors.tscn" type="PackedScene" id=15]
 [ext_resource path="res://dialog/SelectPalette.tscn" type="PackedScene" id=24]
 
 [sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.2288, 0.2288, 0.26, 1 )
+bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
+border_width_bottom = 1
+border_color = Color( 0.772549, 0.772549, 0.772549, 1 )
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0, 0, 0, 0.392157 )
@@ -32,6 +35,7 @@ margin_left = -60.0
 margin_top = -50.0
 margin_right = 60.0
 margin_bottom = 50.0
+theme = ExtResource( 5 )
 
 [node name="Buttons" type="VBoxContainer" parent="UI/Dashboard"]
 margin_right = 120.0
@@ -52,25 +56,27 @@ rect_min_size = Vector2( 120, 40 )
 text = "Open Image"
 
 [node name="Tools" parent="UI" instance=ExtResource( 1 )]
+theme = ExtResource( 5 )
 
 [node name="TopBar" type="VBoxContainer" parent="UI"]
 anchor_right = 1.0
 margin_bottom = 44.0
+theme = ExtResource( 5 )
 custom_constants/separation = 0
 
 [node name="TopMenu" parent="UI/TopBar" instance=ExtResource( 13 )]
 anchor_right = 0.0
 margin_right = 1024.0
-margin_bottom = 20.0
+margin_bottom = 35.0
 
 [node name="TabWrap" type="MarginContainer" parent="UI/TopBar"]
-margin_top = 20.0
+margin_top = 35.0
 margin_right = 1024.0
-margin_bottom = 44.0
+margin_bottom = 64.0
 
 [node name="Panel" type="Panel" parent="UI/TopBar/TabWrap"]
 margin_right = 1024.0
-margin_bottom = 24.0
+margin_bottom = 29.0
 custom_styles/panel = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -78,7 +84,7 @@ __meta__ = {
 
 [node name="ImageTabs" type="Tabs" parent="UI/TopBar/TabWrap"]
 margin_right = 1024.0
-margin_bottom = 24.0
+margin_bottom = 29.0
 custom_constants/hseparation = 20
 tab_align = 0
 tab_close_display_policy = 2
@@ -92,54 +98,58 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -240.0
-margin_top = -22.0
-margin_right = -8.0
-margin_bottom = -8.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_left = -348.0
+margin_top = -23.0
+margin_right = -16.0
+margin_bottom = -4.0
+theme = ExtResource( 5 )
 
 [node name="Tool" type="Label" parent="UI/Text"]
-margin_right = 60.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 60, 0 )
+margin_right = 80.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 80, 0 )
 text = "Pencil"
+align = 1
 
 [node name="Zoom" type="Label" parent="UI/Text"]
-margin_left = 64.0
-margin_right = 124.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 60, 0 )
+margin_left = 84.0
+margin_right = 164.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 80, 0 )
 text = "100%"
+align = 1
 
 [node name="Size" type="Label" parent="UI/Text"]
-margin_left = 128.0
-margin_right = 178.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 50, 0 )
+margin_left = 168.0
+margin_right = 248.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 80, 0 )
 text = "32x32"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Cursor" type="Label" parent="UI/Text"]
-margin_left = 182.0
-margin_right = 232.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 50, 0 )
+margin_left = 252.0
+margin_right = 332.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 80, 0 )
 text = "(0,0)"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorSection" parent="UI" instance=ExtResource( 15 )]
 margin_right = 202.0
+theme = ExtResource( 5 )
 
 [node name="Backdrop" type="MarginContainer" parent="UI"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

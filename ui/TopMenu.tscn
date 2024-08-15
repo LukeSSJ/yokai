@@ -1,49 +1,48 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://ui/TopMenu.gd" type="Script" id=1]
+[ext_resource path="res://themes/default.tres" type="Theme" id=2]
 
 [node name="TopMenu" type="MarginContainer"]
 anchor_right = 1.0
+theme = ExtResource( 2 )
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Panel" type="Panel" parent="."]
 margin_right = 1024.0
-margin_bottom = 20.0
+margin_bottom = 35.0
 
 [node name="Buttons" type="HBoxContainer" parent="."]
 margin_right = 1024.0
-margin_bottom = 20.0
+margin_bottom = 35.0
 
 [node name="File" type="MenuButton" parent="Buttons"]
-margin_right = 35.0
-margin_bottom = 20.0
+margin_right = 47.0
+margin_bottom = 35.0
 text = "File"
 
 [node name="Edit" type="MenuButton" parent="Buttons"]
-margin_left = 39.0
-margin_right = 75.0
-margin_bottom = 20.0
+margin_left = 51.0
+margin_right = 99.0
+margin_bottom = 35.0
 text = "Edit"
 
 [node name="Canvas" type="MenuButton" parent="Buttons"]
-margin_left = 79.0
-margin_right = 135.0
-margin_bottom = 20.0
+margin_left = 103.0
+margin_right = 178.0
+margin_bottom = 35.0
 text = "Canvas"
 
 [node name="Transform" type="MenuButton" parent="Buttons"]
-margin_left = 139.0
-margin_right = 215.0
-margin_bottom = 20.0
+margin_left = 182.0
+margin_right = 274.0
+margin_bottom = 35.0
 text = "Transform"
 
 [node name="View" type="MenuButton" parent="Buttons"]
-margin_left = 219.0
-margin_right = 261.0
-margin_bottom = 20.0
+margin_left = 278.0
+margin_right = 334.0
+margin_bottom = 35.0
 text = "View"
 
 [node name="Testing" type="MenuButton" parent="Buttons"]
