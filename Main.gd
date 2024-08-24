@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var canvas_list := $CanvasList
+onready var current_tool := $CurrentTool
 onready var ui := $UI
 onready var dashboard := $UI/Dashboard
 onready var color_section := $UI/ColorSection
@@ -31,15 +32,13 @@ func _ready() -> void:
 			popup.connect("popup_hide", backdrop, "hide")
 	
 	Global.main = self
+	Global.selected_tool = current_tool
+	
 	Global.color_section = color_section
 	
 	Global.session_load()
 	Shortcut.load_shortcuts()
 	select_palette_dialog.load_palettes()
-	
-	for button in tools.get_children():
-		button.text = button.name
-		button.connect("pressed", Command, "tool_set", [button.name])
 	
 	tool_set("Pencil")
 	
@@ -98,8 +97,11 @@ func tool_set(tool_name) -> void:
 	var new_tool := tools.get_node_or_null(tool_name)
 	if not new_tool:
 		printerr("Error unknown tool: " + str(tool_name))
+		return
 	
-	Global.selected_tool = new_tool
+	current_tool.tool_name = tool_name
+	current_tool.set_script(new_tool.tool_script)
+	
 	ui.update_tool(tool_name)
 
 

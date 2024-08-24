@@ -1,0 +1,7 @@
+- Unit tests for all tools.
+- Use build in UndoRedo object for undos.
+- Use commands for canvas operations instead of calling Main.
+- Crop to content command.
+- Crop to selection command.
+- Show palette path and explain format.
+- Example palettes.

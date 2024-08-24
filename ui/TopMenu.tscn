@@ -19,30 +19,35 @@ margin_bottom = 35.0
 [node name="File" type="MenuButton" parent="Buttons"]
 margin_right = 47.0
 margin_bottom = 35.0
+enabled_focus_mode = 0
 text = "File"
 
 [node name="Edit" type="MenuButton" parent="Buttons"]
 margin_left = 51.0
 margin_right = 99.0
 margin_bottom = 35.0
+enabled_focus_mode = 0
 text = "Edit"
 
 [node name="Canvas" type="MenuButton" parent="Buttons"]
 margin_left = 103.0
 margin_right = 178.0
 margin_bottom = 35.0
+enabled_focus_mode = 0
 text = "Canvas"
 
 [node name="Transform" type="MenuButton" parent="Buttons"]
 margin_left = 182.0
 margin_right = 274.0
 margin_bottom = 35.0
+enabled_focus_mode = 0
 text = "Transform"
 
 [node name="View" type="MenuButton" parent="Buttons"]
 margin_left = 278.0
 margin_right = 334.0
 margin_bottom = 35.0
+enabled_focus_mode = 0
 text = "View"
 
 [node name="Testing" type="MenuButton" parent="Buttons"]
@@ -50,5 +55,5 @@ visible = false
 margin_left = 265.0
 margin_right = 323.0
 margin_bottom = 20.0
-focus_mode = 2
+enabled_focus_mode = 0
 text = "Testing"

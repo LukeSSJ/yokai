@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://ui/Tools.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
 [ext_resource path="res://ui/UI.gd" type="Script" id=3]
 [ext_resource path="res://dialog/NewImage.tscn" type="PackedScene" id=4]
 [ext_resource path="res://themes/default.tres" type="Theme" id=5]
+[ext_resource path="res://tool/Tool.gd" type="Script" id=6]
 [ext_resource path="res://dialog/ResizeCanvas.tscn" type="PackedScene" id=12]
 [ext_resource path="res://ui/TopMenu.tscn" type="PackedScene" id=13]
 [ext_resource path="res://ui/Colors.tscn" type="PackedScene" id=15]
@@ -22,6 +23,9 @@ bg_color = Color( 0, 0, 0, 0.392157 )
 script = ExtResource( 2 )
 
 [node name="CanvasList" type="Node2D" parent="."]
+
+[node name="CurrentTool" type="Node" parent="."]
+script = ExtResource( 6 )
 
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource( 3 )

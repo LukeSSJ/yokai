@@ -1,7 +1,0 @@
-
-== BIG BUGS ==
-Parts of image lost by canvas resize are not restored by undo
-
-
-== SMALL BUGS ==
-

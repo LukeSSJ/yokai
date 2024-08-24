@@ -26,55 +26,72 @@ margin_right = 32.0
 margin_bottom = 476.0
 
 [node name="Pencil" parent="." instance=ExtResource( 17 )]
+margin_right = 127.0
+margin_bottom = 35.0
 group = SubResource( 2 )
+text = "Pencil"
 icon = ExtResource( 9 )
-script = ExtResource( 5 )
+tool_script = ExtResource( 5 )
 
 [node name="Line" parent="." instance=ExtResource( 17 )]
-margin_top = 36.0
-margin_bottom = 68.0
+margin_top = 39.0
+margin_right = 127.0
+margin_bottom = 74.0
 group = SubResource( 2 )
+text = "Line"
 icon = ExtResource( 13 )
-script = ExtResource( 2 )
+tool_script = ExtResource( 2 )
 
 [node name="Rect" parent="." instance=ExtResource( 17 )]
-margin_top = 72.0
-margin_bottom = 104.0
+margin_top = 78.0
+margin_right = 127.0
+margin_bottom = 113.0
 group = SubResource( 2 )
+text = "Rect"
 icon = ExtResource( 15 )
-script = ExtResource( 3 )
+tool_script = ExtResource( 3 )
 
 [node name="Circle" parent="." instance=ExtResource( 17 )]
-margin_top = 108.0
-margin_bottom = 140.0
+margin_top = 117.0
+margin_right = 127.0
+margin_bottom = 152.0
 group = SubResource( 2 )
+text = "Circle"
 icon = ExtResource( 12 )
-script = ExtResource( 14 )
+tool_script = ExtResource( 14 )
 
 [node name="Fill" parent="." instance=ExtResource( 17 )]
-margin_top = 144.0
-margin_bottom = 176.0
+margin_top = 156.0
+margin_right = 127.0
+margin_bottom = 191.0
 group = SubResource( 2 )
+text = "Fill"
 icon = ExtResource( 10 )
-script = ExtResource( 7 )
+tool_script = ExtResource( 7 )
 
 [node name="Rubber" parent="." instance=ExtResource( 17 )]
-margin_top = 180.0
-margin_bottom = 212.0
+margin_top = 195.0
+margin_right = 127.0
+margin_bottom = 230.0
 group = SubResource( 2 )
+text = "Rubber"
 icon = ExtResource( 16 )
-script = ExtResource( 1 )
+tool_script = ExtResource( 1 )
 
 [node name="Eyedropper" parent="." instance=ExtResource( 17 )]
-margin_top = 216.0
-margin_bottom = 248.0
+margin_top = 234.0
+margin_right = 127.0
+margin_bottom = 269.0
 group = SubResource( 2 )
+text = "Eyedropper"
 icon = ExtResource( 11 )
-script = ExtResource( 6 )
+tool_script = ExtResource( 6 )
 
 [node name="Select" parent="." instance=ExtResource( 17 )]
-margin_top = 252.0
-margin_bottom = 284.0
+margin_top = 273.0
+margin_right = 127.0
+margin_bottom = 308.0
 group = SubResource( 2 )
+text = "Select"
 icon = ExtResource( 4 )
-script = ExtResource( 8 )
+tool_script = ExtResource( 8 )

@@ -1,17 +1,16 @@
-extends Button
+extends Node
 
-var drawing : bool
-var start_pos : Vector2
-var prev_pos : Vector2
-var use_preview : bool
-var button_index : int
-var draw_color : Color
-var change_made : bool
+var tool_name: String
+var drawing: bool
+var start_pos: Vector2
+var prev_pos: Vector2
+var use_preview: bool
+var button_index: int
+var draw_color: Color
+var change_made: bool
 var control_pressed: bool
-var dirty : bool
-var dirty_rect : Rect2
-
-onready var Change = preload("res://canvas/Change.gd")
+var dirty: bool
+var dirty_rect: Rect2
 
 func click(pos: Vector2, event: InputEventMouseButton) -> void:
 	drawing = true
@@ -76,6 +75,7 @@ func stop_drawing() -> void:
 			new_image = Global.canvas.image.duplicate()
 			prev_image = Global.canvas.prev_image.duplicate()
 		
+		var Change = preload("res://canvas/Change.gd")
 		var change = Change.new()
 		change.action = "blit_image"
 		change.params = [new_image, change_pos]
