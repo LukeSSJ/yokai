@@ -36,18 +36,13 @@ func assert_image_matches(file: String) -> void:
 		Testing.assertion_failed("Assert image failed: size does not match")
 		return
 	
-	false # image.lock() # TODOConverter3To4, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
-	false # Global.canvas.image.lock() # TODOConverter3To4, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
-	
 	for x in canvas_size.x:
 		for y in canvas_size.y:
 			var canvas_pixel = Global.canvas.image.get_pixel(x, y)
-			var image_pixel = image.get_pixel(x, y)
+			var image_pixel = image.get_pixel(int(x), int(y))
 			if canvas_pixel != image_pixel:
 				Testing.assertion_failed("Assert image failed: pixel does not match at %d,%d" % [x, y])
 				return
-	
-	false # Global.canvas.image.unlock() # TODOConverter3To4, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 	
 	Testing.assertion_passed()
 

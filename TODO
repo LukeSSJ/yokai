@@ -5,11 +5,11 @@
 - Show palette path and explain format.
 - Example palette.
 - Custom shortcuts.
-- Use system clipboard for images (needs Godot4).
+- Use system clipboard for images.
 - Allow more zooming out.
 - Adjust default zoom size depending on image size when opening.
 
 == Engine ==
 - Unit tests for all tools.
 - Use commands for canvas operations instead of calling Main.
-- Use built in UndoRedo object for undos (needs Godot 4 to limit steps). 
+- Use built in UndoRedo object for undos. 

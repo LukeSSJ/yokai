@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" path="res://dialog/ResizeCanvas.tscn" id="12"]
 [ext_resource type="PackedScene" uid="uid://cjukoj20b87iu" path="res://ui/TopMenu.tscn" id="13"]
 [ext_resource type="PackedScene" path="res://ui/Colors.tscn" id="15"]
-[ext_resource type="PackedScene" path="res://dialog/SelectPalette.tscn" id="24"]
+[ext_resource type="PackedScene" uid="uid://bdwtqc3s3l467" path="res://dialog/SelectPalette.tscn" id="24"]
 
 [sub_resource type="StyleBoxFlat" id="1"]
 bg_color = Color(0.12549, 0.12549, 0.12549, 1)
@@ -175,6 +175,7 @@ visible = false
 [connection signal="pressed" from="UI/Dashboard/Buttons/NewImage" to="." method="image_new"]
 [connection signal="pressed" from="UI/Dashboard/Buttons/OpenImage" to="." method="image_open"]
 [connection signal="tab_changed" from="UI/TopBar/TabWrap/ImageTabs" to="." method="tab_changed"]
+[connection signal="tab_close_pressed" from="UI/TopBar/TabWrap/ImageTabs" to="." method="tab_closed"]
 [connection signal="confirmed" from="UI/Backdrop/Dialog/UnsavedChanges" to="." method="quit_confirmed"]
 [connection signal="confirmed" from="UI/Backdrop/Dialog/UnsavedTab" to="." method="tab_close_confirmed"]
 [connection signal="new_image" from="UI/Backdrop/Dialog/NewImage" to="." method="image_new_confirmed"]

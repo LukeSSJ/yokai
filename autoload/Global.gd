@@ -1,6 +1,6 @@
 extends Node
 
-const SESSION_FILE := "usr://.gsprite"
+const SESSION_FILE := "user://session.json"
 
 var main: Node
 var canvas: Node
@@ -27,25 +27,26 @@ func session_load() -> void:
 	var json = JSON.new()
 	var error := json.parse(session_string)
 	if error != OK:
-		print("Failed to parse session JSON: " + json.get_error_message())
+		printerr("Failed to parse session JSON: " + json.get_error_message())
 		return
 	
-	var test_json_conv = JSON.new()
-	test_json_conv.parse(json)
-	session = test_json_conv.get_data()
+	if typeof(json.data) == TYPE_ARRAY:
+		printerr("Session JSON is array expected dict")
+	
+	session = json.data
 	if session.get("maximized"):
-		get_window().mode = Window.MODE_MAXIMIZED if (true) else Window.MODE_WINDOWED
+		get_window().mode = Window.MODE_MAXIMIZED
 
 
 func session_save() -> void:
-	if not session_has_changed:
-		return
+	#if not session_has_changed:
+		#return
 	
 	session.maximized = (get_window().mode == Window.MODE_MAXIMIZED)
 	
 	var file := FileAccess.open(SESSION_FILE, FileAccess.WRITE)
 	if not file:
-		printerr("Failed to write session file")
+		printerr("Failed to write session file: %d" % FileAccess.get_open_error())
 		return
 	
 	file.store_string(JSON.stringify(session))

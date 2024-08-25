@@ -8,7 +8,7 @@ func get_texture(image : Image) -> ImageTexture:
 	return ImageTexture.create_from_image(image)
 
 
-func image_rotate(image: Image, clockwise) -> void:
+func image_rotate(image: Image, clockwise: bool) -> Image:
 	var image_size = image.get_size()
 	var image_copy : Image = image.duplicate()
 	
@@ -21,6 +21,8 @@ func image_rotate(image: Image, clockwise) -> void:
 				image.set_pixel(image_size.y - 1 - y, x, color)
 			else:
 				image.set_pixel(y, image_size.x - 1 - x, color)
+	
+	return image
 
 
 func image_flood_fill(image: Image, pos: Vector2, color_replace: Color) -> bool:

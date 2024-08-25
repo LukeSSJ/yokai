@@ -1,76 +1,52 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://bdwtqc3s3l467"]
 
-[ext_resource path="res://dialog/SelectPalette.gd" type="Script" id=1]
-[ext_resource path="res://themes/default.tres" type="Theme" id=2]
+[ext_resource type="Script" path="res://dialog/SelectPalette.gd" id="1"]
+[ext_resource type="Theme" uid="uid://c7wblpcs378cn" path="res://themes/default.tres" id="2"]
 
 [node name="SelectPalete" type="Window"]
-visible = true
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 820.0
-offset_bottom = 420.0
-size_flags_horizontal = 3
-theme = ExtResource( 2 )
-window_title = "Paletes"
-script = ExtResource( 1 )
+theme = ExtResource("2")
+script = ExtResource("1")
 
 [node name="Content" type="MarginContainer" parent="."]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_top = 20
 theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 20
 
 [node name="Rows" type="VBoxContainer" parent="Content"]
-offset_left = 10.0
-offset_top = 20.0
-offset_right = 790.0
-offset_bottom = 380.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Folder" type="HBoxContainer" parent="Content/Rows"]
-offset_right = 780.0
-offset_bottom = 27.0
+layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
 [node name="Label" type="Label" parent="Content/Rows/Folder"]
-offset_top = 4.0
-offset_right = 50.0
-offset_bottom = 23.0
+layout_mode = 2
 text = "Folder:"
 
 [node name="Path3D" type="LineEdit" parent="Content/Rows/Folder"]
-offset_left = 60.0
-offset_right = 780.0
-offset_bottom = 27.0
+layout_mode = 2
 size_flags_horizontal = 3
 editable = false
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Content/Rows"]
-offset_top = 31.0
-offset_right = 780.0
-offset_bottom = 31.0
-scroll_horizontal_enabled = false
+layout_mode = 2
 
 [node name="Palettes" type="VBoxContainer" parent="Content/Rows/ScrollContainer"]
-offset_right = 780.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="NoPalettes" type="MarginContainer" parent="Content/Rows"]
-offset_top = 35.0
-offset_right = 780.0
-offset_bottom = 74.0
+layout_mode = 2
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="Label" type="Label" parent="Content/Rows/NoPalettes"]
-offset_top = 10.0
-offset_right = 780.0
-offset_bottom = 29.0
+layout_mode = 2
 text = "No Palettes in folder."

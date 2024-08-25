@@ -188,7 +188,6 @@ func image_draw_ellipse(pos1: Vector2, pos2: Vector2) -> void:
 			image_draw_point(Vector2(2 * center.x - x, 2 * center.y - y - even.y))
 		x += 1
 	
-	# warning-ignore:NARROWING_CONVERSION
 	y = int(top_left.y)
 	while y <= center.y:
 		var angle := asin((y - center.y) / r.y)

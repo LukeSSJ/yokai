@@ -137,13 +137,15 @@ func tab_close_current() -> void:
 
 
 func tab_close_confirmed() -> void:
+	if image_tabs.tab_count == 1:
+		Global.canvas = null
+		dashboard.show()
+	
 	var tab: int = image_tabs.current_tab
 	image_tabs.remove_tab(tab)
 	canvas_list.get_child(tab).queue_free()
 	
 	if image_tabs.current_tab == -1:
-		Global.canvas = null
-		dashboard.show()
 		return
 	
 	Global.canvas = canvas_list.get_child(image_tabs.current_tab)

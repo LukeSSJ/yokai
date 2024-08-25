@@ -334,14 +334,14 @@ func rotate_clockwise() -> void:
 	if select.visible:
 		select.rotate_selection(true)
 		return
-	ImageTools.image_rotate(image, true)
+	image = ImageTools.image_rotate(image, true)
 
 
 func rotate_anticlockwise() -> void:
 	if select.visible:
 		select.rotate_selection(false)
 		return
-	ImageTools.image_rotate(image, false)
+	image = ImageTools.image_rotate(image, false)
 
 
 func flip_horizontal() -> void:
