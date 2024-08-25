@@ -61,7 +61,7 @@ func mouse_event(event : InputEventMouse) -> void:
 	Global.selected_tool.move(mouse_pos)
 
 
-func mouse_button_event(event: InputEventMouseButton, mouse_pos: Vector2):
+func mouse_button_event(event: InputEventMouseButton, mouse_pos: Vector2) -> void:
 	if event.button_index == BUTTON_LEFT or event.button_index == BUTTON_RIGHT:
 		if event.pressed:
 			Global.selected_tool.click(mouse_pos, event)
@@ -260,7 +260,7 @@ func select_region(rect : Rect2) -> void:
 	select.select_region(rect)
 
 
-func toggle_grid():
+func toggle_grid() -> void:
 	grid.visible = Global.show_grid
 
 
@@ -277,7 +277,7 @@ func update_size() -> void:
 	grid.set_area(image_size)
 
 
-func update_title():
+func update_title() -> void:
 	title = image_name
 	if dirty:
 		title += "*"
@@ -364,7 +364,7 @@ func resize_canvas(size : Vector2, image_position := Vector2.ZERO) -> void:
 	image.blit_rect(old_image, Rect2(Vector2.ZERO, old_size), dest)
 
 
-func load_image(new_image: Image):
+func load_image(new_image: Image) -> void:
 	Global.canvas.image = new_image.duplicate()
 
 

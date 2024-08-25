@@ -2,8 +2,8 @@ extends Node
 
 onready var node := Node.new()
 
-var assertions : int
-var assertions_failed : int
+var assertions: int
+var assertions_failed: int
 var tests_run: int
 var tests_failed: int
 

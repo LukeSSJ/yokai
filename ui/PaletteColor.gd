@@ -2,9 +2,9 @@ extends Panel
 
 var color: Color
 
-onready var label = $Label
+onready var label := $Label
 
-func set_number_and_color(set_number: int, set_color: Color):
+func set_number_and_color(set_number: int, set_color: Color) -> void:
 	color = set_color
 	
 	label.text = str(set_number)

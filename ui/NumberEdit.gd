@@ -1,6 +1,6 @@
 extends LineEdit
 
-func force_int(_val = null):
+func force_int(_val = null) -> void:
 	var expression := Expression.new()
 	expression.parse(text)
 	

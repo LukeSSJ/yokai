@@ -5,7 +5,7 @@ signal new_image
 onready var width := $Content/Size/Width
 onready var height := $Content/Size/Height
 
-func _ready():
+func _ready() -> void:
 	connect("confirmed", self, "on_confirmed")
 
 

@@ -12,28 +12,29 @@ var select_texture : ImageTexture
 
 onready var Change = preload("res://canvas/Change.gd")
 
-func _ready():
+func _ready() -> void:
 	select_rect = Rect2(Vector2(-16, -16), Vector2(32, 32))
 	hide()
 
 
-func _draw():
-	var draw_rect : Rect2 = select_rect
+func _draw() -> void:
+	var draw_rect := select_rect
 	if has_moved:
 		draw_texture(select_texture, draw_rect.position)
+	
 	draw_rect(draw_rect, Color.black, false)
 	draw_rect = draw_rect.grow(-0.1)
 	draw_rect(draw_rect, Color.white, false)
 
 
-func shift(pos):
+func shift(pos: Vector2) -> void:
 	if selecting:
 		grab_selection()
 		select_rect.position += pos
 		update()
 
 
-func select_region(rect) -> void:
+func select_region(rect: Rect2) -> void:
 	confirm_selection()
 	select_rect = rect
 	original_pos = rect.position
@@ -46,14 +47,14 @@ func select_region(rect) -> void:
 	show()
 
 
-func grab_selection():
+func grab_selection() -> void:
 	if not has_moved:
 		has_moved = true
 		update()
 		Global.canvas.delete_selection()
 
 
-func mouse_event_with_pos(event : InputEventMouse, mouse_pos) -> bool:
+func mouse_event_with_pos(event: InputEventMouse, mouse_pos: Vector2) -> bool:
 	# Dragging
 	if dragging and event is InputEventMouseMotion:
 		select_rect.position = mouse_pos + drag_offset
@@ -125,7 +126,7 @@ func paste() -> void:
 	show()
 
 
-func add_image(image : Image) -> void:
+func add_image(image: Image) -> void:
 	select_image = image
 	select_texture = ImageTools.get_texture(select_image)
 	select_rect = Rect2(Vector2.ZERO, select_image.get_size())
@@ -135,7 +136,7 @@ func add_image(image : Image) -> void:
 	show()
 
 
-func rotate_selection(clockwise : bool):
+func rotate_selection(clockwise: bool) -> void:
 	grab_selection()
 	ImageTools.image_rotate(select_image, clockwise)
 	select_texture = ImageTools.get_texture(select_image)
@@ -143,7 +144,7 @@ func rotate_selection(clockwise : bool):
 	update()
 
 
-func flip_selection(horizontal : bool):
+func flip_selection(horizontal: bool) -> void:
 	grab_selection()
 	if horizontal:
 		select_image.flip_x()

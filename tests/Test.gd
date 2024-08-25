@@ -3,21 +3,21 @@ extends Node
 var main: Node
 var tree: SceneTree
 
-func assert_true(condition: bool):
+func assert_true(condition: bool) -> void:
 	if condition:
 		Testing.assertion_passed()
 	else:
 		Testing.assertion_failed("Assertion failed")
 
 
-func assert_equals(value1, value2):
+func assert_equals(value1, value2) -> void:
 	if value1 == value2:
 		Testing.assertion_passed()
 	else:
 		Testing.assertion_failed("Asset equals failed: %s != %s" % [value1, value2])
 
 
-func assert_canvas_size(size: Vector2):
+func assert_canvas_size(size: Vector2) -> void:
 	var canvas_size = get_canvas_size()
 	if canvas_size[0] == size[0] and canvas_size[1] == size[1]:
 		Testing.assertion_passed()
@@ -25,7 +25,7 @@ func assert_canvas_size(size: Vector2):
 		Testing.assertion_failed("Assert canvas size failed: %d,%d not %d,%d" % [canvas_size[0], canvas_size[1], size[0], size[1]])
 
 
-func assert_image_matches(file: String):
+func assert_image_matches(file: String) -> void:
 	var image := Image.new()
 	if image.load(file) != OK:
 		Testing.assertion_failed("Assert image failed: could not open file %s" % file)

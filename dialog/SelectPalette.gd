@@ -6,12 +6,12 @@ signal palette_selected
 
 var palettes: Array
 
-onready var PalettePreview = preload("res://dialog/PalettePreview.tscn")
+onready var PalettePreview := preload("res://dialog/PalettePreview.tscn")
 
-onready var palette_items = $ScrollContainer/Palettes
-onready var no_palettes = $NoPalettes
+onready var palette_items := $ScrollContainer/Palettes
+onready var no_palettes := $NoPalettes
 
-func load_palettes():
+func load_palettes() -> void:
 	palettes = []
 	
 	var dir := Directory.new()
@@ -30,7 +30,7 @@ func load_palettes():
 	
 	display_palettes()
 
-func load_palette(fname):
+func load_palette(fname) -> void:
 	var palette = {
 		"file": fname,
 		"name": "Palette",
@@ -55,7 +55,7 @@ func load_palette(fname):
 	if palette.file == Global.session.get("palette"):
 		emit_signal("palette_selected", palette)
 
-func display_palettes():
+func display_palettes() -> void:
 	for palette in palettes:
 		var palettePreview = PalettePreview.instance()
 		palette_items.add_child(palettePreview)
@@ -64,6 +64,6 @@ func display_palettes():
 	
 	no_palettes.visible = len(palettes) == 0
 
-func palette_selected(palette):
+func palette_selected(palette) -> void:
 	emit_signal("palette_selected", palette)
 	hide()

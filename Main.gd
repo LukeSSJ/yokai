@@ -99,8 +99,8 @@ func tool_set(tool_name) -> void:
 		printerr("Error unknown tool: " + str(tool_name))
 		return
 	
-	current_tool.tool_name = tool_name
 	current_tool.set_script(new_tool.tool_script)
+	current_tool.tool_name = tool_name
 	
 	ui.update_tool(tool_name)
 
@@ -285,5 +285,5 @@ func palette_selected(palette) -> void:
 	color_section.palette_set(palette)
 
 
-func update_window_title():
+func update_window_title() -> void:
 	OS.set_window_title(Global.canvas.title + " - GSprite")

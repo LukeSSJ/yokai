@@ -1,6 +1,6 @@
 extends "res://tool/Tool.gd"
 
-func start(pos: Vector2):
+func start(pos: Vector2) -> void:
 	image_draw_start()
 	if control_pressed:
 		image_fill_global(pos, draw_color)

@@ -1,12 +1,12 @@
 extends MarginContainer
 
-onready var colors = $HBox/Drawing.get_children()
-onready var palette_item = $HBox/Palette
-onready var change_palette = $HBox/ChangePalette
+onready var colors := $HBox/Drawing.get_children()
+onready var palette_item := $HBox/Palette
+onready var change_palette := $HBox/ChangePalette
 
 onready var PaletteColor = preload("res://ui/PaletteColor.tscn")
 
-func _ready():
+func _ready() -> void:
 	for i in range (2):
 		colors[i].connect("color_changed", self, "color_set", [i])
 		colors[i].color = Global.colors[i]

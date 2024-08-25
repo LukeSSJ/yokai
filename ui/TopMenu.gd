@@ -14,7 +14,7 @@ var menu_transform: PopupMenu
 var menu_view: PopupMenu
 var menu_testing: PopupMenu
 
-func _ready():
+func _ready() -> void:
 	menu_file = file_button.get_popup()
 	menu_file.connect("id_pressed", self, "file_pressed")
 	menu_file.add_item("New (Ctrl + N)")
@@ -66,32 +66,32 @@ func _ready():
 		menu_testing.add_item("Run Tests")
 
 
-func file_pressed(id: int):
+func file_pressed(id: int) -> void:
 	var cmds := ["new", "", "open", "", "save", "save_as"]
 	Command.call(cmds[id])
 
 
-func edit_pressed(id: int):
+func edit_pressed(id: int) -> void:
 	var cmds := ["undo", "redo", "", "select_all", "deselect", "", "delete", "cut", "copy", "paste", "", "import"]
 	Command.call(cmds[id])
 
 
-func canvas_pressed(id: int):
+func canvas_pressed(id: int) -> void:
 	var cmds := ["resize_canvas"]
 	Command.call(cmds[id])
 
 
-func transform_pressed(id: int):
+func transform_pressed(id: int) -> void:
 	var cmds := ["flip_horizontal", "flip_vertical", "", "rotate_clockwise", "rotate_anticlockwise"]
 	Command.call(cmds[id])
 
 
-func view_pressed(id: int):
+func view_pressed(id: int) -> void:
 	var cmds := ["toggle_grid", "", "zoom_in", "zoom_out", "zoom_reset"]
 	menu_view.toggle_item_checked(id)
 	Command.call(cmds[id])
 
 
-func testing_pressed(id: int):
+func testing_pressed(id: int) -> void:
 	var cmds := ["run_tests"]
 	Command.call(cmds[id])
