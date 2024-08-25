@@ -4,42 +4,73 @@
 [ext_resource path="res://themes/default.tres" type="Theme" id=2]
 
 [node name="SelectPalete" type="WindowDialog"]
+visible = true
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 1004.0
-margin_bottom = 580.0
+margin_right = 820.0
+margin_bottom = 420.0
+size_flags_horizontal = 3
 theme = ExtResource( 2 )
 window_title = "Paletes"
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="Content" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 20
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 20
+
+[node name="Rows" type="VBoxContainer" parent="Content"]
+margin_left = 10.0
+margin_top = 20.0
+margin_right = 790.0
+margin_bottom = 380.0
+size_flags_horizontal = 3
+
+[node name="Folder" type="HBoxContainer" parent="Content/Rows"]
+margin_right = 780.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="Content/Rows/Folder"]
+margin_top = 4.0
+margin_right = 50.0
+margin_bottom = 23.0
+text = "Folder:"
+
+[node name="Path" type="LineEdit" parent="Content/Rows/Folder"]
+margin_left = 60.0
+margin_right = 780.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+editable = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Content/Rows"]
+margin_top = 31.0
+margin_right = 780.0
+margin_bottom = 31.0
 scroll_horizontal_enabled = false
 
-[node name="Palettes" type="VBoxContainer" parent="ScrollContainer"]
-margin_right = 984.0
-margin_bottom = 560.0
+[node name="Palettes" type="VBoxContainer" parent="Content/Rows/ScrollContainer"]
+margin_right = 780.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NoPalettes" type="MarginContainer" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-custom_constants/margin_right = 10
+[node name="NoPalettes" type="MarginContainer" parent="Content/Rows"]
+margin_top = 35.0
+margin_right = 780.0
+margin_bottom = 74.0
 custom_constants/margin_top = 10
-custom_constants/margin_left = 10
 custom_constants/margin_bottom = 10
 
-[node name="Label" type="Label" parent="NoPalettes"]
-margin_left = 10.0
-margin_top = 13.0
-margin_right = 145.0
-margin_bottom = 27.0
+[node name="Label" type="Label" parent="Content/Rows/NoPalettes"]
+margin_top = 10.0
+margin_right = 780.0
+margin_bottom = 29.0
 text = "No Palettes in folder."

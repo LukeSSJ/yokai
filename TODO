@@ -1,9 +1,14 @@
-- Unit tests for all tools.
+== Features ==
 - Change grid size.
-- Use commands for canvas operations instead of calling Main.
 - Crop to content command.
 - Crop to selection command.
 - Show palette path and explain format.
 - Example palettes.
 - Custom shortcuts.
+- Use system clipboard for images.
+- Drop images into program, import or open.
+
+== Engine ==
+- Unit tests for all tools.
+- Use commands for canvas operations instead of calling Main.
 - Use built in UndoRedo object for undos (needs Godot 4 to limit steps). 

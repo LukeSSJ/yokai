@@ -8,10 +8,11 @@ var palettes: Array
 
 onready var PalettePreview := preload("res://dialog/PalettePreview.tscn")
 
-onready var palette_items := $ScrollContainer/Palettes
-onready var no_palettes := $NoPalettes
+onready var palette_items := $Content/Rows/ScrollContainer/Palettes
+onready var no_palettes := $Content/Rows/NoPalettes
+onready var folder_path = $Content/Rows/Folder/Path
 
-func load_palettes() -> void:
+func _ready() -> void:
 	palettes = []
 	
 	var dir := Directory.new()
@@ -19,6 +20,8 @@ func load_palettes() -> void:
 	if dir.open(PALETE_DIR) != OK:
 		print("Creating palette folder " + PALETE_DIR)
 		dir.make_dir(PALETE_DIR)
+	
+	folder_path.text = ProjectSettings.globalize_path(PALETE_DIR)
 	
 	dir.list_dir_begin()
 	

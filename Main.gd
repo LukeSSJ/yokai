@@ -18,8 +18,8 @@ onready var import_image_dialog := $UI/Backdrop/Dialog/ImportImage
 onready var resize_canvas_dialog := $UI/Backdrop/Dialog/ResizeCanvas
 onready var select_palette_dialog := $UI/Backdrop/Dialog/SelectPalette
 
-onready var Canvas = preload("res://canvas/Canvas.tscn")
-onready var Change = preload("res://canvas/Change.gd")
+onready var Canvas := preload("res://canvas/Canvas.tscn")
+onready var Change := preload("res://canvas/Change.gd")
 
 var new_count := 1
 
@@ -38,7 +38,6 @@ func _ready() -> void:
 	
 	Global.session_load()
 	Shortcut.load_shortcuts()
-	select_palette_dialog.load_palettes()
 	
 	tool_set("Pencil")
 	
@@ -50,25 +49,28 @@ func _ready() -> void:
 func _unhandled_input(event) -> void:
 	if event is InputEventMouse and Global.canvas:
 		Global.canvas.mouse_event(event)
+		return
 	
-	# Keyboard shortcuts
 	if event is InputEventKey and event.pressed:
-		var key_input = OS.get_scancode_string(event.get_scancode_with_modifiers())
-		var command = Shortcut.command.get(key_input)
-		if command:
-			var args : PoolStringArray = command.split(":")
-			command = args[0]
-			args.remove(0)
-			if Command.has_method(command):
-				print("Command: " + command + " " + args.join(" "))
-				Command.callv(command, args)
-			else:
-				print("Error unkown command: " + command)
-
+		key_event(event)
 
 func _notification(message) -> void:
 	if message == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 		quit()
+
+
+func key_event(event: InputEventKey) -> void:
+	var key_input = OS.get_scancode_string(event.get_scancode_with_modifiers())
+	var command = Shortcut.command.get(key_input)
+	if command:
+		var args : PoolStringArray = command.split(":")
+		command = args[0]
+		args.remove(0)
+		if Command.has_method(command):
+			print("Command: " + command + " " + args.join(" "))
+			Command.callv(command, args)
+		else:
+			printerr("Unkown command: " + command)
 
 
 func quit() -> void:
@@ -105,7 +107,7 @@ func tool_set(tool_name) -> void:
 	ui.update_tool(tool_name)
 
 
-func tab_changed(tab : int) -> void:
+func tab_changed(tab: int) -> void:
 	if not Global.canvas:
 		return
 	
@@ -129,7 +131,7 @@ func tab_close_current() -> void:
 
 
 func tab_close_confirmed() -> void:
-	var tab : int = image_tabs.current_tab
+	var tab: int = image_tabs.current_tab
 	image_tabs.remove_tab(tab)
 	canvas_list.get_child(tab).queue_free()
 	
@@ -277,7 +279,7 @@ func resize_canvas_confirmed(size: Vector2, image_position: Vector2) -> void:
 
 
 func select_palette() -> void:
-	select_palette_dialog.popup_centered()
+	select_palette_dialog.popup_centered(Vector2(800, 400))
 
 
 func palette_selected(palette) -> void:
