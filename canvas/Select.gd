@@ -41,7 +41,7 @@ func select_region(rect: Rect2) -> void:
 	has_moved = false
 	is_new = false
 	selecting = true
-	select_image = Global.canvas.image.get_rect(select_rect)
+	select_image = Global.canvas.image.get_region(select_rect)
 	select_texture = ImageTools.get_texture(select_image)
 	queue_redraw()
 	show()

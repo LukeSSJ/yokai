@@ -1,97 +1,74 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=19 format=3 uid="uid://cstgd5n6i4vjv"]
 
-[ext_resource path="res://tool/Rubber.gd" type="Script" id=1]
-[ext_resource path="res://tool/Line.gd" type="Script" id=2]
-[ext_resource path="res://tool/Rect.gd" type="Script" id=3]
-[ext_resource path="res://graphics/select.png" type="Texture2D" id=4]
-[ext_resource path="res://tool/Pencil.gd" type="Script" id=5]
-[ext_resource path="res://tool/Eyedropper.gd" type="Script" id=6]
-[ext_resource path="res://tool/Fill.gd" type="Script" id=7]
-[ext_resource path="res://tool/Select.gd" type="Script" id=8]
-[ext_resource path="res://graphics/pencil.png" type="Texture2D" id=9]
-[ext_resource path="res://graphics/fill.png" type="Texture2D" id=10]
-[ext_resource path="res://graphics/eyedropper.png" type="Texture2D" id=11]
-[ext_resource path="res://graphics/circle.png" type="Texture2D" id=12]
-[ext_resource path="res://graphics/line.png" type="Texture2D" id=13]
-[ext_resource path="res://tool/Circle.gd" type="Script" id=14]
-[ext_resource path="res://graphics/rect.png" type="Texture2D" id=15]
-[ext_resource path="res://graphics/rubber.png" type="Texture2D" id=16]
-[ext_resource path="res://tool/ToolButton.tscn" type="PackedScene" id=17]
-
-[sub_resource type="ButtonGroup" id=2]
+[ext_resource type="Script" path="res://tool/Rubber.gd" id="1"]
+[ext_resource type="Script" path="res://ui/tools.gd" id="1_authi"]
+[ext_resource type="Script" path="res://tool/Line.gd" id="2"]
+[ext_resource type="Script" path="res://tool/Rect.gd" id="3"]
+[ext_resource type="Texture2D" uid="uid://div2ydagysrlb" path="res://graphics/select.png" id="4"]
+[ext_resource type="Script" path="res://tool/Pencil.gd" id="5"]
+[ext_resource type="Script" path="res://tool/Eyedropper.gd" id="6"]
+[ext_resource type="Script" path="res://tool/Fill.gd" id="7"]
+[ext_resource type="Script" path="res://tool/Select.gd" id="8"]
+[ext_resource type="Texture2D" uid="uid://cg4lnnqroeqvw" path="res://graphics/pencil.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://c43prcp2utyu2" path="res://graphics/fill.png" id="10"]
+[ext_resource type="Texture2D" uid="uid://uukvk76nj1fe" path="res://graphics/eyedropper.png" id="11"]
+[ext_resource type="Texture2D" uid="uid://npb4mqjuy8h8" path="res://graphics/circle.png" id="12"]
+[ext_resource type="Texture2D" uid="uid://dqrs4hw7dytcf" path="res://graphics/line.png" id="13"]
+[ext_resource type="Script" path="res://tool/Circle.gd" id="14"]
+[ext_resource type="Texture2D" uid="uid://c7hpd1upyy7vd" path="res://graphics/rect.png" id="15"]
+[ext_resource type="Texture2D" uid="uid://dxxlmfgenxs6h" path="res://graphics/rubber.png" id="16"]
+[ext_resource type="PackedScene" path="res://tool/ToolButton.tscn" id="17"]
 
 [node name="Tools" type="GridContainer"]
 offset_top = 192.0
 offset_right = 32.0
 offset_bottom = 476.0
+script = ExtResource("1_authi")
 
-[node name="Pencil" parent="." instance=ExtResource( 17 )]
-offset_right = 127.0
-offset_bottom = 35.0
-group = SubResource( 2 )
+[node name="Pencil" parent="." instance=ExtResource("17")]
+layout_mode = 2
 text = "Pencil"
-icon = ExtResource( 9 )
-tool_script = ExtResource( 5 )
+icon = ExtResource("9")
+tool_script = ExtResource("5")
 
-[node name="Line" parent="." instance=ExtResource( 17 )]
-offset_top = 39.0
-offset_right = 127.0
-offset_bottom = 74.0
-group = SubResource( 2 )
+[node name="Line" parent="." instance=ExtResource("17")]
+layout_mode = 2
 text = "Line"
-icon = ExtResource( 13 )
-tool_script = ExtResource( 2 )
+icon = ExtResource("13")
+tool_script = ExtResource("2")
 
-[node name="Rect" parent="." instance=ExtResource( 17 )]
-offset_top = 78.0
-offset_right = 127.0
-offset_bottom = 113.0
-group = SubResource( 2 )
+[node name="Rect" parent="." instance=ExtResource("17")]
+layout_mode = 2
 text = "Rect"
-icon = ExtResource( 15 )
-tool_script = ExtResource( 3 )
+icon = ExtResource("15")
+tool_script = ExtResource("3")
 
-[node name="Circle" parent="." instance=ExtResource( 17 )]
-offset_top = 117.0
-offset_right = 127.0
-offset_bottom = 152.0
-group = SubResource( 2 )
+[node name="Circle" parent="." instance=ExtResource("17")]
+layout_mode = 2
 text = "Circle"
-icon = ExtResource( 12 )
-tool_script = ExtResource( 14 )
+icon = ExtResource("12")
+tool_script = ExtResource("14")
 
-[node name="Fill" parent="." instance=ExtResource( 17 )]
-offset_top = 156.0
-offset_right = 127.0
-offset_bottom = 191.0
-group = SubResource( 2 )
+[node name="Fill" parent="." instance=ExtResource("17")]
+layout_mode = 2
 text = "Fill"
-icon = ExtResource( 10 )
-tool_script = ExtResource( 7 )
+icon = ExtResource("10")
+tool_script = ExtResource("7")
 
-[node name="Rubber" parent="." instance=ExtResource( 17 )]
-offset_top = 195.0
-offset_right = 127.0
-offset_bottom = 230.0
-group = SubResource( 2 )
+[node name="Rubber" parent="." instance=ExtResource("17")]
+layout_mode = 2
 text = "Rubber"
-icon = ExtResource( 16 )
-tool_script = ExtResource( 1 )
+icon = ExtResource("16")
+tool_script = ExtResource("1")
 
-[node name="Eyedropper" parent="." instance=ExtResource( 17 )]
-offset_top = 234.0
-offset_right = 127.0
-offset_bottom = 269.0
-group = SubResource( 2 )
+[node name="Eyedropper" parent="." instance=ExtResource("17")]
+layout_mode = 2
 text = "Eyedropper"
-icon = ExtResource( 11 )
-tool_script = ExtResource( 6 )
+icon = ExtResource("11")
+tool_script = ExtResource("6")
 
-[node name="Select" parent="." instance=ExtResource( 17 )]
-offset_top = 273.0
-offset_right = 127.0
-offset_bottom = 308.0
-group = SubResource( 2 )
+[node name="Select" parent="." instance=ExtResource("17")]
+layout_mode = 2
 text = "Select"
-icon = ExtResource( 4 )
-tool_script = ExtResource( 8 )
+icon = ExtResource("4")
+tool_script = ExtResource("8")

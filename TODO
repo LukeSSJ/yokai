@@ -1,3 +1,6 @@
+== Bugs ==
+- File dialog goes offscreen (Bug with Godot file browser).
+
 == Features ==
 - Change grid size.
 - Crop to content command.

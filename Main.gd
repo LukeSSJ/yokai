@@ -8,15 +8,14 @@ extends Node2D
 @onready var tools := $UI/Tools
 @onready var image_tabs = $UI/TopBar/TabWrap/ImageTabs
 @onready var backdrop := $UI/Backdrop
-@onready var dialog := $UI/Backdrop/Dialog
-@onready var unsaved_changes_dialog := $UI/Backdrop/Dialog/UnsavedChanges
-@onready var unsaved_tab_dialog := $UI/Backdrop/Dialog/UnsavedTab
-@onready var new_image_dialog := $UI/Backdrop/Dialog/NewImage
-@onready var save_image_dialog := $UI/Backdrop/Dialog/SaveImage
-@onready var open_image_dialog := $UI/Backdrop/Dialog/OpenImage
-@onready var import_image_dialog := $UI/Backdrop/Dialog/ImportImage
-@onready var resize_canvas_dialog := $UI/Backdrop/Dialog/ResizeCanvas
-@onready var select_palette_dialog := $UI/Backdrop/Dialog/SelectPalette
+@onready var unsaved_changes_dialog := $UI/UnsavedChanges
+@onready var unsaved_tab_dialog := $UI/UnsavedTab
+@onready var new_image_dialog := $UI/NewImage
+@onready var save_image_dialog := $UI/SaveImage
+@onready var open_image_dialog := $UI/OpenImage
+@onready var import_image_dialog := $UI/ImportImage
+@onready var resize_canvas_dialog := $UI/ResizeCanvas
+@onready var select_palette_dialog := $UI/SelectPalette
 
 @onready var Canvas := preload("res://canvas/Canvas.tscn")
 @onready var Change := preload("res://canvas/Change.gd")
@@ -28,10 +27,8 @@ func _ready() -> void:
 	
 	get_viewport().connect("files_dropped", Callable(self, "files_dropped"))
 	
-	"""for popup in dialog.get_children():
-		if popup is Popup:
-			popup.connect("about_to_popup", Callable(backdrop, "show"))
-			popup.connect("canceled", Callable(backdrop, "hide"))"""
+	for popup in get_tree().get_nodes_in_group("dialog"):
+		popup.connect("visibility_changed", dialog_visibility_changed.bind(popup))
 	
 	Global.main = self
 	Global.selected_tool = current_tool
@@ -96,9 +93,14 @@ func quit() -> void:
 	
 	quit_confirmed()
 
+
 func quit_confirmed() -> void:
 	Global.session_save()
 	get_tree().quit()
+
+
+func dialog_visibility_changed(popup: Node) -> void:
+	backdrop.visible = popup.visible
 
 
 func tool_set(tool_name) -> void:
@@ -221,7 +223,7 @@ func image_save_as() -> void:
 	if Global.canvas.image_name.ends_with(".png"):
 		save_image_dialog.current_file = Global.canvas.image_name
 	
-	save_image_dialog.popup_centered(Vector2(800, 500))
+	save_image_dialog.popup_centered_ratio()
 
 
 func image_save_confirmed(file: String) -> void:
@@ -232,7 +234,7 @@ func image_save_confirmed(file: String) -> void:
 
 
 func image_open() -> void:
-	open_image_dialog.popup_centered(Vector2(800, 500))
+	open_image_dialog.popup_centered_ratio()
 	
 	if Global.session.get("open_dir"):
 		open_image_dialog.current_dir = Global.session.open_dir
@@ -256,7 +258,7 @@ func import_image() -> void:
 	if not Global.canvas:
 		return
 	
-	import_image_dialog.popup_centered(Vector2(800, 500))
+	import_image_dialog.popup_centered_ratio()
 	
 	if Global.session.get("open_dir"):
 		import_image_dialog.current_dir = Global.session.open_dir
@@ -286,7 +288,7 @@ func resize_canvas_confirmed(size: Vector2, image_position: Vector2) -> void:
 
 
 func select_palette() -> void:
-	select_palette_dialog.popup_centered(Vector2(800, 400))
+	select_palette_dialog.popup_centered(Vector2(800, 500))
 
 
 func palette_selected(palette) -> void:

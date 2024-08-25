@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://nolq400lcfk2"]
 
-[ext_resource type="PackedScene" path="res://ui/Tools.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://cstgd5n6i4vjv" path="res://ui/Tools.tscn" id="1"]
 [ext_resource type="Script" path="res://Main.gd" id="2"]
 [ext_resource type="Script" path="res://ui/UI.gd" id="3"]
 [ext_resource type="PackedScene" uid="uid://dri47kyy0xr73" path="res://dialog/NewImage.tscn" id="4"]
@@ -134,41 +134,35 @@ theme = ExtResource("5")
 layout_mode = 2
 theme_override_styles/panel = SubResource("3")
 
-[node name="Dialog" type="MarginContainer" parent="UI/Backdrop"]
-layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="UnsavedChanges" type="ConfirmationDialog" parent="UI/Backdrop/Dialog"]
+[node name="UnsavedChanges" type="ConfirmationDialog" parent="UI" groups=["dialog"]]
 dialog_text = "Quit and discard unsaved changes?"
 
-[node name="UnsavedTab" type="ConfirmationDialog" parent="UI/Backdrop/Dialog"]
+[node name="UnsavedTab" type="ConfirmationDialog" parent="UI" groups=["dialog"]]
 dialog_text = "Discard unsaved changes to image?"
 
-[node name="NewImage" parent="UI/Backdrop/Dialog" instance=ExtResource("4")]
+[node name="NewImage" parent="UI" groups=["dialog"] instance=ExtResource("4")]
 position = Vector2i(0, 36)
 visible = false
 
-[node name="OpenImage" type="FileDialog" parent="UI/Backdrop/Dialog"]
+[node name="OpenImage" type="FileDialog" parent="UI" groups=["dialog"]]
 title = "Open a File"
+size = Vector2i(1174, 180)
 ok_button_text = "Open"
 file_mode = 0
 access = 2
 filters = PackedStringArray("*.png")
 
-[node name="SaveImage" type="FileDialog" parent="UI/Backdrop/Dialog"]
+[node name="SaveImage" type="FileDialog" parent="UI" groups=["dialog"]]
 access = 2
 filters = PackedStringArray("*.png")
 
-[node name="ImportImage" type="FileDialog" parent="UI/Backdrop/Dialog"]
+[node name="ImportImage" type="FileDialog" parent="UI" groups=["dialog"]]
 access = 2
 filters = PackedStringArray("*.png")
 
-[node name="ResizeCanvas" parent="UI/Backdrop/Dialog" instance=ExtResource("12")]
+[node name="ResizeCanvas" parent="UI" groups=["dialog"] instance=ExtResource("12")]
 
-[node name="SelectPalette" parent="UI/Backdrop/Dialog" instance=ExtResource("24")]
+[node name="SelectPalette" parent="UI" groups=["dialog"] instance=ExtResource("24")]
 position = Vector2i(0, 36)
 visible = false
 
@@ -176,11 +170,11 @@ visible = false
 [connection signal="pressed" from="UI/Dashboard/Buttons/OpenImage" to="." method="image_open"]
 [connection signal="tab_changed" from="UI/TopBar/TabWrap/ImageTabs" to="." method="tab_changed"]
 [connection signal="tab_close_pressed" from="UI/TopBar/TabWrap/ImageTabs" to="." method="tab_closed"]
-[connection signal="confirmed" from="UI/Backdrop/Dialog/UnsavedChanges" to="." method="quit_confirmed"]
-[connection signal="confirmed" from="UI/Backdrop/Dialog/UnsavedTab" to="." method="tab_close_confirmed"]
-[connection signal="new_image" from="UI/Backdrop/Dialog/NewImage" to="." method="image_new_confirmed"]
-[connection signal="file_selected" from="UI/Backdrop/Dialog/OpenImage" to="." method="image_open_confirmed"]
-[connection signal="file_selected" from="UI/Backdrop/Dialog/SaveImage" to="." method="image_save_confirmed"]
-[connection signal="file_selected" from="UI/Backdrop/Dialog/ImportImage" to="." method="import_image_confirmed"]
-[connection signal="resize_canvas" from="UI/Backdrop/Dialog/ResizeCanvas" to="." method="resize_canvas_confirmed"]
-[connection signal="palette_selected" from="UI/Backdrop/Dialog/SelectPalette" to="." method="palette_selected"]
+[connection signal="confirmed" from="UI/UnsavedChanges" to="." method="quit_confirmed"]
+[connection signal="confirmed" from="UI/UnsavedTab" to="." method="tab_close_confirmed"]
+[connection signal="new_image" from="UI/NewImage" to="." method="image_new_confirmed"]
+[connection signal="file_selected" from="UI/OpenImage" to="." method="image_open_confirmed"]
+[connection signal="file_selected" from="UI/SaveImage" to="." method="image_save_confirmed"]
+[connection signal="file_selected" from="UI/ImportImage" to="." method="import_image_confirmed"]
+[connection signal="resize_canvas" from="UI/ResizeCanvas" to="." method="resize_canvas_confirmed"]
+[connection signal="palette_selected" from="UI/SelectPalette" to="." method="palette_selected"]
