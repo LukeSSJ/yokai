@@ -244,6 +244,8 @@ margin_right = 1004.0
 margin_bottom = 580.0
 
 [node name="SelectPalette" parent="UI/Backdrop/Dialog" instance=ExtResource( 24 )]
+margin_right = 1004.0
+margin_bottom = 580.0
 
 [connection signal="pressed" from="UI/Dashboard/Buttons/NewImage" to="." method="image_new"]
 [connection signal="pressed" from="UI/Dashboard/Buttons/OpenImage" to="." method="image_open"]

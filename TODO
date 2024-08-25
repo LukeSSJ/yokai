@@ -3,10 +3,9 @@
 - Crop to content command.
 - Crop to selection command.
 - Show palette path and explain format.
-- Example palettes.
+- Example palette.
 - Custom shortcuts.
-- Use system clipboard for images.
-- Drop images into program, import or open.
+- Use system clipboard for images (needs Godot4).
 
 == Engine ==
 - Unit tests for all tools.

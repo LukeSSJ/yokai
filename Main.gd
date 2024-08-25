@@ -26,6 +26,8 @@ var new_count := 1
 func _ready() -> void:
 	get_tree().set_auto_accept_quit(false)
 	
+	get_tree().connect("files_dropped", self, "files_dropped")
+	
 	for popup in dialog.get_children():
 		if popup is Popup:
 			popup.connect("about_to_show", backdrop, "show")
@@ -57,6 +59,11 @@ func _unhandled_input(event) -> void:
 func _notification(message) -> void:
 	if message == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 		quit()
+
+
+func files_dropped(files: PoolStringArray, _screen: int) -> void:
+	for file in files:
+		image_open_confirmed(file)
 
 
 func key_event(event: InputEventKey) -> void:
