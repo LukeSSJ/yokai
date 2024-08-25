@@ -53,12 +53,14 @@ func _unhandled_input(event) -> void:
 	if event is InputEventKey and event.pressed:
 		key_event(event)
 
+
 func _notification(message) -> void:
 	if message == NOTIFICATION_WM_CLOSE_REQUEST:
 		quit()
 
 
-func files_dropped(files: PackedStringArray, _screen: int) -> void:
+func files_dropped(files: PackedStringArray) -> void:
+	
 	for file in files:
 		image_open_confirmed(file)
 
