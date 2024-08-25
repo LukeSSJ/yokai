@@ -6,6 +6,8 @@
 - Example palette.
 - Custom shortcuts.
 - Use system clipboard for images (needs Godot4).
+- Allow more zooming out.
+- Adjust default zoom size depending on image size when opening.
 
 == Engine ==
 - Unit tests for all tools.
