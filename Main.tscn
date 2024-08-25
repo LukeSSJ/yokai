@@ -1,257 +1,180 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=13 format=3 uid="uid://nolq400lcfk2"]
 
-[ext_resource path="res://ui/Tools.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Main.gd" type="Script" id=2]
-[ext_resource path="res://ui/UI.gd" type="Script" id=3]
-[ext_resource path="res://dialog/NewImage.tscn" type="PackedScene" id=4]
-[ext_resource path="res://themes/default.tres" type="Theme" id=5]
-[ext_resource path="res://tool/Tool.gd" type="Script" id=6]
-[ext_resource path="res://dialog/ResizeCanvas.tscn" type="PackedScene" id=12]
-[ext_resource path="res://ui/TopMenu.tscn" type="PackedScene" id=13]
-[ext_resource path="res://ui/Colors.tscn" type="PackedScene" id=15]
-[ext_resource path="res://dialog/SelectPalette.tscn" type="PackedScene" id=24]
+[ext_resource type="PackedScene" path="res://ui/Tools.tscn" id="1"]
+[ext_resource type="Script" path="res://Main.gd" id="2"]
+[ext_resource type="Script" path="res://ui/UI.gd" id="3"]
+[ext_resource type="PackedScene" uid="uid://dri47kyy0xr73" path="res://dialog/NewImage.tscn" id="4"]
+[ext_resource type="Theme" uid="uid://c7wblpcs378cn" path="res://themes/default.tres" id="5"]
+[ext_resource type="Script" path="res://tool/Tool.gd" id="6"]
+[ext_resource type="PackedScene" path="res://dialog/ResizeCanvas.tscn" id="12"]
+[ext_resource type="PackedScene" uid="uid://cjukoj20b87iu" path="res://ui/TopMenu.tscn" id="13"]
+[ext_resource type="PackedScene" path="res://ui/Colors.tscn" id="15"]
+[ext_resource type="PackedScene" path="res://dialog/SelectPalette.tscn" id="24"]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0.12549, 0.12549, 0.12549, 1)
 border_width_bottom = 1
-border_color = Color( 0.772549, 0.772549, 0.772549, 1 )
+border_color = Color(0.772549, 0.772549, 0.772549, 1)
 
-[sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0, 0, 0, 0.392157 )
+[sub_resource type="StyleBoxFlat" id="3"]
+bg_color = Color(0, 0, 0, 0.392157)
 
 [node name="Main" type="Node2D"]
-script = ExtResource( 2 )
+script = ExtResource("2")
 
 [node name="CanvasList" type="Node2D" parent="."]
 
 [node name="CurrentTool" type="Node" parent="."]
-script = ExtResource( 6 )
+script = ExtResource("6")
 
 [node name="UI" type="CanvasLayer" parent="."]
-script = ExtResource( 3 )
+script = ExtResource("3")
 
 [node name="Dashboard" type="MarginContainer" parent="UI"]
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -60.0
-margin_top = -50.0
-margin_right = 60.0
-margin_bottom = 50.0
-theme = ExtResource( 5 )
+offset_left = -60.0
+offset_top = -50.0
+offset_right = 60.0
+offset_bottom = 50.0
+theme = ExtResource("5")
 
 [node name="Buttons" type="VBoxContainer" parent="UI/Dashboard"]
-margin_right = 120.0
-margin_bottom = 100.0
-custom_constants/separation = 20
+layout_mode = 2
+theme_override_constants/separation = 20
 
 [node name="NewImage" type="Button" parent="UI/Dashboard/Buttons"]
-margin_right = 120.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 120, 40 )
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
 text = "New Image"
 
 [node name="OpenImage" type="Button" parent="UI/Dashboard/Buttons"]
-margin_top = 60.0
-margin_right = 120.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 120, 40 )
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
 text = "Open Image"
 
-[node name="Tools" parent="UI" instance=ExtResource( 1 )]
-theme = ExtResource( 5 )
+[node name="Tools" parent="UI" instance=ExtResource("1")]
+theme = ExtResource("5")
 
 [node name="TopBar" type="VBoxContainer" parent="UI"]
+anchors_preset = 10
 anchor_right = 1.0
-margin_bottom = 44.0
-theme = ExtResource( 5 )
-custom_constants/separation = 0
+offset_bottom = 44.0
+theme = ExtResource("5")
+theme_override_constants/separation = 0
 
-[node name="TopMenu" parent="UI/TopBar" instance=ExtResource( 13 )]
-anchor_right = 0.0
-margin_right = 1024.0
-margin_bottom = 35.0
+[node name="TopMenu" parent="UI/TopBar" instance=ExtResource("13")]
+layout_mode = 2
 
 [node name="TabWrap" type="MarginContainer" parent="UI/TopBar"]
-margin_top = 35.0
-margin_right = 1024.0
-margin_bottom = 64.0
+layout_mode = 2
 
 [node name="Panel" type="Panel" parent="UI/TopBar/TabWrap"]
-margin_right = 1024.0
-margin_bottom = 29.0
-custom_styles/panel = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+layout_mode = 2
+theme_override_styles/panel = SubResource("1")
 
-[node name="ImageTabs" type="Tabs" parent="UI/TopBar/TabWrap"]
-margin_right = 1024.0
-margin_bottom = 29.0
-custom_constants/hseparation = 20
-tab_align = 0
+[node name="ImageTabs" type="TabBar" parent="UI/TopBar/TabWrap"]
+layout_mode = 2
+theme_override_constants/h_separation = 20
 tab_close_display_policy = 2
 drag_to_rearrange_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Text" type="HBoxContainer" parent="UI"]
+anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -348.0
-margin_top = -23.0
-margin_right = -16.0
-margin_bottom = -4.0
-theme = ExtResource( 5 )
+offset_left = -348.0
+offset_top = -23.0
+offset_right = -16.0
+offset_bottom = -4.0
+theme = ExtResource("5")
 
 [node name="Tool" type="Label" parent="UI/Text"]
-margin_right = 80.0
-margin_bottom = 19.0
-rect_min_size = Vector2( 80, 0 )
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
 text = "Pencil"
-align = 1
+horizontal_alignment = 1
 
 [node name="Zoom" type="Label" parent="UI/Text"]
-margin_left = 84.0
-margin_right = 164.0
-margin_bottom = 19.0
-rect_min_size = Vector2( 80, 0 )
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
 text = "100%"
-align = 1
+horizontal_alignment = 1
 
 [node name="Size" type="Label" parent="UI/Text"]
-margin_left = 168.0
-margin_right = 248.0
-margin_bottom = 19.0
-rect_min_size = Vector2( 80, 0 )
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
 text = "32x32"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+horizontal_alignment = 1
 
 [node name="Cursor" type="Label" parent="UI/Text"]
-margin_left = 252.0
-margin_right = 332.0
-margin_bottom = 19.0
-rect_min_size = Vector2( 80, 0 )
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
 text = "(0,0)"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+horizontal_alignment = 1
 
-[node name="ColorSection" parent="UI" instance=ExtResource( 15 )]
-margin_right = 202.0
-theme = ExtResource( 5 )
+[node name="ColorSection" parent="UI" instance=ExtResource("15")]
+anchors_preset = 2
+offset_right = 202.0
+theme = ExtResource("5")
 
 [node name="Backdrop" type="MarginContainer" parent="UI"]
 visible = false
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+theme = ExtResource("5")
 
 [node name="Panel" type="Panel" parent="UI/Backdrop"]
-margin_right = 1024.0
-margin_bottom = 600.0
-custom_styles/panel = SubResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+layout_mode = 2
+theme_override_styles/panel = SubResource("3")
 
 [node name="Dialog" type="MarginContainer" parent="UI/Backdrop"]
-margin_right = 1024.0
-margin_bottom = 600.0
-custom_constants/margin_right = 20
-custom_constants/margin_top = 20
-custom_constants/margin_left = 20
-custom_constants/margin_bottom = 20
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
 [node name="UnsavedChanges" type="ConfirmationDialog" parent="UI/Backdrop/Dialog"]
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 1004.0
-margin_bottom = 580.0
-rect_min_size = Vector2( 150, 52.5 )
-window_title = "Unsaved changes"
 dialog_text = "Quit and discard unsaved changes?"
 
 [node name="UnsavedTab" type="ConfirmationDialog" parent="UI/Backdrop/Dialog"]
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 1004.0
-margin_bottom = 580.0
-rect_min_size = Vector2( 150, 52.5 )
-window_title = "Unsaved changes"
 dialog_text = "Discard unsaved changes to image?"
 
-[node name="NewImage" parent="UI/Backdrop/Dialog" instance=ExtResource( 4 )]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 1004.0
-margin_bottom = 580.0
+[node name="NewImage" parent="UI/Backdrop/Dialog" instance=ExtResource("4")]
+position = Vector2i(0, 36)
+visible = false
 
 [node name="OpenImage" type="FileDialog" parent="UI/Backdrop/Dialog"]
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 1004.0
-margin_bottom = 580.0
-rect_min_size = Vector2( 150, 52.5 )
-window_title = "Open a File"
-mode = 0
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
 access = 2
-filters = PoolStringArray( "*.png" )
+filters = PackedStringArray("*.png")
 
 [node name="SaveImage" type="FileDialog" parent="UI/Backdrop/Dialog"]
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 1004.0
-margin_bottom = 580.0
-rect_min_size = Vector2( 150, 52.5 )
 access = 2
-filters = PoolStringArray( "*.png" )
+filters = PackedStringArray("*.png")
 
 [node name="ImportImage" type="FileDialog" parent="UI/Backdrop/Dialog"]
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 1004.0
-margin_bottom = 580.0
-rect_min_size = Vector2( 150, 52.5 )
-window_title = "Open a File"
-mode = 0
 access = 2
-filters = PoolStringArray( "*.png" )
+filters = PackedStringArray("*.png")
 
-[node name="ResizeCanvas" parent="UI/Backdrop/Dialog" instance=ExtResource( 12 )]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 1004.0
-margin_bottom = 580.0
+[node name="ResizeCanvas" parent="UI/Backdrop/Dialog" instance=ExtResource("12")]
 
-[node name="SelectPalette" parent="UI/Backdrop/Dialog" instance=ExtResource( 24 )]
-margin_right = 1004.0
-margin_bottom = 580.0
+[node name="SelectPalette" parent="UI/Backdrop/Dialog" instance=ExtResource("24")]
+position = Vector2i(0, 36)
+visible = false
 
 [connection signal="pressed" from="UI/Dashboard/Buttons/NewImage" to="." method="image_new"]
 [connection signal="pressed" from="UI/Dashboard/Buttons/OpenImage" to="." method="image_open"]
-[connection signal="reposition_active_tab_request" from="UI/TopBar/TabWrap/ImageTabs" to="." method="tab_move"]
 [connection signal="tab_changed" from="UI/TopBar/TabWrap/ImageTabs" to="." method="tab_changed"]
-[connection signal="tab_close" from="UI/TopBar/TabWrap/ImageTabs" to="." method="tab_close"]
 [connection signal="confirmed" from="UI/Backdrop/Dialog/UnsavedChanges" to="." method="quit_confirmed"]
 [connection signal="confirmed" from="UI/Backdrop/Dialog/UnsavedTab" to="." method="tab_close_confirmed"]
 [connection signal="new_image" from="UI/Backdrop/Dialog/NewImage" to="." method="image_new_confirmed"]

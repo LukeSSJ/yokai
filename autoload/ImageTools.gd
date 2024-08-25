@@ -1,22 +1,18 @@
 extends Node
 
-func blank_image(image : Image, size : Vector2) -> void:
-	image.create(int(size.x), int(size.y), false, Image.FORMAT_RGBA8)
+func blank_image(size : Vector2) -> Image:
+	return Image.create_empty(int(size.x), int(size.y), false, Image.FORMAT_RGBA8)
 
 
 func get_texture(image : Image) -> ImageTexture:
-	var tex := ImageTexture.new()
-	tex.create(image.get_width(), image.get_height(), Image.FORMAT_RGBA8, 0)
-	tex.set_data(image)
-	return tex
+	return ImageTexture.create_from_image(image)
+
 
 func image_rotate(image: Image, clockwise) -> void:
 	var image_size = image.get_size()
 	var image_copy : Image = image.duplicate()
 	
-	blank_image(image, Vector2(image_size.y, image_size.x))
-	image.lock()
-	image_copy.lock()
+	image = blank_image(Vector2(image_size.y, image_size.x))
 	
 	for x in image_size.x:
 		for y in image_size.y:
@@ -25,9 +21,6 @@ func image_rotate(image: Image, clockwise) -> void:
 				image.set_pixel(image_size.y - 1 - y, x, color)
 			else:
 				image.set_pixel(y, image_size.x - 1 - x, color)
-	
-	image.unlock()
-	image_copy.unlock()
 
 
 func image_flood_fill(image: Image, pos: Vector2, color_replace: Color) -> bool:

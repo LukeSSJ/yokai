@@ -2,11 +2,11 @@ extends AcceptDialog
 
 signal new_image
 
-onready var width := $Content/Size/Width
-onready var height := $Content/Size/Height
+@onready var width := $Content/Size/Width
+@onready var height := $Content/Size/Height
 
 func _ready() -> void:
-	connect("confirmed", self, "on_confirmed")
+	connect("confirmed", Callable(self, "on_confirmed"))
 
 
 func on_popup() -> void:
@@ -15,7 +15,7 @@ func on_popup() -> void:
 
 
 func on_confirmed() -> void:
-	var size := Vector2(width.text, height.text)
-	if size.x > 0 and size.y > 0:
-		emit_signal("new_image", size)
+	var image_size := Vector2(int(width.text), int(height.text))
+	if image_size.x > 0 and image_size.y > 0:
+		new_image.emit(image_size)
 		hide()

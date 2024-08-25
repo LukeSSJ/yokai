@@ -1,37 +1,37 @@
 extends Node2D
 
-onready var canvas_list := $CanvasList
-onready var current_tool := $CurrentTool
-onready var ui := $UI
-onready var dashboard := $UI/Dashboard
-onready var color_section := $UI/ColorSection
-onready var tools := $UI/Tools
-onready var image_tabs = $UI/TopBar/TabWrap/ImageTabs
-onready var backdrop := $UI/Backdrop
-onready var dialog := $UI/Backdrop/Dialog
-onready var unsaved_changes_dialog := $UI/Backdrop/Dialog/UnsavedChanges
-onready var unsaved_tab_dialog := $UI/Backdrop/Dialog/UnsavedTab
-onready var new_image_dialog := $UI/Backdrop/Dialog/NewImage
-onready var save_image_dialog := $UI/Backdrop/Dialog/SaveImage
-onready var open_image_dialog := $UI/Backdrop/Dialog/OpenImage
-onready var import_image_dialog := $UI/Backdrop/Dialog/ImportImage
-onready var resize_canvas_dialog := $UI/Backdrop/Dialog/ResizeCanvas
-onready var select_palette_dialog := $UI/Backdrop/Dialog/SelectPalette
+@onready var canvas_list := $CanvasList
+@onready var current_tool := $CurrentTool
+@onready var ui := $UI
+@onready var dashboard := $UI/Dashboard
+@onready var color_section := $UI/ColorSection
+@onready var tools := $UI/Tools
+@onready var image_tabs = $UI/TopBar/TabWrap/ImageTabs
+@onready var backdrop := $UI/Backdrop
+@onready var dialog := $UI/Backdrop/Dialog
+@onready var unsaved_changes_dialog := $UI/Backdrop/Dialog/UnsavedChanges
+@onready var unsaved_tab_dialog := $UI/Backdrop/Dialog/UnsavedTab
+@onready var new_image_dialog := $UI/Backdrop/Dialog/NewImage
+@onready var save_image_dialog := $UI/Backdrop/Dialog/SaveImage
+@onready var open_image_dialog := $UI/Backdrop/Dialog/OpenImage
+@onready var import_image_dialog := $UI/Backdrop/Dialog/ImportImage
+@onready var resize_canvas_dialog := $UI/Backdrop/Dialog/ResizeCanvas
+@onready var select_palette_dialog := $UI/Backdrop/Dialog/SelectPalette
 
-onready var Canvas := preload("res://canvas/Canvas.tscn")
-onready var Change := preload("res://canvas/Change.gd")
+@onready var Canvas := preload("res://canvas/Canvas.tscn")
+@onready var Change := preload("res://canvas/Change.gd")
 
 var new_count := 1
 
 func _ready() -> void:
 	get_tree().set_auto_accept_quit(false)
 	
-	get_tree().connect("files_dropped", self, "files_dropped")
+	get_viewport().connect("files_dropped", Callable(self, "files_dropped"))
 	
-	for popup in dialog.get_children():
+	"""for popup in dialog.get_children():
 		if popup is Popup:
-			popup.connect("about_to_show", backdrop, "show")
-			popup.connect("popup_hide", backdrop, "hide")
+			popup.connect("about_to_popup", Callable(backdrop, "show"))
+			popup.connect("canceled", Callable(backdrop, "hide"))"""
 	
 	Global.main = self
 	Global.selected_tool = current_tool
@@ -39,7 +39,7 @@ func _ready() -> void:
 	Global.color_section = color_section
 	
 	Global.session_load()
-	Shortcut.load_shortcuts()
+	Shortcuts.load_shortcuts()
 	
 	tool_set("Pencil")
 	
@@ -57,24 +57,24 @@ func _unhandled_input(event) -> void:
 		key_event(event)
 
 func _notification(message) -> void:
-	if message == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+	if message == NOTIFICATION_WM_CLOSE_REQUEST:
 		quit()
 
 
-func files_dropped(files: PoolStringArray, _screen: int) -> void:
+func files_dropped(files: PackedStringArray, _screen: int) -> void:
 	for file in files:
 		image_open_confirmed(file)
 
 
 func key_event(event: InputEventKey) -> void:
-	var key_input = OS.get_scancode_string(event.get_scancode_with_modifiers())
-	var command = Shortcut.command.get(key_input)
+	var key_input = OS.get_keycode_string(event.get_keycode_with_modifiers())
+	var command = Shortcuts.command.get(key_input)
 	if command:
-		var args : PoolStringArray = command.split(":")
+		var args : PackedStringArray = command.split(":")
 		command = args[0]
-		args.remove(0)
+		args.remove_at(0)
 		if Command.has_method(command):
-			print("Command: " + command + " " + args.join(" "))
+			print("Command: " + command + " " + " ".join(args))
 			Command.callv(command, args)
 		else:
 			printerr("Unkown command: " + command)
@@ -91,7 +91,6 @@ func quit() -> void:
 			break
 	
 	if dirty:
-		backdrop.show()
 		unsaved_changes_dialog.popup_centered(Vector2(200, 100))
 		return
 	
@@ -124,7 +123,7 @@ func tab_changed(tab: int) -> void:
 	update_window_title()
 
 
-func tab_close(tab: int) -> void:
+func tab_closed(tab: int) -> void:
 	image_tabs.current_tab = tab
 	if Global.canvas.dirty:
 		unsaved_tab_dialog.popup_centered(Vector2(200, 100))
@@ -134,7 +133,7 @@ func tab_close(tab: int) -> void:
 
 
 func tab_close_current() -> void:
-	tab_close(image_tabs.current_tab)
+	tab_closed(image_tabs.current_tab)
 
 
 func tab_close_confirmed() -> void:
@@ -171,7 +170,7 @@ func image_new() -> void:
 
 
 func image_new_confirmed(size := Vector2.ZERO) -> void:
-	var canvas = Canvas.instance()
+	var canvas = Canvas.instantiate()
 	var tab := canvas_list.get_child_count()
 	
 	if size != Vector2.ZERO:
@@ -187,10 +186,10 @@ func image_new_confirmed(size := Vector2.ZERO) -> void:
 	
 	dashboard.hide()
 	
-	canvas.connect("update_title", self, "tab_rename")
-	canvas.connect("update_zoom", ui, "update_zoom")
-	canvas.connect("update_size", ui, "update_size")
-	canvas.connect("update_cursor", ui, "update_cursor")
+	canvas.connect("updated_title", Callable(self, "tab_rename"))
+	canvas.connect("updated_zoom", Callable(ui, "update_zoom"))
+	canvas.connect("updated_size", Callable(ui, "update_size"))
+	canvas.connect("updated_cursor", Callable(ui, "update_cursor"))
 	
 	image_tabs.add_tab(canvas.image_name)
 	image_tabs.current_tab = tab
@@ -220,8 +219,7 @@ func image_save_as() -> void:
 	if Global.canvas.image_name.ends_with(".png"):
 		save_image_dialog.current_file = Global.canvas.image_name
 	
-	backdrop.show()
-	save_image_dialog.popup_centered()
+	save_image_dialog.popup_centered(Vector2(800, 500))
 
 
 func image_save_confirmed(file: String) -> void:
@@ -232,14 +230,16 @@ func image_save_confirmed(file: String) -> void:
 
 
 func image_open() -> void:
-	backdrop.show()
-	open_image_dialog.popup_centered()
+	open_image_dialog.popup_centered(Vector2(800, 500))
 	
 	if Global.session.get("open_dir"):
 		open_image_dialog.current_dir = Global.session.open_dir
 
 
 func image_open_confirmed(file: String) -> void:
+	if not file.ends_with(".png"):
+		return
+	
 	print("Opened file: " + file)
 	Global.session_set("open_dir", file.get_base_dir())
 	
@@ -254,8 +254,7 @@ func import_image() -> void:
 	if not Global.canvas:
 		return
 	
-	backdrop.show()
-	import_image_dialog.popup_centered()
+	import_image_dialog.popup_centered(Vector2(800, 500))
 	
 	if Global.session.get("open_dir"):
 		import_image_dialog.current_dir = Global.session.open_dir
@@ -271,7 +270,6 @@ func resize_canvas() -> void:
 	if not Global.canvas:
 		return
 	
-	backdrop.show()
 	resize_canvas_dialog.popup_centered(Vector2(200, 100))
 	resize_canvas_dialog.on_popup()
 
@@ -295,4 +293,4 @@ func palette_selected(palette) -> void:
 
 
 func update_window_title() -> void:
-	OS.set_window_title(Global.canvas.title + " - GSprite")
+	get_window().set_title(Global.canvas.title + " - GSprite")

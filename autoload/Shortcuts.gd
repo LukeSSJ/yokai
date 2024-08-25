@@ -4,19 +4,19 @@ var command : Dictionary
 
 func _ready():
 	command = {
-		"Control+N": "new",
-		"Control+O": "open",
-		"Control+S": "save",
-		"Shift+Control+S": "save_as",
-		"Control+W": "close_tab",
+		"Ctrl+N": "new",
+		"Ctrl+O": "open",
+		"Ctrl+S": "save",
+		"Shift+Ctrl+S": "save_as",
+		"Ctrl+W": "close_tab",
 		
-		"Control+A": "select_all",
-		"Control+D": "deselect",
-		"Control+Z": "undo",
-		"Control+Y": "redo",
-		"Control+C": "copy",
-		"Control+V": "paste",
-		"Control+X": "cut",
+		"Ctrl+A": "select_all",
+		"Ctrl+D": "deselect",
+		"Ctrl+Z": "undo",
+		"Ctrl+Y": "redo",
+		"Ctrl+C": "copy",
+		"Ctrl+V": "paste",
+		"Ctrl+X": "cut",
 		"Delete": "delete",
 		"Enter": "confirm",
 		"Escape": "cancel",
@@ -26,16 +26,16 @@ func _ready():
 		"Up": "shift_up",
 		"Down": "shift_down",
 		
-		"Control+R": "rotate_clockwise",
-		"Shift+Control+R": "rotate_anticlockwise",
-		"Control+F": "flip_horizontal",
-		"Shift+Control+F": "flip_vertical",
+		"Ctrl+R": "rotate_clockwise",
+		"Shift+Ctrl+R": "rotate_anticlockwise",
+		"Ctrl+F": "flip_horizontal",
+		"Shift+Ctrl+F": "flip_vertical",
 		
-		"Shift+Control+C": "resize_canvas",
+		"Shift+Ctrl+C": "resize_canvas",
 		
-		"Control+G": "toggle_grid",
+		"Ctrl+G": "toggle_grid",
 		
-		"Control+P": "select_palette",
+		"Ctrl+P": "select_palette",
 		
 		"Q": "tool_set:Rubber",
 		"D": "tool_set:Pencil",
@@ -46,9 +46,9 @@ func _ready():
 		"C": "tool_set:Circle",
 		"E": "tool_set:Eyedropper",
 		
-		"Control+Equal": "zoom_in",
-		"Control+Minus": "zoom_out",
-		"Control+0": "zoom_reset",
+		"Ctrl+Equal": "zoom_in",
+		"Ctrl+Minus": "zoom_out",
+		"Ctrl+0": "zoom_reset",
 		
 		"1": "palette_select:1",
 		"2": "palette_select:2",
@@ -61,7 +61,7 @@ func _ready():
 		"9": "palette_select:9",
 		"0": "palette_select:10",
 		
-		"Control+T": "run_tests",
+		"Ctrl+T": "run_tests",
 	}
 
 

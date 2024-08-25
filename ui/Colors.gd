@@ -1,17 +1,17 @@
 extends MarginContainer
 
-onready var colors := $HBox/Drawing.get_children()
-onready var palette_item := $HBox/Palette
-onready var change_palette := $HBox/ChangePalette
+@onready var colors := $HBox/Drawing.get_children()
+@onready var palette_item := $HBox/Palette
+@onready var change_palette := $HBox/ChangePalette
 
-onready var PaletteColor = preload("res://ui/PaletteColor.tscn")
+@onready var PaletteColor = preload("res://ui/PaletteColor.tscn")
 
 func _ready() -> void:
 	for i in range (2):
-		colors[i].connect("color_changed", self, "color_set", [i])
+		colors[i].connect("color_changed", Callable(self, "color_set").bind(i))
 		colors[i].color = Global.colors[i]
 	
-	change_palette.connect("pressed", Command, "select_palette")
+	change_palette.connect("pressed", Callable(Command, "select_palette"))
 
 
 func palette_set(palette: Dictionary) -> void:
@@ -20,10 +20,10 @@ func palette_set(palette: Dictionary) -> void:
 	
 	var i := 1
 	for color in palette.colors:
-		var palette_color = PaletteColor.instance()
+		var palette_color = PaletteColor.instantiate()
 		palette_color.set_number_and_color(i, color)
 		palette_item.add_child(palette_color)
-		palette_color.connect("gui_input", self, "palette_color_input", [i])
+		palette_color.connect("gui_input", Callable(self, "palette_color_input").bind(i))
 		i += 1
 
 

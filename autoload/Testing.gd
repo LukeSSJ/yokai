@@ -1,6 +1,6 @@
 extends Node
 
-onready var node := Node.new()
+@onready var node := Node.new()
 
 var assertions: int
 var assertions_failed: int
@@ -12,8 +12,8 @@ func run_tests() -> void:
 		print("Not running tests in release build")
 		return
 	
-	var dir := Directory.new()
-	if dir.open("res://tests") != OK:
+	var dir := DirAccess.open("res://tests")
+	if not dir:
 		printerr("Failed to open test directory")
 		return
 	

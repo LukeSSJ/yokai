@@ -1,9 +1,9 @@
 extends Node2D
 
-signal update_title
-signal update_zoom
-signal update_size
-signal update_cursor
+signal updated_title
+signal updated_zoom
+signal updated_size
+signal updated_cursor
 
 const MAX_UNDOS := 10
 
@@ -22,18 +22,18 @@ var pan_start := Vector2.ZERO
 var change_list := []
 var change_cursor := -1
 
-onready var background := $Background
-onready var output := $Output
-onready var preview := $Preview
-onready var top_left := $TopLeft
-onready var grid := $TopLeft/Grid
-onready var select := $TopLeft/Select
-onready var camera := $Camera
+@onready var background := $Background
+@onready var output := $Output
+@onready var preview := $Preview
+@onready var top_left := $TopLeft
+@onready var grid := $TopLeft/Grid
+@onready var select := $TopLeft/Select
+@onready var camera := $Camera2D
 
-onready var Change = preload("res://canvas/Change.gd")
+@onready var Change = preload("res://canvas/Change.gd")
 
 func _ready() -> void:
-	position = OS.get_window_size() / 2
+	position = get_window().get_size() / 2
 	image_new()
 	update_size()
 
@@ -43,7 +43,8 @@ func mouse_event(event : InputEventMouse) -> void:
 	mouse_pos.x = floor(mouse_pos.x)
 	mouse_pos.y = floor(mouse_pos.y)
 	
-	emit_signal("update_cursor", mouse_pos)
+	emit_signal("updated_cursor", mouse_pos)
+	updated_cursor.emit(mouse_pos)
 	
 	# Panning
 	if panning and event is InputEventMouseMotion:
@@ -62,14 +63,14 @@ func mouse_event(event : InputEventMouse) -> void:
 
 
 func mouse_button_event(event: InputEventMouseButton, mouse_pos: Vector2) -> void:
-	if event.button_index == BUTTON_LEFT or event.button_index == BUTTON_RIGHT:
+	if event.button_index == MOUSE_BUTTON_LEFT or event.button_index == MOUSE_BUTTON_RIGHT:
 		if event.pressed:
 			Global.selected_tool.click(mouse_pos, event)
 		else:
 			Global.selected_tool.release(mouse_pos)
 		return
 			
-	if event.button_index == BUTTON_MIDDLE:
+	if event.button_index == MOUSE_BUTTON_MIDDLE:
 		if event.pressed:
 			panning = true
 			pan_start = get_viewport().get_mouse_position()
@@ -78,9 +79,9 @@ func mouse_button_event(event: InputEventMouseButton, mouse_pos: Vector2) -> voi
 		return
 			
 	if event.pressed:
-		if event.button_index == BUTTON_WHEEL_UP:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			Command.zoom_in()
-		elif event.button_index == BUTTON_WHEEL_DOWN:
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			Command.zoom_out()
 
 
@@ -90,9 +91,9 @@ func make_active() -> void:
 	toggle_grid()
 	show()
 	
-	emit_signal("update_size", image_size)
+	updated_size.emit(image_size)
 	
-	camera.current = true
+	camera.make_current()
 
 
 func image_new() -> void:
@@ -102,8 +103,8 @@ func image_new() -> void:
 	background.region_rect.size = image_size
 	top_left.position = -image_size / 2
 	
-	ImageTools.blank_image(image, image_size)
-	ImageTools.blank_image(image_preview, image_size)
+	image = ImageTools.blank_image(image_size)
+	image_preview = ImageTools.blank_image(image_size)
 	
 	change_list_reset()
 	select.cancel_selection()
@@ -150,9 +151,10 @@ func import_image(file : String) -> bool:
 
 func zoom_update() -> void:
 	zoom_level = clamp(zoom_level, 1, 100)
-	var zoom : float = 1 / zoom_level
-	emit_signal("update_zoom", zoom_level)
-	$Camera.zoom = Vector2(zoom, zoom)
+	var zoom : float = 1 * zoom_level
+	
+	updated_zoom.emit(zoom_level)
+	camera.zoom = Vector2(zoom, zoom)
 
 
 func zoom_in() -> void:
@@ -268,9 +270,9 @@ func update_size() -> void:
 	image_size = image.get_size()
 	image_rect = Rect2(Vector2.ZERO, image_size)
 	
-	emit_signal("update_size", image_size)
+	emit_signal("updated_size", image_size)
 	
-	ImageTools.blank_image(image_preview, image_size)
+	image_preview = ImageTools.blank_image(image_size)
 	
 	background.region_rect.size = image_size
 	top_left.position = -image_size / 2
@@ -281,7 +283,8 @@ func update_title() -> void:
 	title = image_name
 	if dirty:
 		title += "*"
-	emit_signal("update_title", title)
+	
+	updated_title.emit(title)
 
 
 func update_output() -> void:
@@ -359,7 +362,7 @@ func resize_canvas(size : Vector2, image_position := Vector2.ZERO) -> void:
 	var old_size := image_size
 	var old_image := image.duplicate()
 	
-	ImageTools.blank_image(image, size)
+	image = ImageTools.blank_image(size)
 	var dest := (size - old_size) * image_position
 	image.blit_rect(old_image, Rect2(Vector2.ZERO, old_size), dest)
 
@@ -369,8 +372,7 @@ func load_image(new_image: Image) -> void:
 
 
 func delete_rect(rect: Rect2) -> void:
-	var blank_image := Image.new()
-	ImageTools.blank_image(blank_image, rect.size)
+	var blank_image := ImageTools.blank_image(rect.size)
 	image.blit_rect(blank_image, Rect2(Vector2.ZERO, rect.size), rect.position)
 
 # end of Canvas operations

@@ -5,14 +5,14 @@
 
 [sub_resource type="ButtonGroup" id=1]
 
-[node name="ToolButton" type="Button"]
-margin_right = 32.0
-margin_bottom = 32.0
+[node name="Button" type="Button"]
+offset_right = 32.0
+offset_bottom = 32.0
 focus_mode = 0
 theme = ExtResource( 2 )
-custom_constants/hseparation = 8
+theme_override_constants/h_separation = 8
 toggle_mode = true
-enabled_focus_mode = 0
+focus_mode = 0
 group = SubResource( 1 )
 script = ExtResource( 1 )
 

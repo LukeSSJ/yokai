@@ -1,6 +1,6 @@
 extends Node
 
-onready var Change = preload("res://canvas/Change.gd")
+@onready var Change = preload("res://canvas/Change.gd")
 
 func new() -> void:
 	Global.main.image_new()

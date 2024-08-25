@@ -2,19 +2,19 @@ extends AcceptDialog
 
 signal resize_canvas
 
-onready var width := $Content/VBox/Size/Width
-onready var height := $Content/VBox/Size/Height
-onready var position := $Content/VBox/Position
+@onready var width := $Content/VBox/Size/Width
+@onready var height := $Content/VBox/Size/Height
+@onready var resize_position := $Content/VBox/Position
 
 var image_position := Vector2.ZERO
 
 func _ready() -> void:
-	connect("confirmed", self, "on_confirmed")
+	connect("confirmed", Callable(self, "on_confirmed"))
 	
-	for i in position.get_child_count():
-		position.get_child(i).connect("pressed", self, "set_image_position", [i])
+	for i in resize_position.get_child_count():
+		resize_position.get_child(i).connect("pressed", Callable(self, "set_image_position").bind(i))
 	
-	position.get_child(4).pressed = true
+	resize_position.get_child(4).button_pressed = true
 	set_image_position(4)
 
 
@@ -27,9 +27,9 @@ func on_popup() -> void:
 
 
 func on_confirmed() -> void:
-	var size := Vector2(width.text, height.text)
-	if size.x > 0 and size.y > 0:
-		emit_signal("resize_canvas", size, image_position)
+	var image_size := Vector2(int(width.text), int(height.text))
+	if image_size.x > 0 and image_size.y > 0:
+		resize_canvas.emit(image_size, image_position)
 		hide()
 
 

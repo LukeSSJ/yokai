@@ -10,7 +10,7 @@ var selecting := false
 var select_image := Image.new()
 var select_texture : ImageTexture
 
-onready var Change = preload("res://canvas/Change.gd")
+@onready var Change = preload("res://canvas/Change.gd")
 
 func _ready() -> void:
 	select_rect = Rect2(Vector2(-16, -16), Vector2(32, 32))
@@ -18,20 +18,20 @@ func _ready() -> void:
 
 
 func _draw() -> void:
-	var draw_rect := select_rect
+	var rect := select_rect
 	if has_moved:
-		draw_texture(select_texture, draw_rect.position)
+		draw_texture(select_texture, rect.position)
 	
-	draw_rect(draw_rect, Color.black, false)
-	draw_rect = draw_rect.grow(-0.1)
-	draw_rect(draw_rect, Color.white, false)
+	draw_rect(rect, Color.BLACK, false)
+	rect = rect.grow(-0.1)
+	draw_rect(rect, Color.WHITE, false)
 
 
 func shift(pos: Vector2) -> void:
 	if selecting:
 		grab_selection()
 		select_rect.position += pos
-		update()
+		queue_redraw()
 
 
 func select_region(rect: Rect2) -> void:
@@ -43,14 +43,14 @@ func select_region(rect: Rect2) -> void:
 	selecting = true
 	select_image = Global.canvas.image.get_rect(select_rect)
 	select_texture = ImageTools.get_texture(select_image)
-	update()
+	queue_redraw()
 	show()
 
 
 func grab_selection() -> void:
 	if not has_moved:
 		has_moved = true
-		update()
+		queue_redraw()
 		Global.canvas.delete_selection()
 
 
@@ -58,7 +58,7 @@ func mouse_event_with_pos(event: InputEventMouse, mouse_pos: Vector2) -> bool:
 	# Dragging
 	if dragging and event is InputEventMouseMotion:
 		select_rect.position = mouse_pos + drag_offset
-		update()
+		queue_redraw()
 		return true
 		
 	if event is InputEventMouseButton and event.button_index:
@@ -69,7 +69,7 @@ func mouse_event_with_pos(event: InputEventMouse, mouse_pos: Vector2) -> bool:
 			grab_selection()
 			dragging = true
 			drag_offset = select_rect.position - mouse_pos
-			get_tree().set_input_as_handled()
+			get_viewport().set_input_as_handled()
 			return true
 		
 		# Stop dragging
@@ -122,7 +122,7 @@ func paste() -> void:
 	select_rect = Rect2(Vector2.ZERO, select_image.get_size())
 	has_moved = true
 	is_new = true
-	update()
+	queue_redraw()
 	show()
 
 
@@ -132,7 +132,7 @@ func add_image(image: Image) -> void:
 	select_rect = Rect2(Vector2.ZERO, select_image.get_size())
 	has_moved = true
 	is_new = true
-	update()
+	queue_redraw()
 	show()
 
 
@@ -141,7 +141,7 @@ func rotate_selection(clockwise: bool) -> void:
 	ImageTools.image_rotate(select_image, clockwise)
 	select_texture = ImageTools.get_texture(select_image)
 	select_rect.size = select_image.get_size()
-	update()
+	queue_redraw()
 
 
 func flip_selection(horizontal: bool) -> void:
@@ -151,4 +151,4 @@ func flip_selection(horizontal: bool) -> void:
 	else:
 		select_image.flip_y()
 	select_texture = ImageTools.get_texture(select_image)
-	update()
+	queue_redraw()

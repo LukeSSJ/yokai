@@ -20,11 +20,11 @@ func click(pos: Vector2, event: InputEventMouseButton) -> void:
 	start_pos = pos
 	prev_pos = pos
 	
-	if event.button_index == BUTTON_LEFT:
+	if event.button_index == MOUSE_BUTTON_LEFT:
 		button_index = 0
-	elif event.button_index == BUTTON_RIGHT:
+	elif event.button_index == MOUSE_BUTTON_RIGHT:
 		button_index = 1
-	control_pressed = event.control
+	control_pressed = event.ctrl_pressed
 	
 	draw_color = Global.colors[button_index]
 	
@@ -55,9 +55,7 @@ func stop_drawing() -> void:
 	
 	drawing = false
 	
-	Global.canvas.image_preview.lock()
-	Global.canvas.image_preview.fill(Color.transparent)
-	Global.canvas.image_preview.unlock()
+	Global.canvas.image_preview.fill(Color.TRANSPARENT)
 	Global.canvas.update_preview()
 	
 	if change_made:
@@ -68,8 +66,8 @@ func stop_drawing() -> void:
 		if dirty:
 			change_pos = dirty_rect.position
 			dirty_rect.size += Vector2(1, 1)
-			new_image = Global.canvas.image.get_rect(dirty_rect)
-			prev_image = Global.canvas.prev_image.get_rect(dirty_rect)
+			new_image = Global.canvas.image.get_region(dirty_rect)
+			prev_image = Global.canvas.prev_image.get_region(dirty_rect)
 		else:
 			change_pos = Vector2.ZERO
 			new_image = Global.canvas.image.duplicate()
@@ -88,18 +86,13 @@ func stop_drawing() -> void:
 
 func image_draw_start() -> void:
 	if use_preview:
-		Global.canvas.image_preview.lock()
-		Global.canvas.image_preview.fill(Color.transparent)
-	else:
-		Global.canvas.image.lock()
+		Global.canvas.image_preview.fill(Color.TRANSPARENT)
 
 
 func image_draw_end() -> void:
 	if use_preview:
-		Global.canvas.image_preview.unlock()
 		Global.canvas.update_preview()
 	else:
-		Global.canvas.image.unlock()
 		Global.canvas.update_output()
 
 
@@ -112,10 +105,8 @@ func image_draw_point(pos: Vector2) -> void:
 		return
 	
 	if use_preview:
-		Global.canvas.image_preview.lock()
 		Global.canvas.image_preview.set_pixelv(pos, draw_color)
 		Global.canvas.image_preview.set_pixelv(pos, draw_color)
-		Global.canvas.image_preview.unlock()
 	else:
 		var new_color := draw_color
 		new_color.blend(Global.canvas.image.get_pixelv(pos))
@@ -130,17 +121,17 @@ func image_draw_point(pos: Vector2) -> void:
 
 
 func image_draw_line(pos1: Vector2, pos2: Vector2) -> void:
-	var dx := abs(pos2.x - pos1.x)
-	var dy := abs(pos2.y - pos1.y)
+	var dx = abs(pos2.x - pos1.x)
+	var dy = abs(pos2.y - pos1.y)
 	var sx := 1 if pos1.x < pos2.x else -1
 	var sy := 1 if pos1.y < pos2.y else -1
-	var step := dx - dy
+	var step = dx - dy
 	
 	while true:
 		image_draw_point(pos1)
 		if pos1 == pos2:
 			break
-		var a := 2 * step
+		var a = 2 * step
 		if a > -dy:
 			step -= dy
 			pos1.x += sx
@@ -152,7 +143,7 @@ func image_draw_line(pos1: Vector2, pos2: Vector2) -> void:
 func image_draw_rect(pos1: Vector2, pos2: Vector2) -> void:
 	image_draw_point(pos1)
 	
-	var step := sign(pos2.x - pos1.x)
+	var step = sign(pos2.x - pos1.x)
 	var i = pos1.x
 	
 	while i != pos2.x:
@@ -186,9 +177,10 @@ func image_draw_ellipse(pos1: Vector2, pos2: Vector2) -> void:
 		r.y = 1
 	
 	var x := int(top_left.x)
+	var y
 	while x <= center.x:
 		var angle := acos((x - center.x) / r.x)
-		var y := round(r.y * sin(angle) + center.y)
+		y = round(r.y * sin(angle) + center.y)
 		if not is_nan(y):
 			image_draw_point(Vector2(x - even.x, y))
 			image_draw_point(Vector2(x - even.x, 2 * center.y - y - even.y))
@@ -197,7 +189,7 @@ func image_draw_ellipse(pos1: Vector2, pos2: Vector2) -> void:
 		x += 1
 	
 	# warning-ignore:NARROWING_CONVERSION
-	var y := int(top_left.y)
+	y = int(top_left.y)
 	while y <= center.y:
 		var angle := asin((y - center.y) / r.y)
 		x = round(r.x * cos(angle) + center.x)

@@ -1,7 +1,7 @@
 extends "res://tool/Tool.gd"
 
 func start(_pos: Vector2) -> void:
-	draw_color = Color.transparent
+	draw_color = Color.TRANSPARENT
 
 
 func draw(pos: Vector2) -> void:
