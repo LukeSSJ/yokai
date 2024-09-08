@@ -29,6 +29,10 @@ Testing="*res://autoload/Testing.gd"
 
 gdscript/warnings/return_value_discarded=false
 
+[editor]
+
+naming/scene_name_casing=1
+
 [input]
 
 click1={
