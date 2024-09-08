@@ -46,12 +46,10 @@ func mouse_event(event : InputEventMouse) -> void:
 	emit_signal("updated_cursor", mouse_pos)
 	updated_cursor.emit(mouse_pos)
 	
-	# Panning
 	if panning and event is InputEventMouseMotion:
-		camera.offset -= event.relative * camera.zoom
+		camera.offset -= event.relative / camera.zoom
 		return
 	
-	# Handle events for selection
 	if select.visible and select.mouse_event_with_pos(event, mouse_pos):
 		return
 	
@@ -170,6 +168,7 @@ func zoom_out() -> void:
 func zoom_reset() -> void:
 	zoom_level = 10.0
 	zoom_update()
+	camera.offset = Vector2.ZERO
 
 
 func select_all() -> void:
