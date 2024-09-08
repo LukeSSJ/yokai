@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://nolq400lcfk2"]
+[gd_scene load_steps=14 format=3 uid="uid://nolq400lcfk2"]
 
 [ext_resource type="PackedScene" uid="uid://cstgd5n6i4vjv" path="res://ui/Tools.tscn" id="1"]
 [ext_resource type="Script" path="res://Main.gd" id="2"]
@@ -6,7 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://dri47kyy0xr73" path="res://dialog/NewImage.tscn" id="4"]
 [ext_resource type="Theme" uid="uid://c7wblpcs378cn" path="res://themes/default.tres" id="5"]
 [ext_resource type="Script" path="res://tool/Tool.gd" id="6"]
-[ext_resource type="PackedScene" path="res://dialog/ResizeCanvas.tscn" id="12"]
+[ext_resource type="PackedScene" uid="uid://f4rd06rapnxd" path="res://dialog/EditGridSize.tscn" id="10_0w4ia"]
+[ext_resource type="PackedScene" uid="uid://7lrewpkppy54" path="res://dialog/ResizeCanvas.tscn" id="12"]
 [ext_resource type="PackedScene" uid="uid://cjukoj20b87iu" path="res://ui/TopMenu.tscn" id="13"]
 [ext_resource type="PackedScene" path="res://ui/Colors.tscn" id="15"]
 [ext_resource type="PackedScene" uid="uid://bdwtqc3s3l467" path="res://dialog/SelectPalette.tscn" id="24"]
@@ -161,6 +162,9 @@ access = 2
 filters = PackedStringArray("*.png")
 
 [node name="ResizeCanvas" parent="UI" groups=["dialog"] instance=ExtResource("12")]
+
+[node name="EditGridSize" parent="UI" instance=ExtResource("10_0w4ia")]
+visible = false
 
 [node name="SelectPalette" parent="UI" groups=["dialog"] instance=ExtResource("24")]
 position = Vector2i(0, 36)

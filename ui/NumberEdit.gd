@@ -1,8 +1,15 @@
 extends LineEdit
 
 func force_int(_val = null) -> void:
-	var expression := Expression.new()
-	expression.parse(text)
+	if not text:
+		return
 	
-	var result := int(expression.execute())
-	text = str(result)
+	var expression := Expression.new()
+	if expression.parse(text) != OK:
+		return
+	
+	var result = expression.execute([], null, false)
+	if expression.has_execute_failed():
+		return
+	
+	text = str(int(result))

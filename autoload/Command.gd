@@ -99,10 +99,11 @@ func resize_canvas() -> void:
 
 
 func toggle_grid() -> void:
-	Global.show_grid = not Global.show_grid
-	
-	if Global.canvas:
-		Global.canvas.toggle_grid()
+	Global.toggle_grid()
+
+
+func edit_grid_size() -> void:
+	Global.main.edit_grid_size()
 
 
 func zoom_in() -> void:

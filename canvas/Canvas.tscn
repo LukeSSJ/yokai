@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://canvas/Canvas.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://bn3ugpekvypxv" path="res://graphics/transparent.png" id="2"]
-[ext_resource type="PackedScene" path="res://canvas/Grid.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://beuoo5rcaagn4" path="res://canvas/Grid.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://canvas/Select.tscn" id="4"]
 
 [node name="Canvas" type="Node2D"]

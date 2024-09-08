@@ -86,7 +86,7 @@ func mouse_button_event(event: InputEventMouseButton, mouse_pos: Vector2) -> voi
 func make_active() -> void:
 	zoom_update()
 	update_title()
-	toggle_grid()
+	update_grid()
 	show()
 	
 	updated_size.emit(image_size)
@@ -261,8 +261,9 @@ func select_region(rect : Rect2) -> void:
 	select.select_region(rect)
 
 
-func toggle_grid() -> void:
+func update_grid() -> void:
 	grid.visible = Global.show_grid
+	grid.queue_redraw()
 
 
 func update_size() -> void:

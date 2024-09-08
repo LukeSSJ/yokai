@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://f4rd06rapnxd"]
+
+[ext_resource type="Theme" uid="uid://c7wblpcs378cn" path="res://themes/default.tres" id="1_774df"]
+[ext_resource type="Script" path="res://dialog/EditGridSize.gd" id="2_m28ht"]
+[ext_resource type="PackedScene" path="res://ui/NumberEdit.tscn" id="2_s1yso"]
+
+[node name="EditGridSize" type="ConfirmationDialog"]
+title = "Edit Grid Size"
+initial_position = 1
+size = Vector2i(200, 112)
+visible = true
+theme = ExtResource("1_774df")
+script = ExtResource("2_m28ht")
+
+[node name="Content" type="MarginContainer" parent="."]
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 190.0
+offset_bottom = 59.0
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Inputs" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Width" parent="Content/Inputs" instance=ExtResource("2_s1yso")]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Content/Inputs"]
+layout_mode = 2
+text = "x"
+
+[node name="Height" parent="Content/Inputs" instance=ExtResource("2_s1yso")]
+layout_mode = 2
+
+[connection signal="confirmed" from="." to="." method="on_confirmed"]

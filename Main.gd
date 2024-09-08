@@ -15,6 +15,7 @@ extends Node2D
 @onready var open_image_dialog := $UI/OpenImage
 @onready var import_image_dialog := $UI/ImportImage
 @onready var resize_canvas_dialog := $UI/ResizeCanvas
+@onready var edit_grid_size_dialog := $UI/EditGridSize
 @onready var select_palette_dialog := $UI/SelectPalette
 
 @onready var Canvas := preload("res://canvas/Canvas.tscn")
@@ -288,6 +289,10 @@ func resize_canvas_confirmed(size: Vector2, image_position: Vector2) -> void:
 	change.undo_params = [Global.canvas.image.duplicate()]
 	Global.canvas.make_change(change)
 
+
+func edit_grid_size() -> void:
+	edit_grid_size_dialog.popup_centered()
+	edit_grid_size_dialog.on_popup()
 
 func select_palette() -> void:
 	select_palette_dialog.popup_centered(Vector2(800, 500))

@@ -15,6 +15,9 @@ var menu_view: PopupMenu
 var menu_testing: PopupMenu
 
 func _ready() -> void:
+	call_deferred("create_items")
+
+func create_items() -> void:
 	menu_file = file_button.get_popup()
 	menu_file.connect("id_pressed", Callable(self, "file_pressed"))
 	menu_file.add_item("New (Ctrl + N)")
@@ -54,6 +57,8 @@ func _ready() -> void:
 	menu_view = view_button.get_popup()
 	menu_view.connect("id_pressed", Callable(self, "view_pressed"))
 	menu_view.add_check_item("Toggle Grid")
+	menu_view.set_item_checked(0, Global.show_grid)
+	menu_view.add_item("Edit Grid Size")
 	menu_view.add_separator()
 	menu_view.add_item("Zoom In (Ctrl + =)")
 	menu_view.add_item("Zoom Out (Ctrl + -)")
@@ -87,7 +92,7 @@ func transform_pressed(id: int) -> void:
 
 
 func view_pressed(id: int) -> void:
-	var cmds := ["toggle_grid", "", "zoom_in", "zoom_out", "zoom_reset"]
+	var cmds := ["toggle_grid", "edit_grid_size", "", "zoom_in", "zoom_out", "zoom_reset"]
 	menu_view.toggle_item_checked(id)
 	Command.call(cmds[id])
 
