@@ -4,6 +4,8 @@
 [ext_resource type="Theme" uid="uid://c7wblpcs378cn" path="res://themes/default.tres" id="2"]
 
 [node name="SelectPalete" type="Window"]
+title = "Palettes"
+size = Vector2i(188, 179)
 theme = ExtResource("2")
 script = ExtResource("1")
 
@@ -11,6 +13,10 @@ script = ExtResource("1")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 178.0
+offset_bottom = 126.0
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 10
@@ -50,3 +56,5 @@ theme_override_constants/margin_bottom = 10
 [node name="Label" type="Label" parent="Content/Rows/NoPalettes"]
 layout_mode = 2
 text = "No Palettes in folder."
+
+[connection signal="close_requested" from="." to="." method="hide"]

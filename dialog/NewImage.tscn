@@ -6,7 +6,7 @@
 
 [node name="NewImage" type="AcceptDialog"]
 title = "New Image"
-size = Vector2i(186, 118)
+size = Vector2i(186, 122)
 visible = true
 theme = ExtResource("3")
 script = ExtResource("1")
@@ -18,7 +18,7 @@ anchor_bottom = 1.0
 offset_left = 10.0
 offset_top = 8.0
 offset_right = 176.0
-offset_bottom = 65.0
+offset_bottom = 69.0
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_bottom = 10
 

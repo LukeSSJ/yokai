@@ -257,7 +257,7 @@ func redo() -> void:
 		prev_image = image.duplicate()
 
 
-func select_region(rect : Rect2) -> void:
+func select_region(rect: Rect2) -> void:
 	select.select_region(rect)
 
 

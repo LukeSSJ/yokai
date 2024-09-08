@@ -136,6 +136,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("3")
 
 [node name="UnsavedChanges" type="ConfirmationDialog" parent="UI" groups=["dialog"]]
+ok_button_text = "Discard Changes"
 dialog_text = "Quit and discard unsaved changes?"
 
 [node name="UnsavedTab" type="ConfirmationDialog" parent="UI" groups=["dialog"]]

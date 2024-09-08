@@ -6,7 +6,7 @@
 
 [node name="EditGridSize" type="ConfirmationDialog"]
 title = "Edit Grid Size"
-initial_position = 1
+position = Vector2i(476, 268)
 size = Vector2i(200, 112)
 visible = true
 theme = ExtResource("1_774df")

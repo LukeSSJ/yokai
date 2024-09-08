@@ -294,6 +294,7 @@ func edit_grid_size() -> void:
 	edit_grid_size_dialog.popup_centered()
 	edit_grid_size_dialog.on_popup()
 
+
 func select_palette() -> void:
 	select_palette_dialog.popup_centered(Vector2(800, 500))
 
