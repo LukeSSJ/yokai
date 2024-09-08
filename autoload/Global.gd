@@ -59,7 +59,7 @@ func session_save() -> void:
 		printerr("Failed to write session file: %d" % FileAccess.get_open_error())
 		return
 	
-	file.store_string(JSON.stringify(session))
+	file.store_string(JSON.stringify(session, "\t"))
 
 
 func session_set(key: String, value) -> void:
