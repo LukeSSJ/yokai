@@ -7,9 +7,11 @@ func test_new() -> void:
 	main.new_image_dialog.on_confirmed()
 	assert_canvas_size(Vector2(61, 42))
 
+
 func test_open() -> void:
 	main.image_open_confirmed("res://tests/assets/fish.png")
 	assert_image_matches("res://tests/assets/fish.png")
+
 
 func test_save() -> void:
 	main.image_open_confirmed("res://tests/assets/fish.png")

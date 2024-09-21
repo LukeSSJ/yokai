@@ -32,7 +32,7 @@ func on_confirmed() -> void:
 		resize_canvas.emit(image_size, image_position)
 		hide()
 
-
-func set_image_position(i) -> void:
+@warning_ignore("integer_division")
+func set_image_position(i: int) -> void:
 	image_position.x = (i % 3) * 0.5
 	image_position.y = floor(i / 3) * 0.5

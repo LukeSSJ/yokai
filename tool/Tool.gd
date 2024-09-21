@@ -2,6 +2,7 @@ extends Node
 
 var tool_name: String
 var drawing: bool
+var drawing_button: int
 var start_pos: Vector2
 var prev_pos: Vector2
 var use_preview: bool
@@ -12,7 +13,10 @@ var control_pressed: bool
 var dirty: bool
 var dirty_rect: Rect2
 
-func click(pos: Vector2, event: InputEventMouseButton) -> void:
+func click(pos: Vector2, button: int, control: bool) -> void:
+	if drawing:
+		return
+	
 	drawing = true
 	use_preview = false
 	change_made = false
@@ -20,11 +24,8 @@ func click(pos: Vector2, event: InputEventMouseButton) -> void:
 	start_pos = pos
 	prev_pos = pos
 	
-	if event.button_index == MOUSE_BUTTON_LEFT:
-		button_index = 0
-	elif event.button_index == MOUSE_BUTTON_RIGHT:
-		button_index = 1
-	control_pressed = event.ctrl_pressed
+	button_index = button
+	control_pressed = control
 	
 	draw_color = Global.colors[button_index]
 	
@@ -35,8 +36,8 @@ func click(pos: Vector2, event: InputEventMouseButton) -> void:
 	draw(pos)
 
 
-func release(pos: Vector2) -> void:
-	if not drawing:
+func release(pos: Vector2, button: int) -> void:
+	if not drawing or button != button_index:
 		return
 	
 	end(pos)

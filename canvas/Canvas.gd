@@ -62,10 +62,11 @@ func mouse_event(event : InputEventMouse) -> void:
 
 func mouse_button_event(event: InputEventMouseButton, mouse_pos: Vector2) -> void:
 	if event.button_index == MOUSE_BUTTON_LEFT or event.button_index == MOUSE_BUTTON_RIGHT:
+		var button_index := event.button_index - 1
 		if event.pressed:
-			Global.selected_tool.click(mouse_pos, event)
+			Global.selected_tool.click(mouse_pos, button_index, event.ctrl_pressed)
 		else:
-			Global.selected_tool.release(mouse_pos)
+			Global.selected_tool.release(mouse_pos, button_index)
 		return
 			
 	if event.button_index == MOUSE_BUTTON_MIDDLE:

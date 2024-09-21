@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://7lrewpkppy54"]
+[gd_scene load_steps=14 format=3 uid="uid://7lrewpkppy54"]
 
 [ext_resource type="Script" path="res://dialog/ResizeCanvas.gd" id="1"]
 [ext_resource type="PackedScene" path="res://ui/NumberEdit.tscn" id="2"]
@@ -13,7 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://bvu6ydry5u8s" path="res://graphics/canvas_top_left.png" id="11"]
 [ext_resource type="Theme" uid="uid://c7wblpcs378cn" path="res://themes/default.tres" id="12"]
 
+[sub_resource type="ButtonGroup" id="ButtonGroup_lkgs2"]
+
 [node name="ResizeCanvas" type="AcceptDialog"]
+title = "Resize Canvas"
 size = Vector2i(182, 232)
 theme = ExtResource("12")
 dialog_hide_on_ok = false
@@ -57,52 +60,61 @@ columns = 3
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 toggle_mode = true
+button_group = SubResource("ButtonGroup_lkgs2")
 icon = ExtResource("11")
 
 [node name="Top" type="Button" parent="Content/VBox/Position"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 toggle_mode = true
+button_group = SubResource("ButtonGroup_lkgs2")
 icon = ExtResource("6")
 
 [node name="TopRight" type="Button" parent="Content/VBox/Position"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 toggle_mode = true
+button_group = SubResource("ButtonGroup_lkgs2")
 icon = ExtResource("7")
 
 [node name="Left" type="Button" parent="Content/VBox/Position"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 toggle_mode = true
+button_group = SubResource("ButtonGroup_lkgs2")
 icon = ExtResource("10")
 
 [node name="Center" type="Button" parent="Content/VBox/Position"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 toggle_mode = true
+button_group = SubResource("ButtonGroup_lkgs2")
 icon = ExtResource("3")
 
 [node name="Right" type="Button" parent="Content/VBox/Position"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 toggle_mode = true
+button_group = SubResource("ButtonGroup_lkgs2")
 icon = ExtResource("9")
 
 [node name="BottomLeft" type="Button" parent="Content/VBox/Position"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 toggle_mode = true
+button_group = SubResource("ButtonGroup_lkgs2")
 icon = ExtResource("5")
 
 [node name="Bottom" type="Button" parent="Content/VBox/Position"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 toggle_mode = true
+button_group = SubResource("ButtonGroup_lkgs2")
 icon = ExtResource("4")
 
 [node name="BottomRight" type="Button" parent="Content/VBox/Position"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 toggle_mode = true
+button_group = SubResource("ButtonGroup_lkgs2")
 icon = ExtResource("8")
