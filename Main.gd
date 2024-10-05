@@ -307,4 +307,4 @@ func palette_selected(palette) -> void:
 
 
 func update_window_title() -> void:
-	get_window().set_title(Global.canvas.title + " - GSprite")
+	get_window().set_title(Global.canvas.title + " - Yokai")

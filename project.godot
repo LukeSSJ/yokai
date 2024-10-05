@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="GSprite"
+config/name="Yokai"
 run/main_scene="res://Main.tscn"
 config/features=PackedStringArray("4.3")
 run/low_processor_mode=true
