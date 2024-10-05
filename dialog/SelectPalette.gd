@@ -16,10 +16,13 @@ func _ready() -> void:
 	palettes = []
 	
 	var dir := DirAccess.open(PALETE_DIR)
-	
 	if not dir:
+		printerr("Could not open palette directory: %s" % PALETE_DIR)
+		return
+	
+	if not dir.dir_exists(""):
 		print("Creating palette folder " + PALETE_DIR)
-		dir.make_dir(PALETE_DIR)
+		dir.make_dir("")
 	
 	folder_path.text = ProjectSettings.globalize_path(PALETE_DIR)
 	
