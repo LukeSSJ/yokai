@@ -27,48 +27,49 @@ script = ExtResource("1_authi")
 
 [node name="Pencil" parent="." instance=ExtResource("17")]
 layout_mode = 2
-text = "Pencil"
+text = "Pencil (D)"
 icon = ExtResource("9")
 tool_script = ExtResource("5")
 
 [node name="Line" parent="." instance=ExtResource("17")]
 layout_mode = 2
-text = "Line"
+text = "Line (A)"
 icon = ExtResource("13")
 tool_script = ExtResource("2")
 
 [node name="Rect" parent="." instance=ExtResource("17")]
 layout_mode = 2
-text = "Rect"
+text = "Rect (R)"
 icon = ExtResource("15")
 tool_script = ExtResource("3")
 
 [node name="Circle" parent="." instance=ExtResource("17")]
 layout_mode = 2
-text = "Circle"
+text = "Circle (C)"
 icon = ExtResource("12")
 tool_script = ExtResource("14")
 
 [node name="Fill" parent="." instance=ExtResource("17")]
 layout_mode = 2
-text = "Fill"
+tooltip_text = "Hold Ctrl to globally replace colour."
+text = "Fill (F)"
 icon = ExtResource("10")
 tool_script = ExtResource("7")
 
 [node name="Rubber" parent="." instance=ExtResource("17")]
 layout_mode = 2
-text = "Rubber"
+text = "Rubber (Q)"
 icon = ExtResource("16")
 tool_script = ExtResource("1")
 
 [node name="Eyedropper" parent="." instance=ExtResource("17")]
 layout_mode = 2
-text = "Eyedropper"
+text = "Eyedropper (E)"
 icon = ExtResource("11")
 tool_script = ExtResource("6")
 
 [node name="Select" parent="." instance=ExtResource("17")]
 layout_mode = 2
-text = "Select"
+text = "Select (S)"
 icon = ExtResource("4")
 tool_script = ExtResource("8")
