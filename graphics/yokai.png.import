@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bkntdrhm04a71"
-path="res://.godot/imported/GS.png-348afb5bd61d4b8d762cbd84f919449a.ctex"
+uid="uid://bs1b8al6423pq"
+path="res://.godot/imported/yokai.png-d2229ded7428eb518d6d266b27f11232.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/GS.png"
-dest_files=["res://.godot/imported/GS.png-348afb5bd61d4b8d762cbd84f919449a.ctex"]
+source_file="res://graphics/yokai.png"
+dest_files=["res://.godot/imported/yokai.png-d2229ded7428eb518d6d266b27f11232.ctex"]
 
 [params]
 

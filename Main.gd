@@ -2,7 +2,7 @@ extends Node2D
 
 @onready var canvas_list := $CanvasList
 @onready var current_tool := $CurrentTool
-@onready var ui := $UI
+@onready var UI := $UI
 @onready var dashboard := $UI/Dashboard
 @onready var color_section := $UI/ColorSection
 @onready var tools := $UI/Tools
@@ -115,7 +115,7 @@ func tool_set(tool_name) -> void:
 	current_tool.set_script(new_tool.tool_script)
 	current_tool.tool_name = tool_name
 	
-	ui.update_tool(tool_name)
+	UI.update_tool(tool_name)
 
 
 func tab_changed(tab: int) -> void:
@@ -142,10 +142,10 @@ func tab_close_current() -> void:
 
 
 func tab_close_confirmed() -> void:
-	print("close confirmed")
 	if image_tabs.tab_count == 1:
 		Global.canvas = null
 		dashboard.show()
+		UI.all_tabs_closed()
 	
 	var tab: int = image_tabs.current_tab
 	image_tabs.remove_tab(tab)
@@ -193,11 +193,12 @@ func image_new_confirmed(size := Vector2.ZERO) -> void:
 		Global.canvas.hide()
 	
 	dashboard.hide()
+	UI.tab_opened()
 	
 	canvas.connect("updated_title", Callable(self, "tab_rename"))
-	canvas.connect("updated_zoom", Callable(ui, "update_zoom"))
-	canvas.connect("updated_size", Callable(ui, "update_size"))
-	canvas.connect("updated_cursor", Callable(ui, "update_cursor"))
+	canvas.connect("updated_zoom", Callable(UI, "update_zoom"))
+	canvas.connect("updated_size", Callable(UI, "update_size"))
+	canvas.connect("updated_cursor", Callable(UI, "update_cursor"))
 	
 	image_tabs.add_tab(canvas.image_name)
 	image_tabs.current_tab = tab

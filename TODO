@@ -1,5 +1,6 @@
 == Bugs ==
 - Transforming a selection causes an extra undo where the selection is gone.
+- Select is misaligned to pixels slightly.
 
 == Features ==
 - Crop to content command.
@@ -16,5 +17,3 @@
 - Use commands for canvas operations instead of calling Main.
 - Use built in UndoRedo object for undos. 
 
-== Other ==
-- Update icon

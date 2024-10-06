@@ -1,10 +1,14 @@
 extends CanvasLayer
 
 @onready var tools := $Tools
+@onready var info_text = $Text
 @onready var tool_display := $Text/Tool
 @onready var zoom_display := $Text/Zoom
 @onready var size_display := $Text/Size
 @onready var cursor_display := $Text/Cursor
+
+func _ready() -> void:
+	all_tabs_closed()
 
 func update_tool(tool_name: String) -> void:
 	tool_display.text = tool_name
@@ -21,3 +25,11 @@ func update_size(size: Vector2) -> void:
 
 func update_cursor(cursor: Vector2) -> void:
 	cursor_display.text = "(%d,%d)" % [cursor.x, cursor.y]
+
+
+func all_tabs_closed() -> void:
+	info_text.hide()
+
+
+func tab_opened() -> void:
+	info_text.show()
