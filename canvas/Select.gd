@@ -138,9 +138,9 @@ func add_image(image: Image) -> void:
 
 func rotate_selection(clockwise: bool) -> void:
 	grab_selection()
-	ImageTools.image_rotate(select_image, clockwise)
+	select_image = ImageTools.image_rotate(select_image, clockwise)
 	select_texture = ImageTools.get_texture(select_image)
-	select_rect.size = select_image.get_size()
+	select_rect.size = Vector2(select_image.get_size())
 	queue_redraw()
 
 

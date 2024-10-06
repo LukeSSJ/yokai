@@ -330,18 +330,26 @@ func blit_image(add_image: Image, pos: Vector2) -> void:
 	var rect := Rect2(Vector2.ZERO, add_image.get_size())
 	image.blit_rect(add_image, rect, pos)
 
+func rotate_canvas(clockwise: bool) -> void:
+	if select.visible:
+		select.rotate_selection(clockwise)
+		return
+	
+	var change = Change.new()
+	if clockwise:
+		change.action = "rotate_clockwise"
+		change.undo_action = "rotate_anticlockwise"
+	else:
+		change.action = "rotate_anticlockwise"
+		change.undo_action = "rotate_clockwise"
+	Global.canvas.make_change(change)
+	
 
 func rotate_clockwise() -> void:
-	if select.visible:
-		select.rotate_selection(true)
-		return
 	image = ImageTools.image_rotate(image, true)
 
 
 func rotate_anticlockwise() -> void:
-	if select.visible:
-		select.rotate_selection(false)
-		return
 	image = ImageTools.image_rotate(image, false)
 
 

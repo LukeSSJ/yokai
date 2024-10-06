@@ -1,5 +1,6 @@
 == Bugs ==
-- File dialog goes offscreen (Bug with Godot file browser, shows favourited file paths).
+- Transforming a selection causes an extra undo where the selection is gone.
+- Palette folder not being created
 
 == Features ==
 - Crop to content command.

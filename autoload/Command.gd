@@ -64,18 +64,12 @@ func import() -> void:
 
 func rotate_clockwise() -> void:
 	if Global.canvas:
-		var change = Change.new()
-		change.action = "rotate_clockwise"
-		change.undo_action = "rotate_anticlockwise"
-		Global.canvas.make_change(change)
+		Global.canvas.rotate_canvas(true)
 
 
 func rotate_anticlockwise() -> void:
 	if Global.canvas:
-		var change = Change.new()
-		change.action = "rotate_anticlockwise"
-		change.undo_action = "rotate_clockwise"
-		Global.canvas.make_change(change)
+		Global.canvas.rotate_canvas(false)
 
 
 func flip_horizontal() -> void:
