@@ -5,7 +5,8 @@
 
 [node name="SelectPalete" type="Window"]
 title = "Palettes"
-size = Vector2i(188, 179)
+position = Vector2i(0, 36)
+size = Vector2i(800, 500)
 theme = ExtResource("2")
 script = ExtResource("1")
 
@@ -13,10 +14,8 @@ script = ExtResource("1")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 8.0
-offset_right = 178.0
-offset_bottom = 126.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 10
@@ -24,7 +23,6 @@ theme_override_constants/margin_bottom = 20
 
 [node name="Rows" type="VBoxContainer" parent="Content"]
 layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="Folder" type="HBoxContainer" parent="Content/Rows"]
 layout_mode = 2
@@ -35,13 +33,18 @@ theme_override_constants/separation = 10
 layout_mode = 2
 text = "Folder:"
 
-[node name="Path3D" type="LineEdit" parent="Content/Rows/Folder"]
+[node name="FolderPath" type="LineEdit" parent="Content/Rows/Folder"]
 layout_mode = 2
 size_flags_horizontal = 3
 editable = false
 
+[node name="OpenButton" type="Button" parent="Content/Rows/Folder"]
+layout_mode = 2
+text = "Open"
+
 [node name="ScrollContainer" type="ScrollContainer" parent="Content/Rows"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Palettes" type="VBoxContainer" parent="Content/Rows/ScrollContainer"]
 layout_mode = 2
@@ -58,3 +61,4 @@ layout_mode = 2
 text = "No Palettes in folder."
 
 [connection signal="close_requested" from="." to="." method="hide"]
+[connection signal="pressed" from="Content/Rows/Folder/OpenButton" to="." method="open_palette_folder"]

@@ -24,6 +24,7 @@ Shortcuts="*res://autoload/Shortcuts.gd"
 ImageTools="*res://autoload/ImageTools.gd"
 Util="*res://autoload/Util.gd"
 Testing="*res://autoload/Testing.gd"
+System="*res://autoload/System.gd"
 
 [debug]
 

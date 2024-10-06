@@ -4,25 +4,22 @@ const PALETE_DIR := "user://palettes"
 
 signal palette_selected
 
-var palettes: Array
+var palettes := []
 
 @onready var PalettePreview := preload("res://dialog/PalettePreview.tscn")
 
 @onready var palette_items := $Content/Rows/ScrollContainer/Palettes
 @onready var no_palettes := $Content/Rows/NoPalettes
-@onready var folder_path = $Content/Rows/Folder/Path3D
+@onready var folder_path = $Content/Rows/Folder/FolderPath
 
 func _ready() -> void:
-	palettes = []
+	if not DirAccess.dir_exists_absolute(PALETE_DIR):
+		DirAccess.make_dir_absolute(PALETE_DIR)
 	
 	var dir := DirAccess.open(PALETE_DIR)
 	if not dir:
 		printerr("Could not open palette directory: %s" % PALETE_DIR)
 		return
-	
-	if not dir.dir_exists(""):
-		print("Creating palette folder " + PALETE_DIR)
-		dir.make_dir("")
 	
 	folder_path.text = ProjectSettings.globalize_path(PALETE_DIR)
 	
@@ -39,7 +36,7 @@ func _ready() -> void:
 func load_palette(fname) -> void:
 	var palette = {
 		"file": fname,
-		"name": "Palette",
+		"name": fname,
 		"colors": [],
 	}
 	
@@ -66,10 +63,14 @@ func display_palettes() -> void:
 		var palettePreview = PalettePreview.instantiate()
 		palette_items.add_child(palettePreview)
 		palettePreview.set_data(palette)
-		palettePreview.connect("pressed", Callable(self, "palette_selected").bind(palette))
+		palettePreview.connect("pressed", Callable(self, "select_palette").bind(palette))
 	
 	no_palettes.visible = len(palettes) == 0
 
 func select_palette(palette) -> void:
 	emit_signal("palette_selected", palette)
 	hide()
+
+
+func open_palette_folder() -> void:
+	System.open_folder(folder_path.text)

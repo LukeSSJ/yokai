@@ -168,7 +168,6 @@ filters = PackedStringArray("*.png")
 visible = false
 
 [node name="SelectPalette" parent="UI" groups=["dialog"] instance=ExtResource("24")]
-position = Vector2i(0, 36)
 visible = false
 
 [connection signal="pressed" from="UI/Dashboard/Buttons/NewImage" to="." method="image_new"]
