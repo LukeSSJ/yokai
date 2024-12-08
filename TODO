@@ -1,6 +1,7 @@
 == Bugs ==
 - Transforming a selection causes an extra undo where the selection is gone.
 - Select is misaligned to pixels slightly.
+- Tabs keep focus when clicking on the canvas and steal arrow key events.
 
 == Features ==
 - Crop to content command.

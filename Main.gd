@@ -152,6 +152,7 @@ func tab_close_confirmed() -> void:
 	canvas_list.get_child(tab).queue_free()
 	
 	if image_tabs.current_tab == -1:
+		update_window_title()
 		return
 	
 	Global.canvas = canvas_list.get_child(image_tabs.current_tab)
@@ -161,6 +162,8 @@ func tab_close_confirmed() -> void:
 	
 	Global.canvas.show()
 	Global.canvas.make_active()
+	
+	update_window_title()
 
 
 func tab_move(new_index: int):
@@ -204,6 +207,8 @@ func image_new_confirmed(size := Vector2.ZERO) -> void:
 	image_tabs.current_tab = tab
 	Global.canvas = canvas
 	Global.canvas.make_active()
+	
+	update_window_title()
 
 
 func image_save() -> void:
@@ -307,4 +312,7 @@ func palette_selected(palette) -> void:
 
 
 func update_window_title() -> void:
-	get_window().set_title(Global.canvas.title + " - Yokai")
+	if Global.canvas:
+		get_window().set_title(Global.canvas.title + " - Yokai")
+	else:
+		get_window().set_title("Yokai")
