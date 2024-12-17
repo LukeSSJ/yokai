@@ -4,6 +4,7 @@
 - Tabs keep focus when clicking on the canvas and steal arrow key events.
 
 == Features ==
+- Change cursor for tool.
 - Crop to content command.
 - Crop to selection command.
 - Show palette path and explain format.
